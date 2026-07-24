@@ -11,7 +11,7 @@ namespace XamlGeneratedNamespace {
     
     
     /// <summary>
-    /// GeneratedInternalTypeHelper
+    /// GeneratedInternalTypeHelpers
     /// </summary>
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "10.0.10.0")]

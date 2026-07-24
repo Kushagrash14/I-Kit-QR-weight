@@ -617,3 +617,32 @@ WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
 SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
 FROM "Users" AS "u"
 ORDER BY "u"."FullName"
+2026-07-24 16:02:26.060 +05:30 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+2026-07-24 16:02:26.237 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'admin'
+LIMIT 1
+2026-07-24 16:02:36.314 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__ToLower_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE lower("u"."Username") = @__ToLower_0 AND "u"."IsActive"
+LIMIT 1
+2026-07-24 16:02:36.380 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p8='?' (DbType = Int32), @p0='?' (DbType = DateTime), @p1='?' (Size = 20), @p2='?' (DbType = Boolean), @p3='?' (DbType = DateTime), @p4='?' (Size = 44), @p5='?' (Size = 24), @p6='?' (DbType = Int32), @p7='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "Users" SET "CreatedAt" = @p0, "FullName" = @p1, "IsActive" = @p2, "LastLoginAt" = @p3, "PasswordHash" = @p4, "PasswordSalt" = @p5, "Role" = @p6, "Username" = @p7
+WHERE "Id" = @p8
+RETURNING 1;
+2026-07-24 16:02:36.464 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-24 16:02:36.478 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-24 16:02:36.480 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
