@@ -1,0 +1,204 @@
+<UserControl x:Class="WeightVerificationQR.App.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:WeightVerificationQR.App.ViewModels"
+             xmlns:views="clr-namespace:WeightVerificationQR.App.Views"
+             Background="{StaticResource BackgroundBrush}">
+
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top bar: title + status pills -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Live Dashboard" Style="{StaticResource HeaderText}"/>
+                <TextBlock Text="{Binding CurrentDateTime, StringFormat='dddd, dd MMMM yyyy   HH:mm:ss'}" Style="{StaticResource SubHeaderText}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Border Style="{StaticResource StatusPillConnected}" Margin="6,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="8" Height="8" Fill="{Binding MachineStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
+                        <TextBlock Text="Machine" Margin="6,0,0,0" FontSize="11" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatusPillConnected}" Margin="6,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="8" Height="8" Fill="{Binding PrinterStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
+                        <TextBlock Text="Printer" Margin="6,0,0,0" FontSize="11" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatusPillConnected}" Margin="6,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="8" Height="8" Fill="{Binding DatabaseStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
+                        <TextBlock Text="Database" Margin="6,0,0,0" FontSize="11" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+                <Button Content="Connect Machine" Style="{StaticResource SecondaryButton}" Command="{Binding ConnectCommand}" Margin="10,0,0,0" Padding="14,8"/>
+
+                <!-- Hardware-free demo/testing aid: types a weight and feeds it through the exact
+                     same PASS/FAIL/QR/print pipeline a real scale reading would use. -->
+                <Border Background="#FFF7E8" CornerRadius="6" Padding="8,4" Margin="10,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Simulate (kg):" VerticalAlignment="Center" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,6,0"/>
+                        <TextBox Text="{Binding SimulatedWeightInput, UpdateSourceTrigger=PropertyChanged, StringFormat=0.000}" Width="70" Padding="4,2"/>
+                        <Button Content="Weigh" Style="{StaticResource SecondaryButton}" Command="{Binding SimulateWeighingCommand}" Margin="6,0,0,0" Padding="10,4"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Metric cards row -->
+        <Grid Grid.Row="1" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="CURRENT PRODUCT" Style="{StaticResource CardTitleText}"/>
+                    <TextBlock Text="{Binding SelectedProduct.ProductName}" FontSize="16" FontWeight="SemiBold" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Margin="0,4,0,0" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12">
+                        <Run Text="Range:"/>
+                        <Run Text="{Binding SelectedProduct.MinWeightKg, StringFormat=0.000}"/>
+                        <Run Text="-"/>
+                        <Run Text="{Binding SelectedProduct.MaxWeightKg, StringFormat=0.000}"/>
+                        <Run Text="kg"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Margin="8,0">
+                <StackPanel>
+                    <TextBlock Text="TOTAL PASS TODAY" Style="{StaticResource CardTitleText}"/>
+                    <TextBlock Text="{Binding TotalPassToday}" Style="{StaticResource MetricValueText}" Foreground="{StaticResource SuccessBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource CardBorder}" Margin="8,0">
+                <StackPanel>
+                    <TextBlock Text="TOTAL FAIL TODAY" Style="{StaticResource CardTitleText}"/>
+                    <TextBlock Text="{Binding TotalFailToday}" Style="{StaticResource MetricValueText}" Foreground="{StaticResource DangerBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="3" Style="{StaticResource CardBorder}" Margin="8,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="LAST PRINTED QR" Style="{StaticResource CardTitleText}"/>
+                    <TextBlock Text="{Binding LastPrintedQr.QrId, TargetNullValue='—'}" FontSize="16" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Text="{Binding OperatorName, StringFormat='Operator: {0}'}" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Main content: product selector + live/pass/fail panel -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,16,0">
+                <StackPanel>
+                    <TextBlock Text="SELECT PRODUCT" Style="{StaticResource CardTitleText}" Margin="0,0,0,10"/>
+                    <ListBox ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" BorderThickness="0" Background="Transparent">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="6" Padding="10,10" Margin="0,3" Background="Transparent">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding ProductName}" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="12.5"/>
+                                        <TextBlock Text="{Binding Quantity}" FontSize="11">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}">
+                <Grid>
+                    <!-- LIVE WEIGHT SCREEN (separate file: LiveWeightView.xaml) -->
+                    <views:LiveWeightView>
+                        <views:LiveWeightView.Style>
+                            <Style TargetType="views:LiveWeightView">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DisplayState}" Value="Live">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DisplayState}" Value="Idle">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </views:LiveWeightView.Style>
+                    </views:LiveWeightView>
+
+                    <!-- PASS SCREEN (separate file: PassView.xaml) -->
+                    <views:PassView>
+                        <views:PassView.Style>
+                            <Style TargetType="views:PassView">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DisplayState}" Value="Pass">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </views:PassView.Style>
+                    </views:PassView>
+
+                    <!-- FAIL SCREEN (separate file: FailView.xaml) -->
+                    <views:FailView>
+                        <views:FailView.Style>
+                            <Style TargetType="views:FailView">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DisplayState}" Value="Fail">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </views:FailView.Style>
+                    </views:FailView>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

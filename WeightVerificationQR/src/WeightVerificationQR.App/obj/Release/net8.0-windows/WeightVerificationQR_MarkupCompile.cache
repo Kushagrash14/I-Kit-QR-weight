@@ -1,0 +1,20 @@
+﻿WeightVerificationQR
+1.0.0.0
+
+winexe
+C#
+.cs
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.App\obj\Release\net8.0-windows\
+WeightVerificationQR.App
+none
+false
+TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.App\App.xaml
+13-1899654860
+
+4398141612
+508-2126230699
+Themes\LightTheme.xaml;Views\DashboardView.xaml;Views\FailView.xaml;Views\LiveWeightView.xaml;Views\LoginView.xaml;Views\MachineSettingsView.xaml;Views\MainWindow.xaml;Views\PassView.xaml;Views\PrinterSettingsView.xaml;Views\ProductMasterView.xaml;Views\QrReprintView.xaml;Views\ReportsView.xaml;Views\UserManagementView.xaml;
+
+True
+

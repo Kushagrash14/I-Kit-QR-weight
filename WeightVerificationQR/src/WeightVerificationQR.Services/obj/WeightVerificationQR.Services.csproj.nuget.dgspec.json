@@ -1,0 +1,273 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Services\\WeightVerificationQR.Services.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Core\\WeightVerificationQR.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Core\\WeightVerificationQR.Core.csproj",
+        "projectName": "WeightVerificationQR.Core",
+        "projectPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Core\\WeightVerificationQR.Core.csproj",
+        "packagesPath": "C:\\Users\\Suraj Bhora\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Suraj Bhora\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "framework": "net8.0",
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "framework": "net8.0",
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Data\\WeightVerificationQR.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Data\\WeightVerificationQR.Data.csproj",
+        "projectName": "WeightVerificationQR.Data",
+        "projectPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Data\\WeightVerificationQR.Data.csproj",
+        "packagesPath": "C:\\Users\\Suraj Bhora\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Suraj Bhora\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "framework": "net8.0",
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Core\\WeightVerificationQR.Core.csproj": {
+                "projectPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Core\\WeightVerificationQR.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "framework": "net8.0",
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Services\\WeightVerificationQR.Services.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Services\\WeightVerificationQR.Services.csproj",
+        "projectName": "WeightVerificationQR.Services",
+        "projectPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Services\\WeightVerificationQR.Services.csproj",
+        "packagesPath": "C:\\Users\\Suraj Bhora\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Services\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Suraj Bhora\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows": {
+            "framework": "net8.0-windows7.0",
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {
+              "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Core\\WeightVerificationQR.Core.csproj": {
+                "projectPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Core\\WeightVerificationQR.Core.csproj"
+              },
+              "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Data\\WeightVerificationQR.Data.csproj": {
+                "projectPath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Data\\WeightVerificationQR.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net8.0-windows": {
+          "framework": "net8.0-windows7.0",
+          "targetAlias": "net8.0-windows",
+          "dependencies": {
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.104.1, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2024.10.3, )"
+            },
+            "System.IO.Ports": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.29, 8.0.29]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

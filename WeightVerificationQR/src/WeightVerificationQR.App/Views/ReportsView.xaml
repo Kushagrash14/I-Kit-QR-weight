@@ -1,0 +1,104 @@
+<UserControl x:Class="WeightVerificationQR.App.Views.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource BackgroundBrush}">
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Reports" Style="{StaticResource HeaderText}"/>
+            <TextBlock Text="Daily, monthly, operator-wise and product-wise reporting with Excel/PDF export" Style="{StaticResource SubHeaderText}"/>
+        </StackPanel>
+
+        <!-- Filters -->
+        <Border Grid.Row="1" Style="{StaticResource CardBorder}" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Margin="0,0,16,0">
+                    <TextBlock Text="FROM DATE" Style="{StaticResource CardTitleText}" Margin="0,0,0,4"/>
+                    <DatePicker SelectedDate="{Binding FromDate}" Width="140"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,16,0">
+                    <TextBlock Text="TO DATE" Style="{StaticResource CardTitleText}" Margin="0,0,0,4"/>
+                    <DatePicker SelectedDate="{Binding ToDate}" Width="140"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,16,0">
+                    <TextBlock Text="PRODUCT" Style="{StaticResource CardTitleText}" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ProductFilter, UpdateSourceTrigger=PropertyChanged}" Width="180"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,16,0">
+                    <TextBlock Text="OPERATOR" Style="{StaticResource CardTitleText}" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding OperatorFilter, UpdateSourceTrigger=PropertyChanged}" Width="150"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,16,0">
+                    <TextBlock Text="QR ID" Style="{StaticResource CardTitleText}" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding QrIdFilter, UpdateSourceTrigger=PropertyChanged}" Width="150"/>
+                </StackPanel>
+                <Button Content="Search" Style="{StaticResource PrimaryButton}" Command="{Binding SearchCommand}" VerticalAlignment="Bottom" Margin="0,0,10,0"/>
+                <Button Content="Export Excel" Style="{StaticResource SecondaryButton}" Command="{Binding ExportExcelCommand}" VerticalAlignment="Bottom" Margin="0,0,10,0"/>
+                <Button Content="Export PDF" Style="{StaticResource SecondaryButton}" Command="{Binding ExportPdfCommand}" VerticalAlignment="Bottom"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Summary -->
+        <Grid Grid.Row="2" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="TOTAL RECORDS" Style="{StaticResource CardTitleText}"/>
+                    <TextBlock Text="{Binding TotalCount}" Style="{StaticResource MetricValueText}"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Margin="8,0">
+                <StackPanel>
+                    <TextBlock Text="PASS %" Style="{StaticResource CardTitleText}"/>
+                    <TextBlock Foreground="{StaticResource SuccessBrush}" Style="{StaticResource MetricValueText}">
+                        <Run Text="{Binding PassPercent, Mode=OneWay}"/><Run Text="%"/>
+                    </TextBlock>
+                    <TextBlock Text="{Binding PassCount, StringFormat='{}{0} kits'}" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource CardBorder}" Margin="8,0">
+                <StackPanel>
+                    <TextBlock Text="FAIL %" Style="{StaticResource CardTitleText}"/>
+                    <TextBlock Foreground="{StaticResource DangerBrush}" Style="{StaticResource MetricValueText}">
+                        <Run Text="{Binding FailPercent, Mode=OneWay}"/><Run Text="%"/>
+                    </TextBlock>
+                    <TextBlock Text="{Binding FailCount, StringFormat='{}{0} kits'}" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource CardBorder}" Margin="8,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="STATUS" Style="{StaticResource CardTitleText}"/>
+                    <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" FontSize="12.5" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Grid -->
+        <Border Grid.Row="3" Style="{StaticResource CardBorder}" Padding="0">
+            <DataGrid ItemsSource="{Binding Records}" IsReadOnly="True" BorderThickness="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Kit Number" Binding="{Binding KitNumber}" Width="1.3*"/>
+                    <DataGridTextColumn Header="Product" Binding="{Binding ProductName}" Width="2*"/>
+                    <DataGridTextColumn Header="Weight (kg)" Binding="{Binding WeightKg, StringFormat=0.000}" Width="*"/>
+                    <DataGridTextColumn Header="Result" Binding="{Binding Result}" Width="*"/>
+                    <DataGridTextColumn Header="Reason" Binding="{Binding Remarks}" Width="1.4*"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding DateText}" Width="*"/>
+                    <DataGridTextColumn Header="Time" Binding="{Binding TimeText}" Width="*"/>
+                    <DataGridTextColumn Header="Operator" Binding="{Binding OperatorName}" Width="1.2*"/>
+                    <DataGridTextColumn Header="Printer" Binding="{Binding PrinterStatus}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>

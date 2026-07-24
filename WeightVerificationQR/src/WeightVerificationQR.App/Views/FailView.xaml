@@ -1,0 +1,15 @@
+<UserControl x:Class="WeightVerificationQR.App.Views.FailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- FAIL Screen: shown while DashboardViewModel.DisplayState == Fail. Red, shows rejection reason, no QR. -->
+    <Border CornerRadius="8" Background="{StaticResource DangerLightBrush}">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="&#10006;" FontSize="90" Foreground="{StaticResource DangerBrush}" HorizontalAlignment="Center" FontWeight="Bold"/>
+            <TextBlock Text="FAIL" FontSize="46" FontWeight="Bold" Foreground="{StaticResource DangerBrush}" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding LastRecord.WeightKg, StringFormat='{}{0:0.000} kg'}" FontSize="24" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+            <TextBlock Text="{Binding LastRecord.ProductName}" FontSize="14" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+            <TextBlock Text="{Binding LastRecord.Remarks}" FontSize="18" Foreground="{StaticResource DangerBrush}" HorizontalAlignment="Center" Margin="0,6,0,0" FontWeight="SemiBold"/>
+            <TextBlock Text="QR / label NOT generated" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,14,0,0"/>
+        </StackPanel>
+    </Border>
+</UserControl>

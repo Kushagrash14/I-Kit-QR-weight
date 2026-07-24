@@ -1,0 +1,15 @@
+<UserControl x:Class="WeightVerificationQR.App.Views.PassView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- PASS Screen: shown while DashboardViewModel.DisplayState == Pass. Green, full result summary. -->
+    <Border CornerRadius="8" Background="{StaticResource SuccessLightBrush}">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="&#10004;" FontSize="90" Foreground="{StaticResource SuccessBrush}" HorizontalAlignment="Center" FontWeight="Bold"/>
+            <TextBlock Text="PASS" FontSize="46" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding LastRecord.WeightKg, StringFormat='{}{0:0.000} kg'}" FontSize="24" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+            <TextBlock Text="{Binding LastRecord.ProductName}" FontSize="14" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+            <TextBlock Text="{Binding LastRecord.KitNumber}" FontSize="16" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+            <TextBlock Text="QR label sent to printer" FontSize="13" Foreground="{StaticResource SuccessBrush}" HorizontalAlignment="Center" Margin="0,14,0,0"/>
+        </StackPanel>
+    </Border>
+</UserControl>

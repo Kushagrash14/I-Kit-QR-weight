@@ -1,0 +1,102 @@
+<Window x:Class="WeightVerificationQR.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:WeightVerificationQR.App.ViewModels"
+        xmlns:views="clr-namespace:WeightVerificationQR.App.Views"
+        Title="Weight Verification &amp; QR Label System"
+        Icon="/Resources/app.ico"
+        Height="820" Width="1360"
+        WindowStartupLocation="CenterScreen"
+        MinHeight="700" MinWidth="1100">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <views:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProductMasterViewModel}">
+            <views:ProductMasterView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:UserManagementViewModel}">
+            <views:UserManagementView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReportsViewModel}">
+            <views:ReportsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MachineSettingsViewModel}">
+            <views:MachineSettingsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PrinterSettingsViewModel}">
+            <views:PrinterSettingsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:QrReprintViewModel}">
+            <views:QrReprintView/>
+        </DataTemplate>
+
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#DCE9F5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontSize" Value="13.5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#0E4C81"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="{StaticResource PrimaryDarkBrush}">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Margin="20,24,20,30">
+                    <TextBlock Text="WVQR" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Weight Verification System" FontSize="11" Foreground="#9FC2E0" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,0,0,20">
+                    <Separator Margin="16,0,16,10" Background="#1E5D93"/>
+                    <TextBlock Text="{Binding LoggedInUserName}" Foreground="White" FontWeight="SemiBold" Margin="20,0,20,2"/>
+                    <TextBlock Text="{Binding LoggedInUserRole}" Foreground="#9FC2E0" FontSize="11" Margin="20,0,20,10"/>
+                    <Button Content="Logout" Style="{StaticResource NavButton}" Command="{Binding LogoutCommand}"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <Button Content="Dashboard" Style="{StaticResource NavButton}" Command="{Binding NavigateCommand}" CommandParameter="Dashboard"/>
+                    <Button Content="Product Master" Style="{StaticResource NavButton}" Command="{Binding NavigateCommand}" CommandParameter="ProductMaster"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <Button Content="User Management" Style="{StaticResource NavButton}" Command="{Binding NavigateCommand}" CommandParameter="UserManagement"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <Button Content="Reports" Style="{StaticResource NavButton}" Command="{Binding NavigateCommand}" CommandParameter="Reports"
+                            Visibility="{Binding IsSupervisorOrAbove, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <Button Content="QR Reprint" Style="{StaticResource NavButton}" Command="{Binding NavigateCommand}" CommandParameter="QrReprint"
+                            Visibility="{Binding IsSupervisorOrAbove, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <Button Content="Machine Settings" Style="{StaticResource NavButton}" Command="{Binding NavigateCommand}" CommandParameter="MachineSettings"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <Button Content="Printer Settings" Style="{StaticResource NavButton}" Command="{Binding NavigateCommand}" CommandParameter="PrinterSettings"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Content -->
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" Margin="0"/>
+    </Grid>
+</Window>

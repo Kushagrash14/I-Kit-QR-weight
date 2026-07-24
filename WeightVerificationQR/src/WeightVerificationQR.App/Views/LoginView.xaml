@@ -1,0 +1,45 @@
+<Window x:Class="WeightVerificationQR.App.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Weight Verification &amp; QR Label System - Login"
+        Icon="/Resources/app.ico"
+        Height="520" Width="900"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left brand panel -->
+        <Border Grid.Column="0" Background="{StaticResource PrimaryBrush}">
+            <StackPanel VerticalAlignment="Center" Margin="50">
+                <TextBlock Text="Industrial Weight Verification" FontSize="28" FontWeight="Bold" Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Text="&amp; Automatic QR Label Generation" FontSize="20" Foreground="#DCE9F5" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                <TextBlock Text="Automatic PASS / FAIL decisioning, database logging and label printing - no manual approval required." Foreground="#C6DCEF" Margin="0,24,0,0" TextWrapping="Wrap" FontSize="13"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Right login form -->
+        <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}">
+            <StackPanel VerticalAlignment="Center" Margin="60">
+                <TextBlock Text="Sign In" Style="{StaticResource HeaderText}"/>
+                <TextBlock Text="Enter your operator credentials to continue" Style="{StaticResource SubHeaderText}" Margin="0,4,0,24"/>
+
+                <TextBlock Text="USERNAME" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                <TextBox x:Name="UsernameBox" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
+
+                <TextBlock Text="PASSWORD" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                <PasswordBox x:Name="PasswordBox" Margin="0,0,0,10" KeyDown="PasswordBox_KeyDown"/>
+
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource DangerBrush}" TextWrapping="Wrap" Margin="0,0,0,10"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                <Button Content="LOGIN" Style="{StaticResource PrimaryButton}" Click="LoginButton_Click" Margin="0,10,0,0" HorizontalAlignment="Stretch"/>
+
+                <TextBlock Text="Default admin: admin / Admin@123 (change after first login)" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,20,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

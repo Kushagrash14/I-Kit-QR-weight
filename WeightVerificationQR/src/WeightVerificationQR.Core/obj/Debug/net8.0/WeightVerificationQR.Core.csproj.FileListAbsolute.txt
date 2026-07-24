@@ -1,0 +1,11 @@
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\bin\Debug\net8.0\WeightVerificationQR.Core.deps.json
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\bin\Debug\net8.0\WeightVerificationQR.Core.dll
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\bin\Debug\net8.0\WeightVerificationQR.Core.pdb
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\obj\Debug\net8.0\WeightVerificationQR.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\obj\Debug\net8.0\WeightVerificationQR.Core.AssemblyInfoInputs.cache
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\obj\Debug\net8.0\WeightVerificationQR.Core.AssemblyInfo.cs
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\obj\Debug\net8.0\WeightVerificationQR.Core.csproj.CoreCompileInputs.cache
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\obj\Debug\net8.0\WeightVerificationQR.Core.dll
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\obj\Debug\net8.0\refint\WeightVerificationQR.Core.dll
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\obj\Debug\net8.0\WeightVerificationQR.Core.pdb
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Core\obj\Debug\net8.0\ref\WeightVerificationQR.Core.dll
