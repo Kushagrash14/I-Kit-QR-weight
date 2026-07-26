@@ -68,5 +68,21 @@ public class MainViewModel : ViewModelBase
         };
     }
 
-    private void Logout() => LoggedOut?.Invoke(this, EventArgs.Empty);
+    private void Logout()
+    {
+        // MainViewModel is a singleton: reset to Dashboard so the next user who logs in
+        // never inherits the previous user's page (e.g. an Operator landing on User Management).
+        Navigate("Dashboard");
+        LoggedOut?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>Refreshes user-dependent bindings after a new login (singleton VM, new session).</summary>
+    public void RefreshSession()
+    {
+        OnPropertyChanged(nameof(LoggedInUserName));
+        OnPropertyChanged(nameof(LoggedInUserRole));
+        OnPropertyChanged(nameof(IsAdmin));
+        OnPropertyChanged(nameof(IsSupervisorOrAbove));
+        Navigate("Dashboard");
+    }
 }

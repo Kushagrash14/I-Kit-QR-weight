@@ -10,14 +10,22 @@ public class UserManagementViewModel : ViewModelBase
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly SessionContext _session;
 
-    public UserManagementViewModel(IUserRepository userRepository, IPasswordHasher passwordHasher)
+    public UserManagementViewModel(IUserRepository userRepository, IPasswordHasher passwordHasher, SessionContext session)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _session = session;
 
         Users = new ObservableCollection<User>();
-        Roles = Enum.GetValues<UserRole>();
+
+        // Role hierarchy: you can only assign roles strictly BELOW your own rank.
+        // SuperAdmin -> can create Admin/Supervisor/Operator; Admin -> Supervisor/Operator.
+        Roles = Enum.GetValues<UserRole>()
+            .Where(r => SessionContext.RankOf(r) < _session.CurrentRank)
+            .OrderByDescending(SessionContext.RankOf)
+            .ToList();
 
         NewCommand = new RelayCommand(StartNew);
         SaveCommand = new AsyncRelayCommand(SaveAsync);
@@ -47,6 +55,10 @@ public class UserManagementViewModel : ViewModelBase
     public IAsyncRelayCommand<User> DeleteCommand { get; }
     public ICommand EditCommand { get; }
 
+    /// <summary>True when the current user outranks the given user and may modify them.</summary>
+    private bool CanManage(User user) =>
+        user.Id != _session.CurrentUser?.Id && SessionContext.RankOf(user.Role) < _session.CurrentRank;
+
     private async Task LoadAsync()
     {
         var users = await _userRepository.GetAllAsync();
@@ -58,12 +70,22 @@ public class UserManagementViewModel : ViewModelBase
     {
         EditingUser = new User { Role = UserRole.Operator, IsActive = true };
         NewPassword = string.Empty;
+        StatusMessage = string.Empty;
         IsEditing = true;
     }
 
     private void Edit(User? user)
     {
         if (user is null) return;
+
+        if (!CanManage(user))
+        {
+            StatusMessage = user.Id == _session.CurrentUser?.Id
+                ? "You cannot edit your own account from here."
+                : $"Only a higher role can modify a {user.Role} account.";
+            return;
+        }
+
         EditingUser = new User
         {
             Id = user.Id,
@@ -75,6 +97,7 @@ public class UserManagementViewModel : ViewModelBase
             PasswordSalt = user.PasswordSalt
         };
         NewPassword = string.Empty;
+        StatusMessage = string.Empty;
         IsEditing = true;
     }
 
@@ -85,6 +108,13 @@ public class UserManagementViewModel : ViewModelBase
         if (string.IsNullOrWhiteSpace(EditingUser.FullName) || string.IsNullOrWhiteSpace(EditingUser.Username))
         {
             StatusMessage = "Full name and username are required.";
+            return;
+        }
+
+        // Never allow saving a user at or above the current user's own rank.
+        if (SessionContext.RankOf(EditingUser.Role) >= _session.CurrentRank)
+        {
+            StatusMessage = $"You are not allowed to assign the {EditingUser.Role} role.";
             return;
         }
 
@@ -125,6 +155,15 @@ public class UserManagementViewModel : ViewModelBase
     private async Task DeleteAsync(User? user)
     {
         if (user is null) return;
+
+        if (!CanManage(user))
+        {
+            StatusMessage = user.Id == _session.CurrentUser?.Id
+                ? "You cannot deactivate your own account."
+                : $"Only a higher role can deactivate a {user.Role} account.";
+            return;
+        }
+
         await _userRepository.DeleteAsync(user.Id);
         StatusMessage = $"User '{user.FullName}' deactivated.";
         await LoadAsync();

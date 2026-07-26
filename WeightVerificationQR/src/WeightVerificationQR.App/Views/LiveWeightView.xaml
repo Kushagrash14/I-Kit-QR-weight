@@ -6,25 +6,77 @@
         Bindings resolve against the DashboardViewModel that hosts this control
         (see DashboardView.xaml, which sets this as the content for those states).
     -->
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextBlock Text="LIVE WEIGHT" HorizontalAlignment="Center" Style="{StaticResource CardTitleText}"/>
-        <TextBlock Text="{Binding LiveWeight, StringFormat='{}{0:0.000} kg'}" FontSize="72" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Ellipse Width="8" Height="8" Fill="{StaticResource PrimaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="LIVE WEIGHT" Style="{StaticResource CardTitleText}" FontSize="13" VerticalAlignment="Center"/>
+            </StackPanel>
 
-        <Border Padding="16,6" CornerRadius="14" HorizontalAlignment="Center" Background="{StaticResource SuccessLightBrush}">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsStable}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <TextBlock Text="Stable" HorizontalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource SuccessBrush}"/>
-        </Border>
+            <TextBlock HorizontalAlignment="Center" Margin="0,14,0,6">
+                <Run Text="{Binding LiveWeight, StringFormat='{}{0:0.000}'}" FontSize="96" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                <Run Text=" kg" FontSize="34" Foreground="{StaticResource TextMutedBrush}"/>
+            </TextBlock>
 
-        <TextBlock Text="Place the kit on the scale and hold steady" HorizontalAlignment="Center"
-                   Foreground="{StaticResource TextSecondaryBrush}" Margin="0,20,0,0"/>
-    </StackPanel>
+            <!-- Stability indicator -->
+            <Border Padding="18,8" CornerRadius="16" HorizontalAlignment="Center" Margin="0,6,0,0">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="{StaticResource SurfaceAltBrush}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsStable}" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SuccessLightBrush}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="&#xE916;"/>
+                                <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsStable}" Value="True">
+                                        <Setter Property="Text" Value="&#xE73E;"/>
+                                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock FontWeight="SemiBold" FontSize="13.5" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="Waiting for stable reading…"/>
+                                <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsStable}" Value="True">
+                                        <Setter Property="Text" Value="Stable"/>
+                                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,28,0,0">
+                <TextBlock Text="&#xE7B5;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="Place the kit on the scale and hold steady" Foreground="{StaticResource TextSecondaryBrush}" FontSize="13.5"/>
+            </StackPanel>
+
+            <!-- Acceptable range reminder -->
+            <Border Background="{StaticResource PrimaryLightBrush}" CornerRadius="10" Padding="16,8" HorizontalAlignment="Center" Margin="0,18,0,0">
+                <TextBlock FontSize="12.5" Foreground="{StaticResource PrimaryDarkBrush}">
+                    <Run Text="Accept range: "/>
+                    <Run Text="{Binding SelectedProduct.MinWeightKg, StringFormat=0.000}" FontWeight="Bold"/>
+                    <Run Text=" – "/>
+                    <Run Text="{Binding SelectedProduct.MaxWeightKg, StringFormat=0.000}" FontWeight="Bold"/>
+                    <Run Text=" kg"/>
+                </TextBlock>
+            </Border>
+        </StackPanel>
+    </Grid>
 </UserControl>

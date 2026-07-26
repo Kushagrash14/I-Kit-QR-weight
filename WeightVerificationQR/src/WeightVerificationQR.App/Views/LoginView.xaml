@@ -3,42 +3,101 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Weight Verification &amp; QR Label System - Login"
         Icon="/Resources/app.ico"
-        Height="520" Width="900"
+        Height="600" Width="980"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Background="{StaticResource BackgroundBrush}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.1*"/>
+            <ColumnDefinition Width="1.15*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left brand panel -->
-        <Border Grid.Column="0" Background="{StaticResource PrimaryBrush}">
-            <StackPanel VerticalAlignment="Center" Margin="50">
-                <TextBlock Text="Industrial Weight Verification" FontSize="28" FontWeight="Bold" Foreground="White" TextWrapping="Wrap"/>
-                <TextBlock Text="&amp; Automatic QR Label Generation" FontSize="20" Foreground="#DCE9F5" Margin="0,6,0,0" TextWrapping="Wrap"/>
-                <TextBlock Text="Automatic PASS / FAIL decisioning, database logging and label printing - no manual approval required." Foreground="#C6DCEF" Margin="0,24,0,0" TextWrapping="Wrap" FontSize="13"/>
-            </StackPanel>
+        <!-- ============ Left brand panel ============ -->
+        <Border Grid.Column="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#0F62B5" Offset="0"/>
+                    <GradientStop Color="#3E8ED6" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <!-- Subtle decorative circles -->
+                <Ellipse Width="380" Height="380" Fill="#FFFFFF" Opacity="0.04" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-120,-120,0"/>
+                <Ellipse Width="260" Height="260" Fill="#FFFFFF" Opacity="0.05" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-80,0,0,-80"/>
+
+                <StackPanel VerticalAlignment="Center" Margin="54,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,34">
+                        <Border Width="52" Height="52" CornerRadius="13" Background="#FFFFFF22">
+                            <TextBlock Text="&#xE8CB;" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="WVQR" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="INDUSTRIAL QUALITY CONTROL" FontSize="10" Foreground="#9FC2E0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Text="Industrial Weight Verification" FontSize="30" FontWeight="Bold" Foreground="White" TextWrapping="Wrap"/>
+                    <TextBlock Text="&amp; Automatic QR Label Generation" FontSize="21" Foreground="#C6DCEF" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <StackPanel Margin="0,34,0,0">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                            <Border Width="30" Height="30" CornerRadius="8" Background="#FFFFFF1E">
+                                <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#7DDFA0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="Automatic PASS / FAIL decisioning" Foreground="#DCE9F5" FontSize="13.5" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                            <Border Width="30" Height="30" CornerRadius="8" Background="#FFFFFF1E">
+                                <TextBlock Text="&#xE749;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#7DDFA0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="QR label printed instantly on PASS" Foreground="#DCE9F5" FontSize="13.5" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="30" Height="30" CornerRadius="8" Background="#FFFFFF1E">
+                                <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="#7DDFA0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="Full audit trail - every kit logged to database" Foreground="#DCE9F5" FontSize="13.5" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </Border>
 
-        <!-- Right login form -->
+        <!-- ============ Right login form ============ -->
         <Border Grid.Column="1" Background="{StaticResource SurfaceBrush}">
-            <StackPanel VerticalAlignment="Center" Margin="60">
-                <TextBlock Text="Sign In" Style="{StaticResource HeaderText}"/>
-                <TextBlock Text="Enter your operator credentials to continue" Style="{StaticResource SubHeaderText}" Margin="0,4,0,24"/>
+            <StackPanel VerticalAlignment="Center" Margin="56,0">
+                <TextBlock Text="Welcome back" Style="{StaticResource HeaderText}"/>
+                <TextBlock Text="Sign in with your operator credentials" Style="{StaticResource SubHeaderText}" Margin="0,4,0,30"/>
 
                 <TextBlock Text="USERNAME" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                <TextBox x:Name="UsernameBox" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
+                <TextBox x:Name="UsernameBox" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,18" MinHeight="40"/>
 
                 <TextBlock Text="PASSWORD" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                <PasswordBox x:Name="PasswordBox" Margin="0,0,0,10" KeyDown="PasswordBox_KeyDown"/>
+                <PasswordBox x:Name="PasswordBox" Margin="0,0,0,12" KeyDown="PasswordBox_KeyDown" MinHeight="40"/>
 
-                <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource DangerBrush}" TextWrapping="Wrap" Margin="0,0,0,10"
-                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+                <Border Background="{StaticResource DangerLightBrush}" CornerRadius="8" Padding="12,8" Margin="0,0,0,12"
+                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE783;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource DangerBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource DangerBrush}" TextWrapping="Wrap" FontSize="12.5" VerticalAlignment="Center" MaxWidth="280"/>
+                    </StackPanel>
+                </Border>
 
-                <Button Content="LOGIN" Style="{StaticResource PrimaryButton}" Click="LoginButton_Click" Margin="0,10,0,0" HorizontalAlignment="Stretch"/>
+                <Button Content="SIGN IN" Style="{StaticResource PrimaryButton}" Click="LoginButton_Click" Margin="0,6,0,0"
+                        HorizontalAlignment="Stretch" MinHeight="44" FontSize="14"/>
 
-                <TextBlock Text="Default admin: admin / Admin@123 (change after first login)" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,20,0,0"/>
+                <Border Background="{StaticResource SurfaceAltBrush}" CornerRadius="8" Padding="12,10" Margin="0,26,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Top" Margin="0,2,8,0"/>
+                        <TextBlock FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" TextWrapping="Wrap" MaxWidth="280">
+                            <Run Text="Default admin: admin / Admin@123"/>
+                            <LineBreak/>
+                            <Run Text="Change the password after first login."/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </Border>
     </Grid>

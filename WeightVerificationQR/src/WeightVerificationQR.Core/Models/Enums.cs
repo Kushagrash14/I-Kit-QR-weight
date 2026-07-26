@@ -20,7 +20,9 @@ public enum UserRole
 {
     Admin = 1,
     Supervisor = 2,
-    Operator = 3
+    Operator = 3,
+    /// <summary>Highest privilege level - above Admin. Can manage Admin accounts.</summary>
+    SuperAdmin = 4
 }
 
 public enum ConnectionStatus

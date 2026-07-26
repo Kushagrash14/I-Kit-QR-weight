@@ -3,93 +3,160 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Background="{StaticResource BackgroundBrush}">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Margin="28">
+        <Grid Margin="28,24,28,24">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <StackPanel Grid.Row="0" Margin="0,0,0,18">
                 <TextBlock Text="Printer Settings" Style="{StaticResource HeaderText}"/>
-                <TextBlock Text="Configure the Zebra / TSC / Godex label printer" Style="{StaticResource SubHeaderText}"/>
+                <TextBlock Text="Configure the Zebra / TSC / Godex label printer" Style="{StaticResource SubHeaderText}" Margin="0,3,0,0"/>
             </StackPanel>
 
-            <Border Grid.Row="1" Style="{StaticResource CardBorder}" MaxWidth="560" HorizontalAlignment="Left">
-                <StackPanel>
-                    <TextBlock Text="PRINTER TYPE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <ComboBox ItemsSource="{Binding PrinterTypes}" SelectedItem="{Binding PrinterType}" Margin="0,0,0,14"/>
+            <!-- Two-column layout so it doesn't feel like one long form -->
+            <Grid Grid.Row="1" MaxWidth="1180" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="CONNECTION MODE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <ComboBox ItemsSource="{Binding ConnectionModes}" SelectedItem="{Binding ConnectionMode}" Margin="0,0,0,14"/>
+                <!-- Left column: connection + label -->
+                <StackPanel Grid.Column="0" Margin="0,0,9,0">
+                    <Border Style="{StaticResource CardBorder}" Padding="22">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
+                                <TextBlock Text="&#xE8FE;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource PrimaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="Printer Connection" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            </StackPanel>
 
-                    <TextBlock Text="IP ADDRESS (Network mode)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                    <TextBlock Text="PRINTER TYPE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                    <ComboBox ItemsSource="{Binding PrinterTypes}" SelectedItem="{Binding PrinterType}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="CONNECTION MODE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                    <ComboBox ItemsSource="{Binding ConnectionModes}" SelectedItem="{Binding ConnectionMode}"/>
+                                </StackPanel>
+                            </Grid>
 
-                    <TextBlock Text="PORT (Network mode)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.6*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                    <TextBlock Text="IP ADDRESS (Network mode)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                    <TextBox Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="PORT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                    <TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </Grid>
 
-                    <TextBlock Text="COM PORT (USB/Serial mode)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding ComPort, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+                            <TextBlock Text="COM PORT (USB/Serial mode)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                            <TextBox Text="{Binding ComPort, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
 
-                    <TextBlock Text="WINDOWS PRINTER NAME (Print-queue mode)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding WindowsPrinterName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+                            <TextBlock Text="WINDOWS PRINTER NAME (Print-queue mode)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                            <TextBox Text="{Binding WindowsPrinterName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
 
-                    <Grid Margin="0,0,0,18">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                            <TextBlock Text="LABEL WIDTH (mm)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding LabelWidthMm, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                    <TextBlock Text="LABEL WIDTH (MM)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                    <TextBox Text="{Binding LabelWidthMm, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="LABEL HEIGHT (MM)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                    <TextBox Text="{Binding LabelHeightMm, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Background="{StaticResource SurfaceAltBrush}" CornerRadius="8" Padding="12,9" Margin="0,0,0,16"
+                                    Visibility="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                                <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12.5"/>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource SecondaryButton}" Command="{Binding TestConnectionCommand}" Margin="0,0,10,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                        <TextBlock Text="Test Printer"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource PrimaryButton}" Command="{Binding SaveCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                        <TextBlock Text="Save"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                            <TextBlock Text="LABEL HEIGHT (mm)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding LabelHeightMm, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- Right column: BarTender + backup -->
+                <StackPanel Grid.Column="1" Margin="9,0,0,0">
+                    <Border Style="{StaticResource CardBorder}" Padding="22">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
+                                <TextBlock Text="&#xE7C1;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource PrimaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="BarTender Printing" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <Border Background="{StaticResource PrimaryLightBrush}" CornerRadius="9" Padding="8,2" Margin="10,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="Connection Mode = BarTender" FontSize="10.5" Foreground="{StaticResource PrimaryDarkBrush}" FontWeight="SemiBold"/>
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock Text="BARTENDER API URL" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                            <TextBox Text="{Binding BarTenderApiUrl, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+
+                            <TextBlock Text="BARTENDER PRINTER NAME" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                            <TextBox Text="{Binding BarTenderPrinterName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+
+                            <TextBlock Text="LABEL TEMPLATE PATH (.BTW)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                            <TextBox Text="{Binding BarTenderLabelPath, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+
+                            <TextBlock Text="BARTENDER.EXE PATH (leave blank to auto-detect)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                            <TextBox Text="{Binding BarTenderExePath, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+
+                            <TextBlock Text="PRINT METHOD (api / cmd / auto)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                            <TextBox Text="{Binding BarTenderPrintMethod, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
-                    </Grid>
+                    </Border>
 
-                    <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,14"/>
-
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="Test Printer" Style="{StaticResource SecondaryButton}" Command="{Binding TestConnectionCommand}" Margin="0,0,10,0"/>
-                        <Button Content="Save" Style="{StaticResource PrimaryButton}" Command="{Binding SaveCommand}"/>
-                    </StackPanel>
+                    <Border Style="{StaticResource CardBorder}" Margin="0,18,0,0" Padding="22">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource PrimaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Database Backup" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                </StackPanel>
+                                <TextBlock Text="Create a timestamped backup copy of the production database."
+                                           TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12.5"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" Style="{StaticResource PrimaryButton}" Command="{Binding BackupNowCommand}" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                    <TextBlock Text="Backup Now"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </StackPanel>
-            </Border>
-
-            <Border Grid.Row="2" Style="{StaticResource CardBorder}" Margin="0,16,0,0" MaxWidth="560" HorizontalAlignment="Left">
-                <StackPanel>
-                    <TextBlock Text="BARTENDER PRINTING (Connection Mode = BarTender)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-
-                    <TextBlock Text="BARTENDER API URL" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding BarTenderApiUrl, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
-
-                    <TextBlock Text="BARTENDER PRINTER NAME" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding BarTenderPrinterName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
-
-                    <TextBlock Text="LABEL TEMPLATE PATH (.btw)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding BarTenderLabelPath, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
-
-                    <TextBlock Text="BARTENDER.EXE PATH (leave blank to auto-detect)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding BarTenderExePath, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
-
-                    <TextBlock Text="PRINT METHOD (api / cmd / auto)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding BarTenderPrintMethod, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Row="3" Style="{StaticResource CardBorder}" Margin="0,16,0,0" MaxWidth="560" HorizontalAlignment="Left">
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Margin="0,0,20,0">
-                        <TextBlock Text="DATABASE BACKUP" Style="{StaticResource CardTitleText}"/>
-                        <TextBlock Text="Create a timestamped backup copy of the production database." TextWrapping="Wrap" MaxWidth="380" Margin="0,6,0,0" Foreground="{StaticResource TextSecondaryBrush}"/>
-                    </StackPanel>
-                    <Button Content="Backup Now" Style="{StaticResource PrimaryButton}" Command="{Binding BackupNowCommand}" VerticalAlignment="Top"/>
-                </StackPanel>
-            </Border>
+            </Grid>
         </Grid>
     </ScrollViewer>
 </UserControl>

@@ -5,15 +5,15 @@
              xmlns:views="clr-namespace:WeightVerificationQR.App.Views"
              Background="{StaticResource BackgroundBrush}">
 
-    <Grid Margin="28">
+    <Grid Margin="28,24,28,24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Top bar: title + status pills -->
-        <Grid Grid.Row="0" Margin="0,0,0,16">
+        <!-- ============ Top bar: title + status pills ============ -->
+        <Grid Grid.Row="0" Margin="0,0,0,18">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -21,44 +21,53 @@
 
             <StackPanel Grid.Column="0">
                 <TextBlock Text="Live Dashboard" Style="{StaticResource HeaderText}"/>
-                <TextBlock Text="{Binding CurrentDateTime, StringFormat='dddd, dd MMMM yyyy   HH:mm:ss'}" Style="{StaticResource SubHeaderText}"/>
+                <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                    <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding CurrentDateTime, StringFormat='dddd, dd MMMM yyyy   •   HH:mm:ss'}" Style="{StaticResource SubHeaderText}"/>
+                </StackPanel>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Border Style="{StaticResource StatusPillConnected}" Margin="6,0">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Style="{StaticResource StatusPillConnected}" Margin="5,0">
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="8" Height="8" Fill="{Binding MachineStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
-                        <TextBlock Text="Machine" Margin="6,0,0,0" FontSize="11" FontWeight="SemiBold"/>
+                        <Ellipse Width="9" Height="9" Fill="{Binding MachineStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
+                        <TextBlock Text="Machine" Margin="7,0,0,0" FontSize="11.5" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"/>
                     </StackPanel>
                 </Border>
-                <Border Style="{StaticResource StatusPillConnected}" Margin="6,0">
+                <Border Style="{StaticResource StatusPillConnected}" Margin="5,0">
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="8" Height="8" Fill="{Binding PrinterStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
-                        <TextBlock Text="Printer" Margin="6,0,0,0" FontSize="11" FontWeight="SemiBold"/>
+                        <Ellipse Width="9" Height="9" Fill="{Binding PrinterStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
+                        <TextBlock Text="Printer" Margin="7,0,0,0" FontSize="11.5" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"/>
                     </StackPanel>
                 </Border>
-                <Border Style="{StaticResource StatusPillConnected}" Margin="6,0">
+                <Border Style="{StaticResource StatusPillConnected}" Margin="5,0">
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="8" Height="8" Fill="{Binding DatabaseStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
-                        <TextBlock Text="Database" Margin="6,0,0,0" FontSize="11" FontWeight="SemiBold"/>
+                        <Ellipse Width="9" Height="9" Fill="{Binding DatabaseStatus, Converter={StaticResource ConnectionStatusToBrushConverter}}" VerticalAlignment="Center"/>
+                        <TextBlock Text="Database" Margin="7,0,0,0" FontSize="11.5" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"/>
                     </StackPanel>
                 </Border>
-                <Button Content="Connect Machine" Style="{StaticResource SecondaryButton}" Command="{Binding ConnectCommand}" Margin="10,0,0,0" Padding="14,8"/>
+                <Button Style="{StaticResource SecondaryButton}" Command="{Binding ConnectCommand}" Margin="10,0,0,0" Padding="14,8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE703;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                        <TextBlock Text="Connect Machine" FontSize="12"/>
+                    </StackPanel>
+                </Button>
 
                 <!-- Hardware-free demo/testing aid: types a weight and feeds it through the exact
                      same PASS/FAIL/QR/print pipeline a real scale reading would use. -->
-                <Border Background="#FFF7E8" CornerRadius="6" Padding="8,4" Margin="10,0,0,0">
+                <Border Background="{StaticResource WarningLightBrush}" BorderBrush="#F0DFB4" BorderThickness="1" CornerRadius="8" Padding="10,5" Margin="10,0,0,0">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Simulate (kg):" VerticalAlignment="Center" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,6,0"/>
-                        <TextBox Text="{Binding SimulatedWeightInput, UpdateSourceTrigger=PropertyChanged, StringFormat=0.000}" Width="70" Padding="4,2"/>
-                        <Button Content="Weigh" Style="{StaticResource SecondaryButton}" Command="{Binding SimulateWeighingCommand}" Margin="6,0,0,0" Padding="10,4"/>
+                        <TextBlock Text="&#xEA80;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{StaticResource WarningBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="Simulate (kg):" VerticalAlignment="Center" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,6,0"/>
+                        <TextBox Text="{Binding SimulatedWeightInput, UpdateSourceTrigger=PropertyChanged, StringFormat=0.000}" Width="72" Padding="6,3" FontSize="12"/>
+                        <Button Content="Weigh" Style="{StaticResource SecondaryButton}" Command="{Binding SimulateWeighingCommand}" Margin="6,0,0,0" Padding="12,4" FontSize="12"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
         </Grid>
 
-        <!-- Metric cards row -->
-        <Grid Grid.Row="1" Margin="0,0,0,16">
+        <!-- ============ Metric cards row ============ -->
+        <Grid Grid.Row="1" Margin="0,0,0,18">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -66,92 +75,142 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,8,0">
-                <StackPanel>
-                    <TextBlock Text="CURRENT PRODUCT" Style="{StaticResource CardTitleText}"/>
-                    <TextBlock Text="{Binding SelectedProduct.ProductName}" FontSize="16" FontWeight="SemiBold" Margin="0,6,0,0" TextWrapping="Wrap"/>
-                    <TextBlock Margin="0,4,0,0" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12">
-                        <Run Text="Range:"/>
-                        <Run Text="{Binding SelectedProduct.MinWeightKg, StringFormat=0.000}"/>
-                        <Run Text="-"/>
-                        <Run Text="{Binding SelectedProduct.MaxWeightKg, StringFormat=0.000}"/>
-                        <Run Text="kg"/>
-                    </TextBlock>
-                </StackPanel>
+            <!-- Current product -->
+            <Border Grid.Column="0" Style="{StaticResource MetricCard}" Margin="0,0,9,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="42" Height="42" CornerRadius="10" Background="{StaticResource PrimaryLightBrush}" VerticalAlignment="Top">
+                        <TextBlock Text="&#xE7B8;" FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="{StaticResource PrimaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="13,0,0,0">
+                        <TextBlock Text="CURRENT PRODUCT" Style="{StaticResource CardTitleText}"/>
+                        <TextBlock Text="{Binding SelectedProduct.ProductName, TargetNullValue='No product selected'}" FontSize="14.5" FontWeight="SemiBold" Margin="0,4,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="42"/>
+                        <TextBlock Margin="0,4,0,0" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11.5">
+                            <Run Text="Range:"/>
+                            <Run Text="{Binding SelectedProduct.MinWeightKg, StringFormat=0.000}" FontWeight="SemiBold"/>
+                            <Run Text="–"/>
+                            <Run Text="{Binding SelectedProduct.MaxWeightKg, StringFormat=0.000}" FontWeight="SemiBold"/>
+                            <Run Text="kg"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
             </Border>
 
-            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Margin="8,0">
-                <StackPanel>
-                    <TextBlock Text="TOTAL PASS TODAY" Style="{StaticResource CardTitleText}"/>
-                    <TextBlock Text="{Binding TotalPassToday}" Style="{StaticResource MetricValueText}" Foreground="{StaticResource SuccessBrush}"/>
-                </StackPanel>
+            <!-- Pass today -->
+            <Border Grid.Column="1" Style="{StaticResource MetricCard}" Margin="9,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="42" Height="42" CornerRadius="10" Background="{StaticResource SuccessLightBrush}" VerticalAlignment="Top">
+                        <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="{StaticResource SuccessBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="13,0,0,0">
+                        <TextBlock Text="TOTAL PASS TODAY" Style="{StaticResource CardTitleText}"/>
+                        <TextBlock Text="{Binding TotalPassToday}" Style="{StaticResource MetricValueText}" Foreground="{StaticResource SuccessBrush}"/>
+                    </StackPanel>
+                </Grid>
             </Border>
 
-            <Border Grid.Column="2" Style="{StaticResource CardBorder}" Margin="8,0">
-                <StackPanel>
-                    <TextBlock Text="TOTAL FAIL TODAY" Style="{StaticResource CardTitleText}"/>
-                    <TextBlock Text="{Binding TotalFailToday}" Style="{StaticResource MetricValueText}" Foreground="{StaticResource DangerBrush}"/>
-                </StackPanel>
+            <!-- Fail today -->
+            <Border Grid.Column="2" Style="{StaticResource MetricCard}" Margin="9,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="42" Height="42" CornerRadius="10" Background="{StaticResource DangerLightBrush}" VerticalAlignment="Top">
+                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="{StaticResource DangerBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="13,0,0,0">
+                        <TextBlock Text="TOTAL FAIL TODAY" Style="{StaticResource CardTitleText}"/>
+                        <TextBlock Text="{Binding TotalFailToday}" Style="{StaticResource MetricValueText}" Foreground="{StaticResource DangerBrush}"/>
+                    </StackPanel>
+                </Grid>
             </Border>
 
-            <Border Grid.Column="3" Style="{StaticResource CardBorder}" Margin="8,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="LAST PRINTED QR" Style="{StaticResource CardTitleText}"/>
-                    <TextBlock Text="{Binding LastPrintedQr.QrId, TargetNullValue='—'}" FontSize="16" FontWeight="SemiBold" Margin="0,6,0,0"/>
-                    <TextBlock Text="{Binding OperatorName, StringFormat='Operator: {0}'}" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0,4,0,0"/>
-                </StackPanel>
+            <!-- Last printed QR -->
+            <Border Grid.Column="3" Style="{StaticResource MetricCard}" Margin="9,0,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="42" Height="42" CornerRadius="10" Background="{StaticResource WarningLightBrush}" VerticalAlignment="Top">
+                        <TextBlock Text="&#xE749;" FontFamily="Segoe MDL2 Assets" FontSize="17" Foreground="{StaticResource WarningBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="13,0,0,0">
+                        <TextBlock Text="LAST PRINTED QR" Style="{StaticResource CardTitleText}"/>
+                        <TextBlock Text="{Binding LastPrintedQr.QrId, TargetNullValue='—'}" FontSize="14.5" FontFamily="{StaticResource MonoFont}" FontWeight="SemiBold" Margin="0,5,0,0" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding OperatorName, StringFormat='Operator: {0}'}" Foreground="{StaticResource TextSecondaryBrush}" FontSize="11.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
 
-        <!-- Main content: product selector + live/pass/fail panel -->
+        <!-- ============ Main content: product selector + live/pass/fail panel ============ -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="260"/>
+                <ColumnDefinition Width="272"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,16,0">
-                <StackPanel>
-                    <TextBlock Text="SELECT PRODUCT" Style="{StaticResource CardTitleText}" Margin="0,0,0,10"/>
-                    <ListBox ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True" BorderThickness="0" Background="Transparent">
+            <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,18,0" Padding="14">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4,2,0,12">
+                        <TextBlock Text="&#xE71D;" FontFamily="Segoe MDL2 Assets" FontSize="13" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                        <TextBlock Text="SELECT PRODUCT" Style="{StaticResource CardTitleText}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <ListBox ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True"
+                             BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 <Setter Property="Padding" Value="0"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Trigger>
-                                </Style.Triggers>
+                                <Setter Property="Margin" Value="0,3"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="bd" CornerRadius="8" Background="Transparent" BorderThickness="1.4" BorderBrush="Transparent">
+                                                <ContentPresenter/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="bd" Property="Background" Value="{StaticResource SurfaceAltBrush}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="bd" Property="Background" Value="{StaticResource PrimaryLightBrush}"/>
+                                                    <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border CornerRadius="6" Padding="10,10" Margin="0,3" Background="Transparent">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding ProductName}" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="12.5"/>
-                                        <TextBlock Text="{Binding Quantity}" FontSize="11">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
-                                                            <Setter Property="Foreground" Value="White"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
+                                <StackPanel Margin="12,10">
+                                    <TextBlock Text="{Binding ProductName}" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="12.5" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                        <TextBlock Text="{Binding Quantity}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        <TextBlock FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="8,0,0,0">
+                                            <Run Text="{Binding MinWeightKg, StringFormat=0.000}"/><Run Text="–"/><Run Text="{Binding MaxWeightKg, StringFormat=0.000}"/><Run Text=" kg"/>
                                         </TextBlock>
                                     </StackPanel>
-                                </Border>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </StackPanel>
+                </DockPanel>
             </Border>
 
-            <Border Grid.Column="1" Style="{StaticResource CardBorder}">
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Padding="0">
                 <Grid>
                     <!-- LIVE WEIGHT SCREEN (separate file: LiveWeightView.xaml) -->
                     <views:LiveWeightView>

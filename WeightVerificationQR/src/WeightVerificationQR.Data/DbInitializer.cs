@@ -35,5 +35,24 @@ public static class DbInitializer
             admin.PasswordSalt = salt;
             await context.SaveChangesAsync();
         }
+
+        // Ensure a SuperAdmin account exists (created programmatically, not via HasData,
+        // so it also appears on databases created before the SuperAdmin role existed).
+        var superAdmin = await context.Users.FirstOrDefaultAsync(u => u.Username == "superadmin");
+        if (superAdmin is null)
+        {
+            var (hash, salt) = hasher.HashPassword("Super@123");
+            context.Users.Add(new User
+            {
+                FullName = "Super Administrator",
+                Username = "superadmin",
+                PasswordHash = hash,
+                PasswordSalt = salt,
+                Role = UserRole.SuperAdmin,
+                IsActive = true,
+                CreatedAt = DateTime.Now
+            });
+            await context.SaveChangesAsync();
+        }
     }
 }

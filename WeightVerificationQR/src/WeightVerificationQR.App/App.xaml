@@ -12,6 +12,8 @@
             <conv:WeighResultToBrushConverter x:Key="WeighResultToBrushConverter"/>
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <conv:StringEqualsConverter x:Key="StringEqualsConverter"/>
+            <conv:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
