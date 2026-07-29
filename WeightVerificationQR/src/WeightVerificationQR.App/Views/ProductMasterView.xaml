@@ -28,14 +28,16 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="360"/>
+                <ColumnDefinition Width="410"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,18,0" Padding="0">
                 <DataGrid ItemsSource="{Binding Products}" IsReadOnly="True" BorderThickness="0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="PRODUCT NAME" Binding="{Binding ProductName}" Width="2*"/>
-                        <DataGridTextColumn Header="QUANTITY" Binding="{Binding Quantity}" Width="*"/>
+                        <DataGridTextColumn Header="COMMAND" Binding="{Binding CommandCode}" Width="85"/>
+                        <DataGridTextColumn Header="LINE" Binding="{Binding LabelLineCode}" Width="75"/>
+                        <DataGridTextColumn Header="MODEL CODE" Binding="{Binding ModelCode}" Width="*"/>
                         <DataGridTextColumn Header="MIN (KG)" Binding="{Binding MinWeightKg, StringFormat=0.000}" Width="*"/>
                         <DataGridTextColumn Header="MAX (KG)" Binding="{Binding MaxWeightKg, StringFormat=0.000}" Width="*"/>
                         <DataGridTemplateColumn Header="STATUS" Width="100">
@@ -90,6 +92,7 @@
 
             <Border Grid.Column="1" Style="{StaticResource CardBorder}" VerticalAlignment="Top"
                     Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=ActualHeight}">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
                         <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="{StaticResource PrimaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -100,7 +103,45 @@
                         <TextBlock Text="PRODUCT NAME" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
                         <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
 
-                        <TextBlock Text="QUANTITY (e.g. 100 Nos)" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                                <TextBlock Text="COMMAND" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding CommandCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="10"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="5,0">
+                                <TextBlock Text="LINE CODE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding LabelLineCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="20"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Margin="5,0,0,0">
+                                <TextBlock Text="MODEL CODE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding ModelCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="50"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="LABEL SIZE / MODEL TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                        <TextBox Text="{Binding LabelSizeText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+
+                        <Grid Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,7,0">
+                                <TextBlock Text="LENGTH TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding LabelLengthText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="7,0,0,0">
+                                <TextBlock Text="MATERIAL TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding LabelMaterialText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="QUANTITY / PACK INFO" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
                         <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
 
                         <Grid Margin="0,0,0,14">
@@ -136,6 +177,7 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
     </Grid>

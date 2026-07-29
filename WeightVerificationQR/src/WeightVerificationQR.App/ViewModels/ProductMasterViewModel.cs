@@ -52,7 +52,12 @@ public class ProductMasterViewModel : ViewModelBase
 
     private void StartNew()
     {
-        EditingProduct = new Product { IsActive = true, CodePrefix = "KIT" };
+        EditingProduct = new Product
+        {
+            IsActive = true,
+            CodePrefix = "KIT",
+            CommandCode = "P"
+        };
         IsEditing = true;
     }
 
@@ -68,6 +73,12 @@ public class ProductMasterViewModel : ViewModelBase
             MinWeightKg = product.MinWeightKg,
             MaxWeightKg = product.MaxWeightKg,
             CodePrefix = product.CodePrefix,
+            CommandCode = product.CommandCode,
+            LabelLineCode = product.LabelLineCode,
+            ModelCode = product.ModelCode,
+            LabelSizeText = product.LabelSizeText,
+            LabelLengthText = product.LabelLengthText,
+            LabelMaterialText = product.LabelMaterialText,
             IsActive = product.IsActive,
             CreatedAt = product.CreatedAt
         };
@@ -83,6 +94,21 @@ public class ProductMasterViewModel : ViewModelBase
             StatusMessage = "Minimum weight must be greater than 0 and less than or equal to maximum weight.";
             return;
         }
+
+        if (string.IsNullOrWhiteSpace(EditingProduct.CommandCode) ||
+            string.IsNullOrWhiteSpace(EditingProduct.LabelLineCode) ||
+            string.IsNullOrWhiteSpace(EditingProduct.ModelCode))
+        {
+            StatusMessage = "Command code, line code, and model code are required.";
+            return;
+        }
+
+        EditingProduct.CommandCode = NormalizeCode(EditingProduct.CommandCode);
+        EditingProduct.LabelLineCode = NormalizeCode(EditingProduct.LabelLineCode);
+        EditingProduct.ModelCode = NormalizeCode(EditingProduct.ModelCode);
+        EditingProduct.LabelSizeText = EditingProduct.LabelSizeText.Trim();
+        EditingProduct.LabelLengthText = EditingProduct.LabelLengthText.Trim();
+        EditingProduct.LabelMaterialText = EditingProduct.LabelMaterialText.Trim();
 
         if (EditingProduct.Id == 0)
             await _productRepository.AddAsync(EditingProduct);
@@ -102,4 +128,11 @@ public class ProductMasterViewModel : ViewModelBase
         StatusMessage = $"'{product.ProductName}' deactivated.";
         await LoadAsync();
     }
+
+    private static string NormalizeCode(string value) =>
+        new(value
+            .Trim()
+            .ToUpperInvariant()
+            .Where(char.IsLetterOrDigit)
+            .ToArray());
 }

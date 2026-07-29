@@ -197,6 +197,10 @@
                             <DataTemplate>
                                 <StackPanel Margin="12,10">
                                     <TextBlock Text="{Binding ProductName}" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="12.5" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    <TextBlock FontSize="10.5" Foreground="{StaticResource PrimaryBrush}" FontWeight="SemiBold" Margin="0,4,0,0">
+                                        <Run Text="{Binding CommandCode}"/><Run Text="-"/><Run Text="{Binding LabelLineCode}"/>
+                                        <Run Text="  |  "/><Run Text="{Binding ModelCode}"/>
+                                    </TextBlock>
                                     <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                         <TextBlock Text="{Binding Quantity}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
                                         <TextBlock FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="8,0,0,0">

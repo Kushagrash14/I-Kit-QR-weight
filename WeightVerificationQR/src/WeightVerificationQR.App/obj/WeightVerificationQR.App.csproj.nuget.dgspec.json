@@ -356,6 +356,10 @@
               "target": "Package",
               "version": "[2024.10.3, )"
             },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "System.IO.Ports": {
               "target": "Package",
               "version": "[8.0.0, )"

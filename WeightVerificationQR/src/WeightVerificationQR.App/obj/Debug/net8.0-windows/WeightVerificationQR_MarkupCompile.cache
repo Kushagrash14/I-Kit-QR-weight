@@ -1,5 +1,5 @@
 ﻿WeightVerificationQR
-1.0.0.0
+
 
 winexe
 C#
@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR
 C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.App\App.xaml
 13-1899654860
 
-301252126074
-255164089405
+28-297847454
+25519101872
 Themes\LightTheme.xaml;Views\DashboardView.xaml;Views\FailView.xaml;Views\LiveWeightView.xaml;Views\LoginView.xaml;Views\MachineSettingsView.xaml;Views\MainWindow.xaml;Views\PassView.xaml;Views\PrinterSettingsView.xaml;Views\ProductMasterView.xaml;Views\QrReprintView.xaml;Views\ReportsView.xaml;Views\UserManagementView.xaml;
 
-True
+False
 

@@ -59,7 +59,7 @@ namespace WeightVerificationQR.App.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/WeightVerificationQR;V1.0.0.0;component/views/usermanagementview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/WeightVerificationQR;component/views/usermanagementview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\UserManagementView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
