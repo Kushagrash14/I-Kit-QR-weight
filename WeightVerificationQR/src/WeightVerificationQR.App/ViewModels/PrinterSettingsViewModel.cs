@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using System.IO;
 using CommunityToolkit.Mvvm.Input;
 using WeightVerificationQR.Core.Interfaces;
 using WeightVerificationQR.Core.Models;
@@ -24,7 +25,7 @@ public class PrinterSettingsViewModel : ViewModelBase
         BarTenderApiUrl = _printerSettings.BarTenderApiUrl;
         BarTenderPrinterName = _printerSettings.BarTenderPrinterName;
         BarTenderExePath = _printerSettings.BarTenderExePath;
-        BarTenderLabelPath = _printerSettings.BarTenderLabelPath;
+        BarTenderLabelPath = NormalizeTemplatePath(_printerSettings.BarTenderLabelPath);
         BarTenderPrintMethod = _printerSettings.BarTenderPrintMethod;
 
         TestConnectionCommand = new AsyncRelayCommand(TestConnectionAsync);
@@ -106,4 +107,14 @@ public class PrinterSettingsViewModel : ViewModelBase
         BarTenderLabelPath = BarTenderLabelPath,
         BarTenderPrintMethod = BarTenderPrintMethod
     };
+
+    private static string NormalizeTemplatePath(string configuredPath)
+    {
+        if (string.IsNullOrWhiteSpace(configuredPath))
+            return @"Labels\Template.btw";
+
+        return Path.IsPathRooted(configuredPath) && !File.Exists(configuredPath)
+            ? @"Labels\Template.btw"
+            : configuredPath;
+    }
 }

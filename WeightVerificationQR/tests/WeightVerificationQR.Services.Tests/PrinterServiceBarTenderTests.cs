@@ -20,6 +20,32 @@ public class PrinterServiceBarTenderTests
     }
 
     [Fact]
+    public void ResolveExistingBarTenderLabelPath_FallsBackToPackagedTemplate()
+    {
+        var baseDirectory = Path.Combine(Path.GetTempPath(), $"wvqr-app-{Guid.NewGuid():N}");
+        var labelsDirectory = Path.Combine(baseDirectory, "Labels");
+        Directory.CreateDirectory(labelsDirectory);
+        var packagedTemplate = Path.Combine(labelsDirectory, "Template.btw");
+        File.WriteAllText(packagedTemplate, "test");
+
+        try
+        {
+            var settings = new PrinterSettings
+            {
+                BarTenderLabelPath = @"C:\OldMachine\Missing\Template.btw"
+            };
+
+            var resolved = PrinterService.ResolveExistingBarTenderLabelPath(settings, baseDirectory);
+
+            Assert.Equal(Path.GetFullPath(packagedTemplate), resolved);
+        }
+        finally
+        {
+            Directory.Delete(baseDirectory, recursive: true);
+        }
+    }
+
+    [Fact]
     public void BuildBarTenderArguments_UsesActiveFormatDataPrinterPrintAndExitSwitches()
     {
         var arguments = PrinterService.BuildBarTenderArguments(

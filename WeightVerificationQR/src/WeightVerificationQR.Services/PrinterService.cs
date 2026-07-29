@@ -199,7 +199,7 @@ public class PrinterService : IPrinterService
         string printerName)
     {
         var exePath = ResolveBarTenderExePath(settings);
-        var labelPath = ResolveBarTenderLabelPath(settings);
+        var labelPath = ResolveExistingBarTenderLabelPath(settings);
         if (exePath is null)
         {
             LastErrorMessage = "BarTender executable was not found. Set BARTENDER.EXE PATH in Printer Settings.";
@@ -323,6 +323,21 @@ public class PrinterService : IPrinterService
         return Path.GetFullPath(configuredPath, baseDirectory ?? AppDomain.CurrentDomain.BaseDirectory);
     }
 
+    internal static string ResolveExistingBarTenderLabelPath(
+        PrinterSettings settings,
+        string? baseDirectory = null)
+    {
+        var applicationDirectory = baseDirectory ?? AppDomain.CurrentDomain.BaseDirectory;
+        var configuredPath = ResolveBarTenderLabelPath(settings, applicationDirectory);
+        if (File.Exists(configuredPath))
+            return configuredPath;
+
+        var packagedTemplate = Path.GetFullPath(
+            Path.Combine("Labels", "Template.btw"),
+            applicationDirectory);
+        return File.Exists(packagedTemplate) ? packagedTemplate : configuredPath;
+    }
+
     internal static string[] BuildBarTenderArguments(string labelPath, string dataPath, string printerName) =>
     [
         $"/AF={labelPath}",
@@ -349,7 +364,7 @@ public class PrinterService : IPrinterService
             {
                 var method = NormalizeBarTenderMethod(settings.BarTenderPrintMethod);
                 var exePath = ResolveBarTenderExePath(settings);
-                var labelPath = ResolveBarTenderLabelPath(settings);
+                var labelPath = ResolveExistingBarTenderLabelPath(settings);
                 var printerName = settings.BarTenderPrinterName?.Trim() ?? string.Empty;
                 var queueReady = PrinterRawSpooler.IsPrinterReady(printerName, out var queueStatus);
                 var cmdReady = exePath is not null &&

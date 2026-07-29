@@ -109,8 +109,10 @@ internal static class PrinterRawSpooler
             {
                 if (!GetPrinter(hPrinter, 6, buffer, size, out _))
                 {
-                    statusMessage = $"Windows could not read status for printer '{printerName}'.";
-                    return false;
+                    // Some Zebra/Seagull drivers accept jobs but do not expose
+                    // PRINTER_INFO_6. OpenPrinter already proved the queue exists.
+                    statusMessage = "Installed; live status is unavailable from the printer driver.";
+                    return true;
                 }
 
                 var status = Marshal.PtrToStructure<PRINTER_INFO_6>(buffer).dwStatus;
