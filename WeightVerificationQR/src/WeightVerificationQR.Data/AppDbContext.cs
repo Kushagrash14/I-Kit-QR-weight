@@ -18,7 +18,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Product>(e =>
         {
-            e.HasIndex(p => p.ProductName);`
+            e.HasIndex(p => p.ProductName);
         });
 
         modelBuilder.Entity<WeighRecord>(e =>

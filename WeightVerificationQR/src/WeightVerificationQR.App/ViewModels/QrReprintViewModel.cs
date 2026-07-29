@@ -78,7 +78,7 @@ public class QrReprintViewModel : ViewModelBase
             }
             else
             {
-                StatusMessage = "Reprint failed - check the printer connection in Settings.";
+                StatusMessage = $"Reprint failed: {_printerService.LastErrorMessage}";
             }
         }
         catch (Exception ex)

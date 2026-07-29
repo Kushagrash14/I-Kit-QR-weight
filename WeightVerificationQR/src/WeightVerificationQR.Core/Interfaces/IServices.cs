@@ -34,6 +34,10 @@ public interface IPrinterService
 {
     event EventHandler<ConnectionStatus>? PrinterStatusChanged;
     ConnectionStatus Status { get; }
+    string LastErrorMessage { get; }
+
+    /// <summary>Lists printer queues currently installed in Windows.</summary>
+    IReadOnlyList<string> GetInstalledPrinterNames();
 
     /// <summary>Builds the ZPL label content for a PASS record.</summary>
     string BuildZplLabel(WeighRecord record, PrinterSettings settings);
