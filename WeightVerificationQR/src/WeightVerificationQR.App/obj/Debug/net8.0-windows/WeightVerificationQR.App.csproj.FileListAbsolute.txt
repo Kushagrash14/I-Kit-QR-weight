@@ -158,3 +158,5 @@ C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src
 C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.App\obj\Debug\net8.0-windows\WeightVerificationQR.pdb
 C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.App\obj\Debug\net8.0-windows\WeightVerificationQR.App.genruntimeconfig.cache
 C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.App\obj\Debug\net8.0-windows\ref\WeightVerificationQR.dll
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.App\obj\Debug\net8.0-windows\WeightVerificationQR.App.sourcelink.json
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.App\bin\Debug\net8.0-windows\Npgsql.dll

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "tsC1HpnUJp8=",
+  "dgSpecHash": "WdEh0ga1GA8=",
   "success": true,
   "projectFilePath": "C:\\Users\\Suraj Bhora\\Downloads\\WeightVerificationQR (1)\\WeightVerificationQR\\src\\WeightVerificationQR.Services\\WeightVerificationQR.Services.csproj",
   "expectedPackageFiles": [
@@ -27,6 +27,7 @@
     "C:\\Users\\Suraj Bhora\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
     "C:\\Users\\Suraj Bhora\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
     "C:\\Users\\Suraj Bhora\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\Suraj Bhora\\.nuget\\packages\\npgsql\\8.0.5\\npgsql.8.0.5.nupkg.sha512",
     "C:\\Users\\Suraj Bhora\\.nuget\\packages\\qrcoder\\1.6.0\\qrcoder.1.6.0.nupkg.sha512",
     "C:\\Users\\Suraj Bhora\\.nuget\\packages\\questpdf\\2024.10.3\\questpdf.2024.10.3.nupkg.sha512",
     "C:\\Users\\Suraj Bhora\\.nuget\\packages\\rbush\\3.2.0\\rbush.3.2.0.nupkg.sha512",

@@ -77,3 +77,32 @@ public interface IDatabaseBackupService
     Task<string> BackupNowAsync();
     string DatabaseStatusText { get; }
 }
+
+public interface ICentralSyncStore
+{
+    bool IsEnabled { get; }
+    Task InitializeAsync(CancellationToken cancellationToken = default);
+    Task<SerialNumberBlock?> TryAllocateSerialBlockAsync(
+        int blockSize,
+        CancellationToken cancellationToken = default);
+    Task UpsertWeighRecordAsync(
+        WeighRecord record,
+        CancellationToken cancellationToken = default);
+}
+
+public interface ISerialNumberService
+{
+    Task<SerialNumberAllocation> GetNextAsync(CancellationToken cancellationToken = default);
+    string BuildQrId(
+        long serialNumber,
+        decimal weightKg,
+        DateTime timestamp);
+}
+
+public interface IOfflineSyncService
+{
+    string StatusText { get; }
+    void Start();
+    Task StopAsync();
+    Task SyncNowAsync(CancellationToken cancellationToken = default);
+}

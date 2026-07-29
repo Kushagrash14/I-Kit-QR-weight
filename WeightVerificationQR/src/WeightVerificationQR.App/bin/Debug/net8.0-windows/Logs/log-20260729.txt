@@ -1,0 +1,5 @@
+2026-07-29 11:13:58.255 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."GlobalRecordId", "w"."KitNumber", "w"."LastSyncError", "w"."LineCode", "w"."MachineCode", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."SerialNumber", "w"."SiteCode", "w"."SyncAttempts", "w"."SyncStatus", "w"."SyncedAt", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC

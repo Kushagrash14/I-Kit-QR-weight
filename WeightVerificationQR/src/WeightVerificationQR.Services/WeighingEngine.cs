@@ -13,17 +13,24 @@ public class WeighingEngine : IWeighingEngine
 {
     private readonly IWeighRecordRepository _weighRecordRepository;
     private readonly IPrinterService _printerService;
+    private readonly ISerialNumberService _serialNumberService;
+    private readonly StationSettings _stationSettings;
     private readonly PrinterSettings _printerSettings; // resolved from Settings screen / config at startup
     private readonly ILogger<WeighingEngine> _logger;
+    private readonly SemaphoreSlim _processingLock = new(1, 1);
 
     public WeighingEngine(
         IWeighRecordRepository weighRecordRepository,
         IPrinterService printerService,
+        ISerialNumberService serialNumberService,
+        StationSettings stationSettings,
         PrinterSettings printerSettings,
         ILogger<WeighingEngine> logger)
     {
         _weighRecordRepository = weighRecordRepository;
         _printerService = printerService;
+        _serialNumberService = serialNumberService;
+        _stationSettings = stationSettings;
         _printerSettings = printerSettings;
         _logger = logger;
     }
@@ -34,6 +41,19 @@ public class WeighingEngine : IWeighingEngine
     public string CurrentOperator { get; set; } = string.Empty;
 
     public async Task ProcessStableWeightAsync(decimal weightKg)
+    {
+        await _processingLock.WaitAsync();
+        try
+        {
+            await ProcessStableWeightCoreAsync(weightKg);
+        }
+        finally
+        {
+            _processingLock.Release();
+        }
+    }
+
+    private async Task ProcessStableWeightCoreAsync(decimal weightKg)
     {
         if (CurrentProduct is null)
         {
@@ -63,14 +83,24 @@ public class WeighingEngine : IWeighingEngine
             Result = result,
             FailReason = reason,
             OperatorName = CurrentOperator,
-            RecordDate = DateTime.Now
+            RecordDate = DateTime.Now,
+            SiteCode = _stationSettings.SiteCode,
+            LineCode = _stationSettings.LineCode,
+            MachineCode = _stationSettings.MachineCode
         };
 
         if (result == WeighResult.Pass)
         {
-            record.KitNumber = await _weighRecordRepository.GenerateNextKitNumberAsync(CurrentProduct.CodePrefix);
-            record.QrId = record.KitNumber;
+            var allocation = await _serialNumberService.GetNextAsync();
+            record.SerialNumber = allocation.Value;
+            record.QrId = _serialNumberService.BuildQrId(
+                allocation.Value,
+                weightKg,
+                record.RecordDate);
+            record.KitNumber = record.QrId;
             record.QrGenerated = true;
+            if (!allocation.FromCentralBlock)
+                record.Remarks = "Offline emergency serial; pending central synchronization.";
         }
         else
         {

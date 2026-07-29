@@ -41,6 +41,20 @@ in `App.xaml.cs`.
    IP/COM port under **Printer Settings** (both Admin-only).
 5. Optionally run the unit tests: `dotnet test WeightVerificationQR.sln`.
 
+## Multi-station and offline QR synchronization
+
+The application supports a station identity in the generated QR:
+
+```text
+P-S01-L01-WM01-20260728-12.345-00000001
+```
+
+Each station persists records and serial-block state in its embedded SQLite database.
+An optional Aiven/PostgreSQL connection provides atomic central serial blocks and
+background synchronization. If the network is unavailable, the station continues
+with its configured emergency range and uploads pending records when connectivity
+returns. See `docs/HYBRID_OFFLINE_SYNC.md` for setup and deployment rules.
+
 ## Building a Windows installer
 
 Once the app builds cleanly:

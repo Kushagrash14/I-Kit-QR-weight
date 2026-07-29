@@ -19,7 +19,7 @@ public class ReportService : IReportService
         using var workbook = new XLWorkbook();
         var ws = workbook.Worksheets.Add("Weigh Records");
 
-        string[] headers = { "Kit Number", "Product", "Qty", "Weight (kg)", "Result", "Fail Reason", "Date", "Time", "Operator", "QR ID", "Printer Status", "Remarks" };
+        string[] headers = { "Kit Number", "Serial", "Site", "Line", "Machine", "Product", "Qty", "Weight (kg)", "Result", "Fail Reason", "Date", "Time", "Operator", "QR ID", "Printer Status", "Sync Status", "Remarks" };
         for (var i = 0; i < headers.Length; i++)
             ws.Cell(1, i + 1).Value = headers[i];
 
@@ -32,17 +32,22 @@ public class ReportService : IReportService
         foreach (var r in records)
         {
             ws.Cell(row, 1).Value = r.KitNumber;
-            ws.Cell(row, 2).Value = r.ProductName;
-            ws.Cell(row, 3).Value = r.Quantity;
-            ws.Cell(row, 4).Value = r.WeightKg;
-            ws.Cell(row, 5).Value = r.Result.ToString();
-            ws.Cell(row, 6).Value = r.FailReason == FailReason.None ? "" : r.FailReason.ToString();
-            ws.Cell(row, 7).Value = r.DateText;
-            ws.Cell(row, 8).Value = r.TimeText;
-            ws.Cell(row, 9).Value = r.OperatorName;
-            ws.Cell(row, 10).Value = r.QrId;
-            ws.Cell(row, 11).Value = r.PrinterStatus;
-            ws.Cell(row, 12).Value = r.Remarks;
+            ws.Cell(row, 2).Value = r.SerialNumber;
+            ws.Cell(row, 3).Value = r.SiteCode;
+            ws.Cell(row, 4).Value = r.LineCode;
+            ws.Cell(row, 5).Value = r.MachineCode;
+            ws.Cell(row, 6).Value = r.ProductName;
+            ws.Cell(row, 7).Value = r.Quantity;
+            ws.Cell(row, 8).Value = r.WeightKg;
+            ws.Cell(row, 9).Value = r.Result.ToString();
+            ws.Cell(row, 10).Value = r.FailReason == FailReason.None ? "" : r.FailReason.ToString();
+            ws.Cell(row, 11).Value = r.DateText;
+            ws.Cell(row, 12).Value = r.TimeText;
+            ws.Cell(row, 13).Value = r.OperatorName;
+            ws.Cell(row, 14).Value = r.QrId;
+            ws.Cell(row, 15).Value = r.PrinterStatus;
+            ws.Cell(row, 16).Value = r.SyncStatus.ToString();
+            ws.Cell(row, 17).Value = r.Remarks;
             row++;
         }
 
@@ -81,7 +86,8 @@ public class ReportService : IReportService
                     table.ColumnsDefinition(columns =>
                     {
                         columns.RelativeColumn(1.4f); // Kit Number
-                        columns.RelativeColumn(2f);   // Product
+                        columns.RelativeColumn(1.1f); // Station
+                        columns.RelativeColumn(1.7f); // Product
                         columns.RelativeColumn(0.9f);  // Weight
                         columns.RelativeColumn(0.8f);  // Result
                         columns.RelativeColumn(1.2f);  // Reason
@@ -93,7 +99,7 @@ public class ReportService : IReportService
 
                     table.Header(header =>
                     {
-                        foreach (var text in new[] { "Kit Number", "Product", "Weight", "Result", "Reason", "Date", "Time", "Operator", "Printer" })
+                        foreach (var text in new[] { "Kit Number", "Station", "Product", "Weight", "Result", "Reason", "Date", "Time", "Operator", "Printer" })
                             header.Cell().Background(Colors.Blue.Darken3).Padding(4).Text(text).FontColor(Colors.White).Bold();
                     });
 
@@ -101,6 +107,7 @@ public class ReportService : IReportService
                     {
                         var bg = r.Result == WeighResult.Fail ? Colors.Red.Lighten4 : Colors.White;
                         table.Cell().Background(bg).Padding(3).Text(r.KitNumber);
+                        table.Cell().Background(bg).Padding(3).Text($"{r.SiteCode}/{r.LineCode}/{r.MachineCode}");
                         table.Cell().Background(bg).Padding(3).Text(r.ProductName);
                         table.Cell().Background(bg).Padding(3).Text($"{r.WeightKg:0.000}");
                         table.Cell().Background(bg).Padding(3).Text(r.Result.ToString());

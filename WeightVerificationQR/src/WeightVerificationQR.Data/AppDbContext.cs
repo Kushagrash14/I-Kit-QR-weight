@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<Product> Products => Set<Product>();
     public DbSet<WeighRecord> WeighRecords => Set<WeighRecord>();
     public DbSet<User> Users => Set<User>();
+    public DbSet<SerialNumberState> SerialNumberStates => Set<SerialNumberState>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -17,7 +18,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Product>(e =>
         {
-            e.HasIndex(p => p.ProductName);
+            e.HasIndex(p => p.ProductName);`
         });
 
         modelBuilder.Entity<WeighRecord>(e =>
@@ -25,6 +26,20 @@ public class AppDbContext : DbContext
             e.HasIndex(r => r.KitNumber).IsUnique();
             e.HasIndex(r => r.RecordDate);
             e.HasIndex(r => r.QrId);
+            e.HasIndex(r => r.GlobalRecordId).IsUnique();
+            e.HasIndex(r => r.SyncStatus);
+        });
+
+        modelBuilder.Entity<SerialNumberState>(e =>
+        {
+            e.HasData(new SerialNumberState
+            {
+                Id = 1,
+                NextSerial = 0,
+                BlockEndSerial = 0,
+                EmergencyNextSerial = 0,
+                UpdatedAt = new DateTime(2026, 1, 1)
+            });
         });
 
         modelBuilder.Entity<User>(e =>

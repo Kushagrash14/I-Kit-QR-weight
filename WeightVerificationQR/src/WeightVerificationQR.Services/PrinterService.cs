@@ -60,6 +60,7 @@ public class PrinterService : IPrinterService
         sb.AppendLine($"^FO{textX},85^A0N,20,20^FDWt: {record.WeightKg:0.000} kg^FS");
         sb.AppendLine($"^FO{textX},115^A0N,20,20^FD{Escape(record.QrId)}^FS");
         sb.AppendLine($"^FO{textX},145^A0N,18,18^FD{record.RecordDate:dd-MM-yyyy HH:mm}^FS");
+        sb.AppendLine($"^FO{textX},170^A0N,18,18^FD{Escape(record.SiteCode)}/{Escape(record.LineCode)}/{Escape(record.MachineCode)}^FS");
 
         sb.AppendLine("^XZ");
         return sb.ToString();
@@ -153,8 +154,8 @@ public class PrinterService : IPrinterService
                 var payload = new
                 {
                     Printer = printerName,
-                    NamedDataSources = new { QRCode = record.QrId, SAPCode = record.KitNumber, Description = record.ProductName },
-                    Variables = new { QRCode = record.QrId, SAPCode = record.KitNumber, Description = record.ProductName }
+                    NamedDataSources = BuildBarTenderData(record),
+                    Variables = BuildBarTenderData(record)
                 };
 
                 var response = await _httpClient.PostAsJsonAsync($"{apiUrl}/print", payload);
@@ -192,8 +193,10 @@ public class PrinterService : IPrinterService
         Directory.CreateDirectory(dataDir);
 
         var dataPath = Path.Combine(dataDir, "wvqr-print.csv");
-        var csv = "QRCode,SAPCode,Description\r\n" +
-                  $"{CsvCell(record.QrId)},{CsvCell(record.KitNumber)},{CsvCell(record.ProductName)}";
+        var csv = "QRCode,SAPCode,Description,Weight,Site,Line,Machine,SerialNumber\r\n" +
+                  $"{CsvCell(record.QrId)},{CsvCell(record.KitNumber)},{CsvCell(record.ProductName)}," +
+                  $"{CsvCell(record.WeightKg.ToString("0.000"))},{CsvCell(record.SiteCode)}," +
+                  $"{CsvCell(record.LineCode)},{CsvCell(record.MachineCode)},{record.SerialNumber}";
         File.WriteAllText(dataPath, csv, Encoding.UTF8);
 
         var psi = new ProcessStartInfo
@@ -212,6 +215,18 @@ public class PrinterService : IPrinterService
         process.WaitForExit(15000);
         return process.HasExited && process.ExitCode == 0;
     }
+
+    private static object BuildBarTenderData(WeighRecord record) => new
+    {
+        QRCode = record.QrId,
+        SAPCode = record.KitNumber,
+        Description = record.ProductName,
+        Weight = record.WeightKg.ToString("0.000"),
+        Site = record.SiteCode,
+        Line = record.LineCode,
+        Machine = record.MachineCode,
+        SerialNumber = record.SerialNumber.ToString()
+    };
 
     internal static string? ResolveBarTenderExePath(PrinterSettings settings)
     {

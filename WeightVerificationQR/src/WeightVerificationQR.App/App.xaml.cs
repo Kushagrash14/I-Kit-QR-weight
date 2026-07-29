@@ -22,6 +22,7 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
         var configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -58,8 +59,12 @@ public partial class App : Application
             return;
         }
 
+        Services.GetRequiredService<IOfflineSyncService>().Start();
+
         var loginWindow = Services.GetRequiredService<LoginView>();
+        MainWindow = loginWindow;
         loginWindow.Show();
+        ShutdownMode = ShutdownMode.OnLastWindowClose;
     }
 
     private static void ConfigureServices(ServiceCollection services, IConfiguration configuration)
@@ -72,9 +77,13 @@ public partial class App : Application
         var dbSettings = configuration.GetSection("Database").Get<DatabaseSettings>() ?? new DatabaseSettings();
         var serialSettings = configuration.GetSection("SerialPort").Get<SerialPortSettings>() ?? new SerialPortSettings();
         var printerSettings = configuration.GetSection("Printer").Get<PrinterSettings>() ?? new PrinterSettings();
+        var stationSettings = configuration.GetSection("Station").Get<StationSettings>() ?? new StationSettings();
+        var centralSyncSettings = configuration.GetSection("CentralSync").Get<CentralSyncSettings>() ?? new CentralSyncSettings();
         services.AddSingleton(dbSettings);
         services.AddSingleton(serialSettings);
         services.AddSingleton(printerSettings);
+        services.AddSingleton(stationSettings);
+        services.AddSingleton(centralSyncSettings);
 
         // ---- Data layer ----
         // Swap UseSqlite for UseSqlServer(dbSettings.ConnectionString) for a production SQL Server rollout.
@@ -90,6 +99,7 @@ public partial class App : Application
         services.AddTransient<IProductRepository, ProductRepository>();
         services.AddTransient<IWeighRecordRepository, WeighRecordRepository>();
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddSingleton<ICentralSyncStore, PostgresCentralSyncStore>();
 
         // ---- Services ----
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
@@ -98,6 +108,8 @@ public partial class App : Application
         services.AddSingleton<ISerialPortService, SerialPortService>();
         services.AddSingleton<IReportService, ReportService>();
         services.AddSingleton<IDatabaseBackupService, DatabaseBackupService>();
+        services.AddTransient<ISerialNumberService, SerialNumberService>();
+        services.AddSingleton<IOfflineSyncService, OfflineSyncService>();
         services.AddTransient<IWeighingEngine, WeighingEngine>();
 
         // Session holds the logged-in user for the lifetime of the app run.
@@ -121,6 +133,19 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        if (Services is not null)
+        {
+            try
+            {
+                Services.GetRequiredService<IOfflineSyncService>()
+                    .StopAsync()
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch
+            {
+            }
+        }
         Log.CloseAndFlush();
         base.OnExit(e);
     }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 using WeightVerificationQR.Core.Interfaces;
 using WeightVerificationQR.Core.Models;
 
@@ -26,6 +27,7 @@ public static class DbInitializer
     public static async Task InitializeAsync(AppDbContext context, IPasswordHasher hasher)
     {
         await context.Database.EnsureCreatedAsync();
+        await ApplySqliteCompatibilityUpgradesAsync(context);
 
         var admin = await context.Users.FirstOrDefaultAsync(u => u.Username == "admin");
         if (admin is not null && admin.PasswordHash == "REPLACE_ON_FIRST_RUN")
@@ -54,5 +56,96 @@ public static class DbInitializer
             });
             await context.SaveChangesAsync();
         }
+    }
+
+    private static async Task ApplySqliteCompatibilityUpgradesAsync(AppDbContext context)
+    {
+        if (!context.Database.IsSqlite())
+            return;
+
+        await context.Database.ExecuteSqlRawAsync(
+            """
+            CREATE TABLE IF NOT EXISTS "SerialNumberStates" (
+                "Id" INTEGER NOT NULL CONSTRAINT "PK_SerialNumberStates" PRIMARY KEY,
+                "NextSerial" INTEGER NOT NULL DEFAULT 0,
+                "BlockEndSerial" INTEGER NOT NULL DEFAULT 0,
+                "EmergencyNextSerial" INTEGER NOT NULL DEFAULT 0,
+                "UpdatedAt" TEXT NOT NULL
+            );
+            INSERT OR IGNORE INTO "SerialNumberStates"
+                ("Id", "NextSerial", "BlockEndSerial", "EmergencyNextSerial", "UpdatedAt")
+            VALUES (1, 0, 0, 0, CURRENT_TIMESTAMP);
+            """);
+
+        var additions = new Dictionary<string, string>
+        {
+            ["GlobalRecordId"] = "TEXT NOT NULL DEFAULT ''",
+            ["SiteCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["LineCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["MachineCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["SerialNumber"] = "INTEGER NOT NULL DEFAULT 0",
+            ["SyncStatus"] = "INTEGER NOT NULL DEFAULT 0",
+            ["SyncAttempts"] = "INTEGER NOT NULL DEFAULT 0",
+            ["LastSyncError"] = "TEXT NOT NULL DEFAULT ''",
+            ["SyncedAt"] = "TEXT NULL"
+        };
+
+        var existingColumns = await GetColumnNamesAsync(context, "WeighRecords");
+        foreach (var (name, sqlType) in additions)
+        {
+            if (existingColumns.Contains(name))
+                continue;
+
+            var alterSql = string.Concat(
+                "ALTER TABLE \"WeighRecords\" ADD COLUMN \"",
+                name,
+                "\" ",
+                sqlType,
+                ";");
+            await context.Database.ExecuteSqlRawAsync(alterSql);
+        }
+
+        await context.Database.ExecuteSqlRawAsync(
+            """
+            UPDATE "WeighRecords"
+            SET "GlobalRecordId" = lower(hex(randomblob(4))) || '-' ||
+                                   lower(hex(randomblob(2))) || '-4' ||
+                                   substr(lower(hex(randomblob(2))),2) || '-' ||
+                                   substr('89ab',abs(random()) % 4 + 1,1) ||
+                                   substr(lower(hex(randomblob(2))),2) || '-' ||
+                                   lower(hex(randomblob(6)))
+            WHERE "GlobalRecordId" = '';
+            CREATE UNIQUE INDEX IF NOT EXISTS "IX_WeighRecords_GlobalRecordId"
+                ON "WeighRecords" ("GlobalRecordId");
+            CREATE INDEX IF NOT EXISTS "IX_WeighRecords_SyncStatus"
+                ON "WeighRecords" ("SyncStatus");
+            """);
+    }
+
+    private static async Task<HashSet<string>> GetColumnNamesAsync(
+        AppDbContext context,
+        string tableName)
+    {
+        var result = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        DbConnection connection = context.Database.GetDbConnection();
+        var shouldClose = connection.State != System.Data.ConnectionState.Open;
+        if (shouldClose)
+            await connection.OpenAsync();
+
+        try
+        {
+            await using var command = connection.CreateCommand();
+            command.CommandText = $"PRAGMA table_info(\"{tableName}\");";
+            await using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+                result.Add(reader.GetString(1));
+        }
+        finally
+        {
+            if (shouldClose)
+                await connection.CloseAsync();
+        }
+
+        return result;
     }
 }

@@ -55,6 +55,31 @@ public static class AppSettingsFileWriter
         });
     }
 
+    public static void SaveStationSettings(StationSettings settings)
+    {
+        UpdateSection("Station", node =>
+        {
+            node["QrPrefix"] = settings.QrPrefix;
+            node["SiteCode"] = settings.SiteCode;
+            node["LineCode"] = settings.LineCode;
+            node["MachineCode"] = settings.MachineCode;
+            node["SerialDigits"] = settings.SerialDigits;
+            node["EmergencySerialStart"] = settings.EmergencySerialStart;
+        });
+    }
+
+    public static void SaveCentralSyncSettings(CentralSyncSettings settings)
+    {
+        UpdateSection("CentralSync", node =>
+        {
+            node["Enabled"] = settings.Enabled;
+            node["ConnectionString"] = settings.ConnectionString;
+            node["SerialBlockSize"] = settings.SerialBlockSize;
+            node["SyncIntervalSeconds"] = settings.SyncIntervalSeconds;
+            node["BatchSize"] = settings.BatchSize;
+        });
+    }
+
     /// <summary>
     /// Reads appsettings.json as a mutable JSON tree, applies <paramref name="apply"/> to the
     /// named section (creating it if missing), and writes the file back out formatted.

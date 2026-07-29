@@ -61,3 +61,27 @@ public class DatabaseSettings
     public bool AutoBackupEnabled { get; set; } = true;
     public int AutoBackupIntervalHours { get; set; } = 24;
 }
+
+public class StationSettings
+{
+    public string QrPrefix { get; set; } = "P";
+    public string SiteCode { get; set; } = "S01";
+    public string LineCode { get; set; } = "L01";
+    public string MachineCode { get; set; } = "WM01";
+    public int SerialDigits { get; set; } = 8;
+
+    /// <summary>
+    /// Emergency local range used only when no central block is available. Configure a
+    /// different range per station. MachineCode still keeps the complete QR globally unique.
+    /// </summary>
+    public long EmergencySerialStart { get; set; } = 90_000_001;
+}
+
+public class CentralSyncSettings
+{
+    public bool Enabled { get; set; }
+    public string ConnectionString { get; set; } = string.Empty;
+    public int SerialBlockSize { get; set; } = 1000;
+    public int SyncIntervalSeconds { get; set; } = 15;
+    public int BatchSize { get; set; } = 100;
+}

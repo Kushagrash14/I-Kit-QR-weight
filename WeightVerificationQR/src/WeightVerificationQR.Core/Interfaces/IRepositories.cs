@@ -27,6 +27,11 @@ public interface IWeighRecordRepository
         string? operatorName = null);
     Task<string> GenerateNextKitNumberAsync(string codePrefix);
     Task<(int passCount, int failCount)> GetTodayCountsAsync();
+    Task<SerialNumberState> GetSerialNumberStateAsync();
+    Task UpdateSerialNumberStateAsync(SerialNumberState state);
+    Task<List<WeighRecord>> GetPendingSyncAsync(int maxCount);
+    Task MarkSyncedAsync(Guid globalRecordId, DateTime syncedAt);
+    Task MarkSyncFailedAsync(Guid globalRecordId, string error);
 }
 
 public interface IUserRepository

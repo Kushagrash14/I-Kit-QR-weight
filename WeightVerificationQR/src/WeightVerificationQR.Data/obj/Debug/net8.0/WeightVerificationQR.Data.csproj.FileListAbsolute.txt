@@ -15,3 +15,4 @@ C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src
 C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Data\obj\Debug\net8.0\WeightVerificationQR.Data.pdb
 C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Data\obj\Debug\net8.0\WeightVerificationQR.Data.genruntimeconfig.cache
 C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Data\obj\Debug\net8.0\ref\WeightVerificationQR.Data.dll
+C:\Users\Suraj Bhora\Downloads\WeightVerificationQR (1)\WeightVerificationQR\src\WeightVerificationQR.Data\obj\Debug\net8.0\WeightVerificationQR.Data.sourcelink.json

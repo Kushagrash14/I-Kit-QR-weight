@@ -13,8 +13,21 @@ public class WeighRecord
     public int Id { get; set; }
 
     /// <summary>Human readable unique kit number, also encoded in the QR, e.g. KIT202607110001</summary>
-    [Required, MaxLength(40)]
+    [Required, MaxLength(120)]
     public string KitNumber { get; set; } = string.Empty;
+
+    public Guid GlobalRecordId { get; set; } = Guid.NewGuid();
+
+    [MaxLength(20)]
+    public string SiteCode { get; set; } = string.Empty;
+
+    [MaxLength(20)]
+    public string LineCode { get; set; } = string.Empty;
+
+    [MaxLength(20)]
+    public string MachineCode { get; set; } = string.Empty;
+
+    public long SerialNumber { get; set; }
 
     public int ProductId { get; set; }
 
@@ -37,7 +50,7 @@ public class WeighRecord
     public string OperatorName { get; set; } = string.Empty;
 
     /// <summary>Same as KitNumber, kept separately in case QR payload format changes later.</summary>
-    [MaxLength(40)]
+    [MaxLength(120)]
     public string QrId { get; set; } = string.Empty;
 
     public bool QrGenerated { get; set; }
@@ -51,6 +64,15 @@ public class WeighRecord
 
     [MaxLength(500)]
     public string Remarks { get; set; } = string.Empty;
+
+    public RecordSyncStatus SyncStatus { get; set; } = RecordSyncStatus.Pending;
+
+    public int SyncAttempts { get; set; }
+
+    [MaxLength(500)]
+    public string LastSyncError { get; set; } = string.Empty;
+
+    public DateTime? SyncedAt { get; set; }
 
     // Convenience read-only properties for UI binding / reports
     [NotMapped]

@@ -121,6 +121,10 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Header="SERIAL" Binding="{Binding SerialNumber}" Width="*"/>
+                    <DataGridTextColumn Header="SITE" Binding="{Binding SiteCode}" Width="0.7*"/>
+                    <DataGridTextColumn Header="LINE" Binding="{Binding LineCode}" Width="0.7*"/>
+                    <DataGridTextColumn Header="MACHINE" Binding="{Binding MachineCode}" Width="0.8*"/>
                     <DataGridTextColumn Header="PRODUCT" Binding="{Binding ProductName}" Width="2*"/>
                     <DataGridTextColumn Header="WEIGHT (KG)" Binding="{Binding WeightKg, StringFormat=0.000}" Width="*"/>
                     <DataGridTemplateColumn Header="RESULT" Width="90">
@@ -148,6 +152,7 @@
                     <DataGridTextColumn Header="TIME" Binding="{Binding TimeText}" Width="*"/>
                     <DataGridTextColumn Header="OPERATOR" Binding="{Binding OperatorName}" Width="1.2*"/>
                     <DataGridTextColumn Header="PRINTER" Binding="{Binding PrinterStatus}" Width="*"/>
+                    <DataGridTextColumn Header="SYNC" Binding="{Binding SyncStatus}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

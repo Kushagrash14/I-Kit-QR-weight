@@ -47,3 +47,10 @@ public enum PrinterConnectionMode
     LocalWindowsPrintQueue = 3,
     BarTender = 4
 }
+
+public enum RecordSyncStatus
+{
+    Pending = 0,
+    Synced = 1,
+    Failed = 2
+}

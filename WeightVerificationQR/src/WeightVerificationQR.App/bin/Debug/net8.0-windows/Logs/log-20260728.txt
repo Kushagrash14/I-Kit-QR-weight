@@ -1,0 +1,723 @@
+2026-07-28 09:44:19.714 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+2026-07-28 09:44:19.960 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'admin'
+LIMIT 1
+2026-07-28 09:44:20.043 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'superadmin'
+LIMIT 1
+2026-07-28 09:44:33.117 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__ToLower_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE lower("u"."Username") = @__ToLower_0 AND "u"."IsActive"
+LIMIT 1
+2026-07-28 09:44:33.322 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[@p8='?' (DbType = Int32), @p0='?' (DbType = DateTime), @p1='?' (Size = 20), @p2='?' (DbType = Boolean), @p3='?' (DbType = DateTime), @p4='?' (Size = 44), @p5='?' (Size = 24), @p6='?' (DbType = Int32), @p7='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "Users" SET "CreatedAt" = @p0, "FullName" = @p1, "IsActive" = @p2, "LastLoginAt" = @p3, "PasswordHash" = @p4, "PasswordSalt" = @p5, "Role" = @p6, "Username" = @p7
+WHERE "Id" = @p8
+RETURNING 1;
+2026-07-28 09:44:33.548 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 09:44:33.575 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 09:44:33.578 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 09:44:33.598 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 09:44:33.601 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 09:44:33.602 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 09:44:49.456 +05:30 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+ORDER BY "u"."FullName"
+2026-07-28 09:44:59.379 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 09:44:59.393 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 09:44:59.396 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 09:46:58.689 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."KitNumber", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 09:47:03.800 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."KitNumber", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 09:47:09.971 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."KitNumber", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 09:47:10.767 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."KitNumber", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 09:47:11.761 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."KitNumber", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 09:47:11.959 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."KitNumber", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 09:47:12.186 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."KitNumber", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 09:47:18.358 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 09:47:18.360 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 09:47:18.361 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 09:47:19.289 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 09:47:19.291 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 09:47:19.292 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 09:47:32.374 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 16)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 09:47:32.456 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 19), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 3), @p5='?' (DbType = Int32), @p6='?' (Size = 26), @p7='?' (DbType = Boolean), @p8='?', @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?' (Size = 18), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "KitNumber", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14)
+RETURNING "Id";
+2026-07-28 09:47:32.470 +05:30 [INF] Kit KIT-REJ202607280001 | 12.7 mm & 6.35 mm EPE Gray | 1.030 kg | "Fail"
+2026-07-28 09:47:32.474 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 09:47:32.474 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 09:47:55.608 +05:30 [INF] Executed DbCommand (23ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 12)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 09:47:55.614 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 15), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 3), @p5='?' (DbType = Int32), @p6='?' (Size = 26), @p7='?' (DbType = Boolean), @p8='?' (Size = 15), @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?', @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "KitNumber", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14)
+RETURNING "Id";
+2026-07-28 09:47:59.854 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@p15='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 15), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 12), @p5='?' (DbType = Int32), @p6='?' (Size = 26), @p7='?' (DbType = Boolean), @p8='?' (Size = 15), @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?', @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "WeighRecords" SET "FailReason" = @p0, "KitNumber" = @p1, "OperatorName" = @p2, "PrintedSuccessfully" = @p3, "PrinterStatus" = @p4, "ProductId" = @p5, "ProductName" = @p6, "QrGenerated" = @p7, "QrId" = @p8, "Quantity" = @p9, "RecordDate" = @p10, "Remarks" = @p11, "ReprintCount" = @p12, "Result" = @p13, "WeightKg" = @p14
+WHERE "Id" = @p15
+RETURNING 1;
+2026-07-28 09:47:59.857 +05:30 [INF] Kit KIT202607280001 | 12.7 mm & 6.35 mm EPE Gray | 1.0510 kg | "Pass"
+2026-07-28 09:47:59.861 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 09:47:59.862 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 09:48:12.174 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+ORDER BY "u"."FullName"
+2026-07-28 09:48:13.704 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+ORDER BY "p"."ProductName"
+2026-07-28 09:48:18.343 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."KitNumber", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 09:48:24.364 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 09:48:24.365 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 09:48:24.366 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 10:37:49.599 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 16)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 10:37:49.602 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 19), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 3), @p5='?' (DbType = Int32), @p6='?' (Size = 22), @p7='?' (DbType = Boolean), @p8='?', @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?' (Size = 18), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "KitNumber", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14)
+RETURNING "Id";
+2026-07-28 10:37:49.608 +05:30 [INF] Kit KIT-REJ202607280002 | I Kit 12 mm & 6 mm EPE | 1.5000 kg | "Fail"
+2026-07-28 10:37:49.611 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 10:37:49.611 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 10:38:06.207 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 16)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 10:38:06.208 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 19), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 3), @p5='?' (DbType = Int32), @p6='?' (Size = 22), @p7='?' (DbType = Boolean), @p8='?', @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?' (Size = 18), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "KitNumber", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14)
+RETURNING "Id";
+2026-07-28 10:38:06.232 +05:30 [INF] Kit KIT-REJ202607280003 | I Kit 12 mm & 6 mm EPE | 0.9900 kg | "Fail"
+2026-07-28 10:38:06.234 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 10:38:06.235 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 10:38:28.546 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 16)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 10:38:28.549 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 19), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 3), @p5='?' (DbType = Int32), @p6='?' (Size = 22), @p7='?' (DbType = Boolean), @p8='?', @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?' (Size = 18), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "KitNumber", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14)
+RETURNING "Id";
+2026-07-28 10:38:28.574 +05:30 [INF] Kit KIT-REJ202607280004 | I Kit 12 mm & 6 mm EPE | 1.0520 kg | "Fail"
+2026-07-28 10:38:28.576 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 10:38:28.577 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 10:38:39.519 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 12)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 10:38:39.520 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 15), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 3), @p5='?' (DbType = Int32), @p6='?' (Size = 22), @p7='?' (DbType = Boolean), @p8='?' (Size = 15), @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?', @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "KitNumber", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14)
+RETURNING "Id";
+2026-07-28 10:38:43.613 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p15='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 15), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 12), @p5='?' (DbType = Int32), @p6='?' (Size = 22), @p7='?' (DbType = Boolean), @p8='?' (Size = 15), @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?', @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "WeighRecords" SET "FailReason" = @p0, "KitNumber" = @p1, "OperatorName" = @p2, "PrintedSuccessfully" = @p3, "PrinterStatus" = @p4, "ProductId" = @p5, "ProductName" = @p6, "QrGenerated" = @p7, "QrId" = @p8, "Quantity" = @p9, "RecordDate" = @p10, "Remarks" = @p11, "ReprintCount" = @p12, "Result" = @p13, "WeightKg" = @p14
+WHERE "Id" = @p15
+RETURNING 1;
+2026-07-28 10:38:43.615 +05:30 [INF] Kit KIT202607280002 | I Kit 12 mm & 6 mm EPE | 1.0400 kg | "Pass"
+2026-07-28 10:38:43.618 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 10:38:43.618 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 10:40:25.894 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+ORDER BY "p"."ProductName"
+2026-07-28 10:40:50.921 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+ORDER BY "u"."FullName"
+2026-07-28 10:41:15.618 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 10:41:15.621 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 10:41:15.622 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 10:44:54.274 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 16)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 10:44:54.278 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 19), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 3), @p5='?' (DbType = Int32), @p6='?' (Size = 26), @p7='?' (DbType = Boolean), @p8='?', @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?' (Size = 18), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "KitNumber", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14)
+RETURNING "Id";
+2026-07-28 10:44:54.285 +05:30 [INF] Kit KIT-REJ202607280005 | 12.7 mm & 6.35 mm EPE Gray | 1.030 kg | "Fail"
+2026-07-28 10:44:54.287 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 10:44:54.288 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 10:44:58.374 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 12)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 10:44:58.376 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 15), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 3), @p5='?' (DbType = Int32), @p6='?' (Size = 22), @p7='?' (DbType = Boolean), @p8='?' (Size = 15), @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?', @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "KitNumber", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14)
+RETURNING "Id";
+2026-07-28 10:45:02.470 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p15='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 15), @p2='?' (Size = 20), @p3='?' (DbType = Boolean), @p4='?' (Size = 12), @p5='?' (DbType = Int32), @p6='?' (Size = 22), @p7='?' (DbType = Boolean), @p8='?' (Size = 15), @p9='?' (Size = 7), @p10='?' (DbType = DateTime), @p11='?', @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "WeighRecords" SET "FailReason" = @p0, "KitNumber" = @p1, "OperatorName" = @p2, "PrintedSuccessfully" = @p3, "PrinterStatus" = @p4, "ProductId" = @p5, "ProductName" = @p6, "QrGenerated" = @p7, "QrId" = @p8, "Quantity" = @p9, "RecordDate" = @p10, "Remarks" = @p11, "ReprintCount" = @p12, "Result" = @p13, "WeightKg" = @p14
+WHERE "Id" = @p15
+RETURNING 1;
+2026-07-28 10:45:02.472 +05:30 [INF] Kit KIT202607280003 | I Kit 12 mm & 6 mm EPE | 1.030 kg | "Pass"
+2026-07-28 10:45:02.473 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 10:45:02.474 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 11:46:42.877 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+2026-07-28 11:46:42.937 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "SerialNumberStates" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_SerialNumberStates" PRIMARY KEY,
+    "NextSerial" INTEGER NOT NULL DEFAULT 0,
+    "BlockEndSerial" INTEGER NOT NULL DEFAULT 0,
+    "EmergencyNextSerial" INTEGER NOT NULL DEFAULT 0,
+    "UpdatedAt" TEXT NOT NULL
+);
+INSERT OR IGNORE INTO "SerialNumberStates"
+    ("Id", "NextSerial", "BlockEndSerial", "EmergencyNextSerial", "UpdatedAt")
+VALUES (1, 0, 0, 0, CURRENT_TIMESTAMP);
+2026-07-28 11:46:42.948 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "GlobalRecordId" TEXT NOT NULL DEFAULT '';
+2026-07-28 11:46:42.949 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "SiteCode" TEXT NOT NULL DEFAULT '';
+2026-07-28 11:46:42.950 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "LineCode" TEXT NOT NULL DEFAULT '';
+2026-07-28 11:46:42.952 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "MachineCode" TEXT NOT NULL DEFAULT '';
+2026-07-28 11:46:42.953 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "SerialNumber" INTEGER NOT NULL DEFAULT 0;
+2026-07-28 11:46:42.954 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "SyncStatus" INTEGER NOT NULL DEFAULT 0;
+2026-07-28 11:46:42.956 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "SyncAttempts" INTEGER NOT NULL DEFAULT 0;
+2026-07-28 11:46:42.957 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "LastSyncError" TEXT NOT NULL DEFAULT '';
+2026-07-28 11:46:42.958 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "WeighRecords" ADD COLUMN "SyncedAt" TEXT NULL;
+2026-07-28 11:46:42.961 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+UPDATE "WeighRecords"
+SET "GlobalRecordId" = lower(hex(randomblob(4))) || '-' ||
+                       lower(hex(randomblob(2))) || '-4' ||
+                       substr(lower(hex(randomblob(2))),2) || '-' ||
+                       substr('89ab',abs(random()) % 4 + 1,1) ||
+                       substr(lower(hex(randomblob(2))),2) || '-' ||
+                       lower(hex(randomblob(6)))
+WHERE "GlobalRecordId" = '';
+CREATE UNIQUE INDEX IF NOT EXISTS "IX_WeighRecords_GlobalRecordId"
+    ON "WeighRecords" ("GlobalRecordId");
+CREATE INDEX IF NOT EXISTS "IX_WeighRecords_SyncStatus"
+    ON "WeighRecords" ("SyncStatus");
+2026-07-28 11:46:43.191 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'admin'
+LIMIT 1
+2026-07-28 11:46:43.227 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'superadmin'
+LIMIT 1
+2026-07-28 11:51:40.624 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+2026-07-28 11:51:40.654 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "SerialNumberStates" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_SerialNumberStates" PRIMARY KEY,
+    "NextSerial" INTEGER NOT NULL DEFAULT 0,
+    "BlockEndSerial" INTEGER NOT NULL DEFAULT 0,
+    "EmergencyNextSerial" INTEGER NOT NULL DEFAULT 0,
+    "UpdatedAt" TEXT NOT NULL
+);
+INSERT OR IGNORE INTO "SerialNumberStates"
+    ("Id", "NextSerial", "BlockEndSerial", "EmergencyNextSerial", "UpdatedAt")
+VALUES (1, 0, 0, 0, CURRENT_TIMESTAMP);
+2026-07-28 11:51:40.657 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+UPDATE "WeighRecords"
+SET "GlobalRecordId" = lower(hex(randomblob(4))) || '-' ||
+                       lower(hex(randomblob(2))) || '-4' ||
+                       substr(lower(hex(randomblob(2))),2) || '-' ||
+                       substr('89ab',abs(random()) % 4 + 1,1) ||
+                       substr(lower(hex(randomblob(2))),2) || '-' ||
+                       lower(hex(randomblob(6)))
+WHERE "GlobalRecordId" = '';
+CREATE UNIQUE INDEX IF NOT EXISTS "IX_WeighRecords_GlobalRecordId"
+    ON "WeighRecords" ("GlobalRecordId");
+CREATE INDEX IF NOT EXISTS "IX_WeighRecords_SyncStatus"
+    ON "WeighRecords" ("SyncStatus");
+2026-07-28 11:51:40.920 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'admin'
+LIMIT 1
+2026-07-28 11:51:40.953 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'superadmin'
+LIMIT 1
+2026-07-28 16:51:20.507 +05:30 [INF] Executed DbCommand (38ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+PRAGMA journal_mode = 'wal';
+2026-07-28 16:51:20.663 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Products" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Products" PRIMARY KEY AUTOINCREMENT,
+    "ProductName" TEXT NOT NULL,
+    "Quantity" TEXT NOT NULL,
+    "MinWeightKg" decimal(10,3) NOT NULL,
+    "MaxWeightKg" decimal(10,3) NOT NULL,
+    "CodePrefix" TEXT NOT NULL,
+    "IsActive" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL
+);
+2026-07-28 16:51:20.666 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "SerialNumberStates" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_SerialNumberStates" PRIMARY KEY AUTOINCREMENT,
+    "NextSerial" INTEGER NOT NULL,
+    "BlockEndSerial" INTEGER NOT NULL,
+    "EmergencyNextSerial" INTEGER NOT NULL,
+    "UpdatedAt" TEXT NOT NULL
+);
+2026-07-28 16:51:20.666 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Users" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Users" PRIMARY KEY AUTOINCREMENT,
+    "FullName" TEXT NOT NULL,
+    "Username" TEXT NOT NULL,
+    "PasswordHash" TEXT NOT NULL,
+    "PasswordSalt" TEXT NOT NULL,
+    "Role" INTEGER NOT NULL,
+    "IsActive" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "LastLoginAt" TEXT NULL
+);
+2026-07-28 16:51:20.666 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "WeighRecords" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_WeighRecords" PRIMARY KEY AUTOINCREMENT,
+    "KitNumber" TEXT NOT NULL,
+    "GlobalRecordId" TEXT NOT NULL,
+    "SiteCode" TEXT NOT NULL,
+    "LineCode" TEXT NOT NULL,
+    "MachineCode" TEXT NOT NULL,
+    "SerialNumber" INTEGER NOT NULL,
+    "ProductId" INTEGER NOT NULL,
+    "ProductName" TEXT NOT NULL,
+    "Quantity" TEXT NOT NULL,
+    "WeightKg" decimal(10,3) NOT NULL,
+    "Result" INTEGER NOT NULL,
+    "FailReason" INTEGER NOT NULL,
+    "RecordDate" TEXT NOT NULL,
+    "OperatorName" TEXT NOT NULL,
+    "QrId" TEXT NOT NULL,
+    "QrGenerated" INTEGER NOT NULL,
+    "PrintedSuccessfully" INTEGER NOT NULL,
+    "PrinterStatus" TEXT NOT NULL,
+    "ReprintCount" INTEGER NOT NULL,
+    "Remarks" TEXT NOT NULL,
+    "SyncStatus" INTEGER NOT NULL,
+    "SyncAttempts" INTEGER NOT NULL,
+    "LastSyncError" TEXT NOT NULL,
+    "SyncedAt" TEXT NULL
+);
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Products" ("Id", "CodePrefix", "CreatedAt", "IsActive", "MaxWeightKg", "MinWeightKg", "ProductName", "Quantity", "UpdatedAt")
+VALUES (1, 'KIT', '2026-01-01 00:00:00', 1, '1.051', '1.0', 'I Kit 12 mm & 6 mm EPE', '100 Nos', NULL);
+SELECT changes();
+
+INSERT INTO "Products" ("Id", "CodePrefix", "CreatedAt", "IsActive", "MaxWeightKg", "MinWeightKg", "ProductName", "Quantity", "UpdatedAt")
+VALUES (2, 'KIT', '2026-01-01 00:00:00', 1, '1.08', '1.05', '12.7 mm & 6.35 mm EPE Gray', '100 Nos', NULL);
+SELECT changes();
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "SerialNumberStates" ("Id", "BlockEndSerial", "EmergencyNextSerial", "NextSerial", "UpdatedAt")
+VALUES (1, 0, 0, 0, '2026-01-01 00:00:00');
+SELECT changes();
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("Id", "CreatedAt", "FullName", "IsActive", "LastLoginAt", "PasswordHash", "PasswordSalt", "Role", "Username")
+VALUES (1, '2026-01-01 00:00:00', 'System Administrator', 1, NULL, 'REPLACE_ON_FIRST_RUN', 'REPLACE_ON_FIRST_RUN', 1, 'admin');
+SELECT changes();
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Products_ProductName" ON "Products" ("ProductName");
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Users_Username" ON "Users" ("Username");
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_WeighRecords_GlobalRecordId" ON "WeighRecords" ("GlobalRecordId");
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_WeighRecords_KitNumber" ON "WeighRecords" ("KitNumber");
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_WeighRecords_QrId" ON "WeighRecords" ("QrId");
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_WeighRecords_RecordDate" ON "WeighRecords" ("RecordDate");
+2026-07-28 16:51:20.667 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_WeighRecords_SyncStatus" ON "WeighRecords" ("SyncStatus");
+2026-07-28 16:51:20.680 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "SerialNumberStates" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_SerialNumberStates" PRIMARY KEY,
+    "NextSerial" INTEGER NOT NULL DEFAULT 0,
+    "BlockEndSerial" INTEGER NOT NULL DEFAULT 0,
+    "EmergencyNextSerial" INTEGER NOT NULL DEFAULT 0,
+    "UpdatedAt" TEXT NOT NULL
+);
+INSERT OR IGNORE INTO "SerialNumberStates"
+    ("Id", "NextSerial", "BlockEndSerial", "EmergencyNextSerial", "UpdatedAt")
+VALUES (1, 0, 0, 0, CURRENT_TIMESTAMP);
+2026-07-28 16:51:20.685 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+UPDATE "WeighRecords"
+SET "GlobalRecordId" = lower(hex(randomblob(4))) || '-' ||
+                       lower(hex(randomblob(2))) || '-4' ||
+                       substr(lower(hex(randomblob(2))),2) || '-' ||
+                       substr('89ab',abs(random()) % 4 + 1,1) ||
+                       substr(lower(hex(randomblob(2))),2) || '-' ||
+                       lower(hex(randomblob(6)))
+WHERE "GlobalRecordId" = '';
+CREATE UNIQUE INDEX IF NOT EXISTS "IX_WeighRecords_GlobalRecordId"
+    ON "WeighRecords" ("GlobalRecordId");
+CREATE INDEX IF NOT EXISTS "IX_WeighRecords_SyncStatus"
+    ON "WeighRecords" ("SyncStatus");
+2026-07-28 16:51:20.890 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'admin'
+LIMIT 1
+2026-07-28 16:51:21.033 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@p2='?' (DbType = Int32), @p0='?' (Size = 44), @p1='?' (Size = 24)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "Users" SET "PasswordHash" = @p0, "PasswordSalt" = @p1
+WHERE "Id" = @p2
+RETURNING 1;
+2026-07-28 16:51:21.070 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'superadmin'
+LIMIT 1
+2026-07-28 16:51:21.100 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (Size = 19), @p2='?' (DbType = Boolean), @p3='?' (DbType = DateTime), @p4='?' (Size = 44), @p5='?' (Size = 24), @p6='?' (DbType = Int32), @p7='?' (Size = 10)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("CreatedAt", "FullName", "IsActive", "LastLoginAt", "PasswordHash", "PasswordSalt", "Role", "Username")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7)
+RETURNING "Id";
+2026-07-28 18:14:03.549 +05:30 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+2026-07-28 18:14:03.585 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "SerialNumberStates" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_SerialNumberStates" PRIMARY KEY,
+    "NextSerial" INTEGER NOT NULL DEFAULT 0,
+    "BlockEndSerial" INTEGER NOT NULL DEFAULT 0,
+    "EmergencyNextSerial" INTEGER NOT NULL DEFAULT 0,
+    "UpdatedAt" TEXT NOT NULL
+);
+INSERT OR IGNORE INTO "SerialNumberStates"
+    ("Id", "NextSerial", "BlockEndSerial", "EmergencyNextSerial", "UpdatedAt")
+VALUES (1, 0, 0, 0, CURRENT_TIMESTAMP);
+2026-07-28 18:14:03.589 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+UPDATE "WeighRecords"
+SET "GlobalRecordId" = lower(hex(randomblob(4))) || '-' ||
+                       lower(hex(randomblob(2))) || '-4' ||
+                       substr(lower(hex(randomblob(2))),2) || '-' ||
+                       substr('89ab',abs(random()) % 4 + 1,1) ||
+                       substr(lower(hex(randomblob(2))),2) || '-' ||
+                       lower(hex(randomblob(6)))
+WHERE "GlobalRecordId" = '';
+CREATE UNIQUE INDEX IF NOT EXISTS "IX_WeighRecords_GlobalRecordId"
+    ON "WeighRecords" ("GlobalRecordId");
+CREATE INDEX IF NOT EXISTS "IX_WeighRecords_SyncStatus"
+    ON "WeighRecords" ("SyncStatus");
+2026-07-28 18:14:03.800 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'admin'
+LIMIT 1
+2026-07-28 18:14:03.963 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Username" = 'superadmin'
+LIMIT 1
+2026-07-28 18:14:24.602 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__ToLower_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE lower("u"."Username") = @__ToLower_0 AND "u"."IsActive"
+LIMIT 1
+2026-07-28 18:14:34.490 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__ToLower_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE lower("u"."Username") = @__ToLower_0 AND "u"."IsActive"
+LIMIT 1
+2026-07-28 18:14:34.554 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p8='?' (DbType = Int32), @p0='?' (DbType = DateTime), @p1='?' (Size = 20), @p2='?' (DbType = Boolean), @p3='?' (DbType = DateTime), @p4='?' (Size = 44), @p5='?' (Size = 24), @p6='?' (DbType = Int32), @p7='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "Users" SET "CreatedAt" = @p0, "FullName" = @p1, "IsActive" = @p2, "LastLoginAt" = @p3, "PasswordHash" = @p4, "PasswordSalt" = @p5, "Role" = @p6, "Username" = @p7
+WHERE "Id" = @p8
+RETURNING 1;
+2026-07-28 18:14:34.611 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 18:14:34.631 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 18:14:34.632 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 18:14:34.642 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 18:14:34.643 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 18:14:34.643 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 18:14:53.663 +05:30 [INF] Executed DbCommand (23ms) [Parameters=[@__todayPrefix_0_startswith='?' (Size = 16)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."KitNumber"
+FROM "WeighRecords" AS "w"
+WHERE "w"."KitNumber" LIKE @__todayPrefix_0_startswith ESCAPE '\'
+ORDER BY "w"."KitNumber" DESC
+LIMIT 1
+2026-07-28 18:14:53.748 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Guid), @p2='?' (Size = 19), @p3='?', @p4='?' (Size = 3), @p5='?' (Size = 4), @p6='?' (Size = 20), @p7='?' (DbType = Boolean), @p8='?' (Size = 3), @p9='?' (DbType = Int32), @p10='?' (Size = 26), @p11='?' (DbType = Boolean), @p12='?', @p13='?' (Size = 7), @p14='?' (DbType = DateTime), @p15='?' (Size = 18), @p16='?' (DbType = Int32), @p17='?' (DbType = Int32), @p18='?' (DbType = Int64), @p19='?' (Size = 3), @p20='?' (DbType = Int32), @p21='?' (DbType = Int32), @p22='?' (DbType = DateTime), @p23='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "GlobalRecordId", "KitNumber", "LastSyncError", "LineCode", "MachineCode", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "SerialNumber", "SiteCode", "SyncAttempts", "SyncStatus", "SyncedAt", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23)
+RETURNING "Id";
+2026-07-28 18:14:53.759 +05:30 [INF] Kit KIT-REJ202607280006 | 12.7 mm & 6.35 mm EPE Gray | 1.030 kg | "Fail"
+2026-07-28 18:14:53.763 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 18:14:53.763 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 18:15:07.460 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "s"."Id", "s"."BlockEndSerial", "s"."EmergencyNextSerial", "s"."NextSerial", "s"."UpdatedAt"
+FROM "SerialNumberStates" AS "s"
+WHERE "s"."Id" = 1
+LIMIT 1
+2026-07-28 18:15:07.469 +05:30 [WRN] Using emergency offline serial 90000001 for station S01/L01/WM01.
+2026-07-28 18:15:07.474 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p4='?' (DbType = Int32), @p0='?' (DbType = Int64), @p1='?' (DbType = Int64), @p2='?' (DbType = Int64), @p3='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "SerialNumberStates" SET "BlockEndSerial" = @p0, "EmergencyNextSerial" = @p1, "NextSerial" = @p2, "UpdatedAt" = @p3
+WHERE "Id" = @p4
+RETURNING 1;
+2026-07-28 18:15:07.480 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Guid), @p2='?' (Size = 38), @p3='?', @p4='?' (Size = 3), @p5='?' (Size = 4), @p6='?' (Size = 20), @p7='?' (DbType = Boolean), @p8='?' (Size = 3), @p9='?' (DbType = Int32), @p10='?' (Size = 26), @p11='?' (DbType = Boolean), @p12='?' (Size = 38), @p13='?' (Size = 7), @p14='?' (DbType = DateTime), @p15='?' (Size = 58), @p16='?' (DbType = Int32), @p17='?' (DbType = Int32), @p18='?' (DbType = Int64), @p19='?' (Size = 3), @p20='?' (DbType = Int32), @p21='?' (DbType = Int32), @p22='?' (DbType = DateTime), @p23='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "WeighRecords" ("FailReason", "GlobalRecordId", "KitNumber", "LastSyncError", "LineCode", "MachineCode", "OperatorName", "PrintedSuccessfully", "PrinterStatus", "ProductId", "ProductName", "QrGenerated", "QrId", "Quantity", "RecordDate", "Remarks", "ReprintCount", "Result", "SerialNumber", "SiteCode", "SyncAttempts", "SyncStatus", "SyncedAt", "WeightKg")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23)
+RETURNING "Id";
+2026-07-28 18:15:11.695 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@p24='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (DbType = Guid), @p2='?' (Size = 38), @p3='?', @p4='?' (Size = 3), @p5='?' (Size = 4), @p6='?' (Size = 20), @p7='?' (DbType = Boolean), @p8='?' (Size = 12), @p9='?' (DbType = Int32), @p10='?' (Size = 26), @p11='?' (DbType = Boolean), @p12='?' (Size = 38), @p13='?' (Size = 7), @p14='?' (DbType = DateTime), @p15='?' (Size = 58), @p16='?' (DbType = Int32), @p17='?' (DbType = Int32), @p18='?' (DbType = Int64), @p19='?' (Size = 3), @p20='?' (DbType = Int32), @p21='?' (DbType = Int32), @p22='?' (DbType = DateTime), @p23='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "WeighRecords" SET "FailReason" = @p0, "GlobalRecordId" = @p1, "KitNumber" = @p2, "LastSyncError" = @p3, "LineCode" = @p4, "MachineCode" = @p5, "OperatorName" = @p6, "PrintedSuccessfully" = @p7, "PrinterStatus" = @p8, "ProductId" = @p9, "ProductName" = @p10, "QrGenerated" = @p11, "QrId" = @p12, "Quantity" = @p13, "RecordDate" = @p14, "Remarks" = @p15, "ReprintCount" = @p16, "Result" = @p17, "SerialNumber" = @p18, "SiteCode" = @p19, "SyncAttempts" = @p20, "SyncStatus" = @p21, "SyncedAt" = @p22, "WeightKg" = @p23
+WHERE "Id" = @p24
+RETURNING 1;
+2026-07-28 18:15:11.720 +05:30 [INF] Kit P-S01-L01-WM01-20260728-1.051-90000001 | 12.7 mm & 6.35 mm EPE Gray | 1.0510 kg | "Pass"
+2026-07-28 18:15:11.729 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 18:15:11.730 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 18:26:21.103 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."GlobalRecordId", "w"."KitNumber", "w"."LastSyncError", "w"."LineCode", "w"."MachineCode", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."SerialNumber", "w"."SiteCode", "w"."SyncAttempts", "w"."SyncStatus", "w"."SyncedAt", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 18:26:21.786 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."GlobalRecordId", "w"."KitNumber", "w"."LastSyncError", "w"."LineCode", "w"."MachineCode", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."SerialNumber", "w"."SiteCode", "w"."SyncAttempts", "w"."SyncStatus", "w"."SyncedAt", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 18:26:29.767 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 18:26:29.769 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 18:26:29.770 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-28 18:30:14.919 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."FailReason", "w"."GlobalRecordId", "w"."KitNumber", "w"."LastSyncError", "w"."LineCode", "w"."MachineCode", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."SerialNumber", "w"."SiteCode", "w"."SyncAttempts", "w"."SyncStatus", "w"."SyncedAt", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-28 18:30:46.387 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CreatedAt", "p"."IsActive", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-28 18:30:46.389 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-28 18:30:46.389 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2

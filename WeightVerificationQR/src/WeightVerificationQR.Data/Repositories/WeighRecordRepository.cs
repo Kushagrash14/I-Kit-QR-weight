@@ -13,6 +13,10 @@ public class WeighRecordRepository : IWeighRecordRepository
 
     public async Task<WeighRecord> AddAsync(WeighRecord record)
     {
+        if (record.GlobalRecordId == Guid.Empty)
+            record.GlobalRecordId = Guid.NewGuid();
+        record.SyncStatus = RecordSyncStatus.Pending;
+        record.SyncedAt = null;
         _context.WeighRecords.Add(record);
         await _context.SaveChangesAsync();
         return record;
@@ -20,6 +24,8 @@ public class WeighRecordRepository : IWeighRecordRepository
 
     public async Task UpdateAsync(WeighRecord record)
     {
+        record.SyncStatus = RecordSyncStatus.Pending;
+        record.SyncedAt = null;
         _context.WeighRecords.Update(record);
         await _context.SaveChangesAsync();
     }
@@ -110,5 +116,53 @@ public class WeighRecordRepository : IWeighRecordRepository
         var fail = await _context.WeighRecords
             .CountAsync(r => r.RecordDate >= today && r.Result == WeighResult.Fail);
         return (pass, fail);
+    }
+
+    public async Task<SerialNumberState> GetSerialNumberStateAsync()
+    {
+        var state = await _context.SerialNumberStates.FirstOrDefaultAsync(s => s.Id == 1);
+        if (state is not null)
+            return state;
+
+        state = new SerialNumberState { Id = 1 };
+        _context.SerialNumberStates.Add(state);
+        await _context.SaveChangesAsync();
+        return state;
+    }
+
+    public async Task UpdateSerialNumberStateAsync(SerialNumberState state)
+    {
+        state.UpdatedAt = DateTime.Now;
+        _context.SerialNumberStates.Update(state);
+        await _context.SaveChangesAsync();
+    }
+
+    public Task<List<WeighRecord>> GetPendingSyncAsync(int maxCount) =>
+        _context.WeighRecords
+            .Where(r => r.SyncStatus != RecordSyncStatus.Synced)
+            .OrderBy(r => r.RecordDate)
+            .Take(Math.Max(1, maxCount))
+            .ToListAsync();
+
+    public async Task MarkSyncedAsync(Guid globalRecordId, DateTime syncedAt)
+    {
+        var record = await _context.WeighRecords.FirstOrDefaultAsync(r => r.GlobalRecordId == globalRecordId);
+        if (record is null) return;
+
+        record.SyncStatus = RecordSyncStatus.Synced;
+        record.SyncedAt = syncedAt;
+        record.LastSyncError = string.Empty;
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task MarkSyncFailedAsync(Guid globalRecordId, string error)
+    {
+        var record = await _context.WeighRecords.FirstOrDefaultAsync(r => r.GlobalRecordId == globalRecordId);
+        if (record is null) return;
+
+        record.SyncStatus = RecordSyncStatus.Failed;
+        record.SyncAttempts++;
+        record.LastSyncError = error.Length <= 500 ? error : error[..500];
+        await _context.SaveChangesAsync();
     }
 }
