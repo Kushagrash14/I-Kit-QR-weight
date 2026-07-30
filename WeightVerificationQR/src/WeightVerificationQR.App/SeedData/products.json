@@ -1,0 +1,30 @@
+[
+  {
+    "productName": "I Kit 12 mm & 6 mm EPE",
+    "quantity": "100 Nos",
+    "minWeightKg": 1.000,
+    "maxWeightKg": 1.051,
+    "codePrefix": "KIT",
+    "commandCode": "P",
+    "labelLineCode": "I",
+    "modelCode": "IKIT-12-6",
+    "labelSizeText": "12 mm & 6 mm",
+    "labelLengthText": "3 Meter",
+    "labelMaterialText": "EPE",
+    "isActive": true
+  },
+  {
+    "productName": "12.7 mm & 6.35 mm EPE Gray",
+    "quantity": "100 Nos",
+    "minWeightKg": 1.050,
+    "maxWeightKg": 1.080,
+    "codePrefix": "KIT",
+    "commandCode": "P",
+    "labelLineCode": "O",
+    "modelCode": "ODU-12.7-6.35",
+    "labelSizeText": "12.7 mm & 6.35 mm",
+    "labelLengthText": "3 Meter",
+    "labelMaterialText": "EPE Gray",
+    "isActive": true
+  }
+]

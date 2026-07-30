@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using WeightVerificationQR.Core.Interfaces;
 using WeightVerificationQR.Core.Models;
 
@@ -9,10 +10,14 @@ namespace WeightVerificationQR.App.ViewModels;
 public class ProductMasterViewModel : ViewModelBase
 {
     private readonly IProductRepository _productRepository;
+    private readonly ILogger<ProductMasterViewModel> _logger;
 
-    public ProductMasterViewModel(IProductRepository productRepository)
+    public ProductMasterViewModel(
+        IProductRepository productRepository,
+        ILogger<ProductMasterViewModel> logger)
     {
         _productRepository = productRepository;
+        _logger = logger;
 
         Products = new ObservableCollection<Product>();
         NewCommand = new RelayCommand(StartNew);
@@ -45,9 +50,17 @@ public class ProductMasterViewModel : ViewModelBase
 
     private async Task LoadAsync()
     {
-        var products = await _productRepository.GetAllAsync(activeOnly: false);
-        Products.Clear();
-        foreach (var p in products) Products.Add(p);
+        try
+        {
+            var products = await _productRepository.GetAllAsync(activeOnly: false);
+            Products.Clear();
+            foreach (var p in products) Products.Add(p);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Product list could not be loaded.");
+            StatusMessage = $"Products could not be loaded: {GetSpecificError(ex)}";
+        }
     }
 
     private void StartNew()
@@ -162,7 +175,11 @@ public class ProductMasterViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Product could not be saved: {ex.Message}";
+            _logger.LogError(
+                ex,
+                "Product {ProductName} could not be saved.",
+                EditingProduct.ProductName);
+            StatusMessage = $"Product could not be saved: {GetSpecificError(ex)}";
             return;
         }
 
@@ -193,4 +210,10 @@ public class ProductMasterViewModel : ViewModelBase
             .ToUpperInvariant()
             .Where(ch => char.IsLetterOrDigit(ch) || ch is '-' or '_' or '.')
             .ToArray());
+
+    private static string GetSpecificError(Exception exception)
+    {
+        var specific = exception.GetBaseException().Message;
+        return string.IsNullOrWhiteSpace(specific) ? exception.Message : specific;
+    }
 }

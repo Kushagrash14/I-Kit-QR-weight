@@ -46,16 +46,43 @@ public class PrinterServiceBarTenderTests
     }
 
     [Fact]
+    public void ResolveExistingBarTenderLabelPath_PrefersMatchingPackagedFileName()
+    {
+        var baseDirectory = Path.Combine(Path.GetTempPath(), $"wvqr-app-{Guid.NewGuid():N}");
+        var labelsDirectory = Path.Combine(baseDirectory, "Labels");
+        Directory.CreateDirectory(labelsDirectory);
+        File.WriteAllText(Path.Combine(labelsDirectory, "Template.btw"), "default");
+        var matchingTemplate = Path.Combine(labelsDirectory, "New Document.btw");
+        File.WriteAllText(matchingTemplate, "selected");
+
+        try
+        {
+            var settings = new PrinterSettings
+            {
+                BarTenderLabelPath = @"C:\OldMachine\Labels\New Document.btw"
+            };
+
+            var resolved = PrinterService.ResolveExistingBarTenderLabelPath(settings, baseDirectory);
+
+            Assert.Equal(Path.GetFullPath(matchingTemplate), resolved);
+        }
+        finally
+        {
+            Directory.Delete(baseDirectory, recursive: true);
+        }
+    }
+
+    [Fact]
     public void BuildBarTenderArguments_UsesActiveFormatDataPrinterPrintAndExitSwitches()
     {
         var arguments = PrinterService.BuildBarTenderArguments(
             @"C:\App\Labels\Template.btw",
             @"C:\Temp\wvqr-print.csv",
-            "ZDesigner ZT231-300dpi ZPL");
+            "Plant Label Printer");
 
         Assert.Contains(@"/AF=C:\App\Labels\Template.btw", arguments);
         Assert.Contains(@"/D=C:\Temp\wvqr-print.csv", arguments);
-        Assert.Contains("/PRN=ZDesigner ZT231-300dpi ZPL", arguments);
+        Assert.Contains("/PRN=Plant Label Printer", arguments);
         Assert.Contains("/P", arguments);
         Assert.Contains("/X", arguments);
     }
@@ -65,15 +92,26 @@ public class PrinterServiceBarTenderTests
     {
         var record = new WeighRecord
         {
-            QrId = "QR-1001",
-            KitNumber = "SAP-2002",
-            ProductName = "EPE \"Gray\""
+            QrPayload = "KIT=P-O-290726-1064-000002|MODEL=ODU-A",
+            KitNumber = "P-O-290726-1064-000002",
+            ProductName = "ODU Model A",
+            LabelSizeText = "5/8\" & 3/8\"",
+            LabelLengthText = "3 Meter",
+            LabelMaterialText = "EPE",
+            ModelCode = "ODU-A",
+            CommandCode = "P",
+            WeightKg = 1.064m,
+            RecordDate = new DateTime(2026, 7, 29),
+            LineCode = "O",
+            DailySerialNumber = 2
         };
 
         var csv = PrinterService.BuildBarTenderCsv(record);
 
-        Assert.Equal(
-            "QRCode,SAPCode,Description\r\n\"QR-1001\",\"SAP-2002\",\"EPE \"\"Gray\"\"\"",
-            csv);
+        Assert.Contains("\"KIT=P-O-290726-1064-000002|MODEL=ODU-A\"", csv);
+        Assert.Contains("\"P-O-290726-1064-000002\"", csv);
+        Assert.Contains("\"5/8\"\" & 3/8\"\"\"", csv);
+        Assert.Contains("\"1.064\"", csv);
+        Assert.EndsWith("\"O\",\"000002\"", csv);
     }
 }

@@ -47,7 +47,11 @@ public partial class App : Application
             using var scope = Services.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
-            await DbInitializer.InitializeAsync(db, hasher);
+            var productSeedPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "SeedData",
+                "products.json");
+            await DbInitializer.InitializeAsync(db, hasher, productSeedPath);
         }
         catch (Exception ex)
         {

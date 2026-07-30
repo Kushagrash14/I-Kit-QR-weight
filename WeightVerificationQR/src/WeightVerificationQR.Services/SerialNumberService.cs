@@ -80,21 +80,46 @@ public sealed class SerialNumberService : ISerialNumberService
         }
     }
 
-    public string BuildQrId(long serialNumber, decimal weightKg, DateTime timestamp)
+    public string BuildKitNumber(
+        string commandCode,
+        string lineCode,
+        int dailySerialNumber,
+        decimal weightKg,
+        DateTime timestamp)
     {
-        var digits = Math.Clamp(_stationSettings.SerialDigits, 1, 18);
-        var serial = serialNumber.ToString($"D{digits}", CultureInfo.InvariantCulture);
-        var weight = weightKg.ToString("0.000", CultureInfo.InvariantCulture);
+        if (dailySerialNumber is <= 0 or > 999_999)
+            throw new InvalidOperationException(
+                $"Daily label serial {dailySerialNumber} exceeds six-digit capacity.");
+
+        var weightGrams = decimal.ToInt64(
+            decimal.Round(weightKg * 1000m, 0, MidpointRounding.AwayFromZero));
+        var weight = weightGrams.ToString("D4", CultureInfo.InvariantCulture);
 
         return string.Join(
             '-',
-            Clean(_stationSettings.QrPrefix, "P"),
-            Clean(_stationSettings.SiteCode, "S01"),
-            Clean(_stationSettings.LineCode, "L01"),
-            Clean(_stationSettings.MachineCode, "WM01"),
-            timestamp.ToString("yyyyMMdd", CultureInfo.InvariantCulture),
+            Clean(commandCode, "P"),
+            Clean(lineCode, "LINE"),
+            timestamp.ToString("ddMMyy", CultureInfo.InvariantCulture),
             weight,
-            serial);
+            dailySerialNumber.ToString("D6", CultureInfo.InvariantCulture));
+    }
+
+    public string BuildQrPayload(WeighRecord record)
+    {
+        var dailySerial = record.DailySerialNumber.ToString("D6", CultureInfo.InvariantCulture);
+        return string.Join(
+            '|',
+            $"KIT={CleanPayload(record.KitNumber)}",
+            $"COMMAND={CleanPayload(record.CommandCode)}",
+            $"LINE={CleanPayload(record.LineCode)}",
+            $"MODEL={CleanPayload(record.ModelCode)}",
+            $"NAME={CleanPayload(record.ProductName)}",
+            $"SIZE={CleanPayload(record.LabelSizeText)}",
+            $"LENGTH={CleanPayload(record.LabelLengthText)}",
+            $"MATERIAL={CleanPayload(record.LabelMaterialText)}",
+            $"WEIGHT_KG={record.WeightKg.ToString("0.000", CultureInfo.InvariantCulture)}",
+            $"DATE={record.RecordDate:yyyy-MM-dd}",
+            $"SERIAL={dailySerial}");
     }
 
     private async Task<SerialNumberBlock?> TryGetCentralBlockAsync(
@@ -128,6 +153,13 @@ public sealed class SerialNumberService : ISerialNumberService
 
         return builder.Length == 0 ? fallback : builder.ToString();
     }
+
+    private static string CleanPayload(string? value) =>
+        (value ?? string.Empty)
+            .Replace("|", "/")
+            .Replace("\r", " ")
+            .Replace("\n", " ")
+            .Trim();
 
     private static long Pow10(int exponent)
     {

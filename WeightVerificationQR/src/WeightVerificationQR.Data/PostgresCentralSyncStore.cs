@@ -37,6 +37,12 @@ public sealed class PostgresCentralSyncStore : ICentralSyncStore
                 site_code varchar(20) NOT NULL,
                 line_code varchar(20) NOT NULL,
                 machine_code varchar(20) NOT NULL,
+                command_code varchar(10) NOT NULL DEFAULT '',
+                model_code varchar(50) NOT NULL DEFAULT '',
+                label_size_text varchar(100) NOT NULL DEFAULT '',
+                label_length_text varchar(50) NOT NULL DEFAULT '',
+                label_material_text varchar(50) NOT NULL DEFAULT '',
+                daily_serial_number integer NOT NULL DEFAULT 0,
                 serial_number bigint NOT NULL,
                 product_id integer NOT NULL,
                 product_name varchar(200) NOT NULL,
@@ -46,6 +52,7 @@ public sealed class PostgresCentralSyncStore : ICentralSyncStore
                 fail_reason integer NOT NULL,
                 record_date timestamp with time zone NOT NULL,
                 operator_name varchar(100) NOT NULL,
+                qr_payload varchar(500) NOT NULL DEFAULT '',
                 qr_generated boolean NOT NULL,
                 printed_successfully boolean NOT NULL,
                 printer_status varchar(50) NOT NULL,
@@ -54,6 +61,15 @@ public sealed class PostgresCentralSyncStore : ICentralSyncStore
                 source_updated_at timestamp with time zone NOT NULL,
                 synced_at timestamp with time zone NOT NULL
             );
+
+            ALTER TABLE qr_weigh_records
+                ADD COLUMN IF NOT EXISTS command_code varchar(10) NOT NULL DEFAULT '',
+                ADD COLUMN IF NOT EXISTS model_code varchar(50) NOT NULL DEFAULT '',
+                ADD COLUMN IF NOT EXISTS label_size_text varchar(100) NOT NULL DEFAULT '',
+                ADD COLUMN IF NOT EXISTS label_length_text varchar(50) NOT NULL DEFAULT '',
+                ADD COLUMN IF NOT EXISTS label_material_text varchar(50) NOT NULL DEFAULT '',
+                ADD COLUMN IF NOT EXISTS daily_serial_number integer NOT NULL DEFAULT 0,
+                ADD COLUMN IF NOT EXISTS qr_payload varchar(500) NOT NULL DEFAULT '';
 
             CREATE UNIQUE INDEX IF NOT EXISTS ux_qr_weigh_records_qr_id
                 ON qr_weigh_records (qr_id)
@@ -128,14 +144,18 @@ public sealed class PostgresCentralSyncStore : ICentralSyncStore
             """
             INSERT INTO qr_weigh_records (
                 global_record_id, kit_number, qr_id, site_code, line_code, machine_code,
-                serial_number, product_id, product_name, quantity, weight_kg, result,
-                fail_reason, record_date, operator_name, qr_generated,
+                command_code, model_code, label_size_text, label_length_text,
+                label_material_text, daily_serial_number, serial_number, product_id,
+                product_name, quantity, weight_kg, result, fail_reason, record_date,
+                operator_name, qr_payload, qr_generated,
                 printed_successfully, printer_status, reprint_count, remarks,
                 source_updated_at, synced_at)
             VALUES (
                 @global_record_id, @kit_number, @qr_id, @site_code, @line_code, @machine_code,
-                @serial_number, @product_id, @product_name, @quantity, @weight_kg, @result,
-                @fail_reason, @record_date, @operator_name, @qr_generated,
+                @command_code, @model_code, @label_size_text, @label_length_text,
+                @label_material_text, @daily_serial_number, @serial_number, @product_id,
+                @product_name, @quantity, @weight_kg, @result, @fail_reason, @record_date,
+                @operator_name, @qr_payload, @qr_generated,
                 @printed_successfully, @printer_status, @reprint_count, @remarks,
                 @source_updated_at, @synced_at)
             ON CONFLICT (global_record_id) DO UPDATE SET
@@ -144,6 +164,12 @@ public sealed class PostgresCentralSyncStore : ICentralSyncStore
                 site_code = EXCLUDED.site_code,
                 line_code = EXCLUDED.line_code,
                 machine_code = EXCLUDED.machine_code,
+                command_code = EXCLUDED.command_code,
+                model_code = EXCLUDED.model_code,
+                label_size_text = EXCLUDED.label_size_text,
+                label_length_text = EXCLUDED.label_length_text,
+                label_material_text = EXCLUDED.label_material_text,
+                daily_serial_number = EXCLUDED.daily_serial_number,
                 serial_number = EXCLUDED.serial_number,
                 product_id = EXCLUDED.product_id,
                 product_name = EXCLUDED.product_name,
@@ -153,6 +179,7 @@ public sealed class PostgresCentralSyncStore : ICentralSyncStore
                 fail_reason = EXCLUDED.fail_reason,
                 record_date = EXCLUDED.record_date,
                 operator_name = EXCLUDED.operator_name,
+                qr_payload = EXCLUDED.qr_payload,
                 qr_generated = EXCLUDED.qr_generated,
                 printed_successfully = EXCLUDED.printed_successfully,
                 printer_status = EXCLUDED.printer_status,
@@ -173,6 +200,12 @@ public sealed class PostgresCentralSyncStore : ICentralSyncStore
         command.Parameters.AddWithValue("site_code", record.SiteCode);
         command.Parameters.AddWithValue("line_code", record.LineCode);
         command.Parameters.AddWithValue("machine_code", record.MachineCode);
+        command.Parameters.AddWithValue("command_code", record.CommandCode);
+        command.Parameters.AddWithValue("model_code", record.ModelCode);
+        command.Parameters.AddWithValue("label_size_text", record.LabelSizeText);
+        command.Parameters.AddWithValue("label_length_text", record.LabelLengthText);
+        command.Parameters.AddWithValue("label_material_text", record.LabelMaterialText);
+        command.Parameters.AddWithValue("daily_serial_number", record.DailySerialNumber);
         command.Parameters.AddWithValue("serial_number", record.SerialNumber);
         command.Parameters.AddWithValue("product_id", record.ProductId);
         command.Parameters.AddWithValue("product_name", record.ProductName);
@@ -186,6 +219,7 @@ public sealed class PostgresCentralSyncStore : ICentralSyncStore
                 Value = record.RecordDate.ToUniversalTime()
             });
         command.Parameters.AddWithValue("operator_name", record.OperatorName);
+        command.Parameters.AddWithValue("qr_payload", record.QrPayload);
         command.Parameters.AddWithValue("qr_generated", record.QrGenerated);
         command.Parameters.AddWithValue("printed_successfully", record.PrintedSuccessfully);
         command.Parameters.AddWithValue("printer_status", record.PrinterStatus);

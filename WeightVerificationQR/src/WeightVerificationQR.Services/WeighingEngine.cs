@@ -79,13 +79,18 @@ public class WeighingEngine : IWeighingEngine
             ProductId = CurrentProduct.Id,
             ProductName = CurrentProduct.ProductName,
             Quantity = CurrentProduct.Quantity,
+            CommandCode = CurrentProduct.CommandCode,
+            ModelCode = CurrentProduct.ModelCode,
+            LabelSizeText = CurrentProduct.LabelSizeText,
+            LabelLengthText = CurrentProduct.LabelLengthText,
+            LabelMaterialText = CurrentProduct.LabelMaterialText,
             WeightKg = weightKg,
             Result = result,
             FailReason = reason,
             OperatorName = CurrentOperator,
             RecordDate = DateTime.Now,
             SiteCode = _stationSettings.SiteCode,
-            LineCode = _stationSettings.LineCode,
+            LineCode = CurrentProduct.LabelLineCode,
             MachineCode = _stationSettings.MachineCode
         };
 
@@ -93,11 +98,18 @@ public class WeighingEngine : IWeighingEngine
         {
             var allocation = await _serialNumberService.GetNextAsync();
             record.SerialNumber = allocation.Value;
-            record.QrId = _serialNumberService.BuildQrId(
-                allocation.Value,
+            record.DailySerialNumber = await _weighRecordRepository.GetNextDailyLabelSerialAsync(
+                record.CommandCode,
+                record.LineCode,
+                record.RecordDate);
+            record.KitNumber = _serialNumberService.BuildKitNumber(
+                record.CommandCode,
+                record.LineCode,
+                record.DailySerialNumber,
                 weightKg,
                 record.RecordDate);
-            record.KitNumber = record.QrId;
+            record.QrId = record.KitNumber;
+            record.QrPayload = _serialNumberService.BuildQrPayload(record);
             record.QrGenerated = true;
             if (!allocation.FromCentralBlock)
                 record.Remarks = "Offline emergency serial; pending central synchronization.";

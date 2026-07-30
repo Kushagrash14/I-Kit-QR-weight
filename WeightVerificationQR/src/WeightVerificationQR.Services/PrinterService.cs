@@ -42,10 +42,17 @@ public class PrinterService : IPrinterService
         if (!OperatingSystem.IsWindows())
             return [];
 
-        return WindowsPrinterSettings.InstalledPrinters
-            .Cast<string>()
-            .OrderBy(name => name, StringComparer.CurrentCultureIgnoreCase)
-            .ToArray();
+        try
+        {
+            return WindowsPrinterSettings.InstalledPrinters
+                .Cast<string>()
+                .OrderBy(name => name, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray();
+        }
+        catch
+        {
+            return [];
+        }
     }
 
     public string BuildZplLabel(WeighRecord record, PrinterSettings settings)
@@ -64,16 +71,15 @@ public class PrinterService : IPrinterService
         // QR code (uses the printer's native QR command so no bitmap transfer is needed)
         sb.AppendLine("^FO20,20");
         sb.AppendLine("^BQN,2,6");
-        sb.AppendLine($"^FDQA,{record.QrId}^FS");
+        sb.AppendLine($"^FDQA,{Escape(record.QrPayload)}^FS");
 
         // Human-readable text block to the right of the QR
         var textX = (int)(widthDots * 0.42);
-        sb.AppendLine($"^FO{textX},25^A0N,22,22^FD{Escape(record.ProductName)}^FS");
-        sb.AppendLine($"^FO{textX},55^A0N,20,20^FDQty: {Escape(record.Quantity)}^FS");
-        sb.AppendLine($"^FO{textX},85^A0N,20,20^FDWt: {record.WeightKg:0.000} kg^FS");
-        sb.AppendLine($"^FO{textX},115^A0N,20,20^FD{Escape(record.QrId)}^FS");
-        sb.AppendLine($"^FO{textX},145^A0N,18,18^FD{record.RecordDate:dd-MM-yyyy HH:mm}^FS");
-        sb.AppendLine($"^FO{textX},170^A0N,18,18^FD{Escape(record.SiteCode)}/{Escape(record.LineCode)}/{Escape(record.MachineCode)}^FS");
+        sb.AppendLine($"^FO{textX},25^A0N,22,22^FD{Escape(record.KitNumber)}^FS");
+        sb.AppendLine($"^FO{textX},55^A0N,20,20^FD{Escape(record.LabelSizeText)}^FS");
+        sb.AppendLine($"^FO{textX},85^A0N,20,20^FD{Escape(record.LabelLengthText)}^FS");
+        sb.AppendLine($"^FO{textX},115^A0N,20,20^FD{Escape(record.LabelMaterialText)}^FS");
+        sb.AppendLine($"^FO{textX},145^A0N,18,18^FD{Escape(record.ModelCode)} | {record.WeightKg:0.000} kg^FS");
 
         sb.AppendLine("^XZ");
         return sb.ToString();
@@ -134,13 +140,19 @@ public class PrinterService : IPrinterService
     /// Prints via Seagull BarTender, mirroring backend-correct/bartender.js: checks live printer
     /// status first, then tries the BarTender REST API (if method is "api"/"auto"), and falls back
     /// to invoking bartend.exe directly with a CSV data source and the configured .btw template
-    /// (if method is "cmd"/"auto"). QRCode/SAPCode/Description columns map to QrId/KitNumber/ProductName.
+    /// (if method is "cmd"/"auto"). Named data and CSV columns map the stored QR payload,
+    /// generated kit number, and product-specific label text into the .btw template.
     /// </summary>
     private async Task<bool> PrintViaBarTenderAsync(WeighRecord record, PrinterSettings settings)
     {
         var apiUrl = string.IsNullOrWhiteSpace(settings.BarTenderApiUrl) ? "http://localhost:5159/api" : settings.BarTenderApiUrl.TrimEnd('/');
         var printerName = settings.BarTenderPrinterName?.Trim() ?? string.Empty;
         var method = NormalizeBarTenderMethod(settings.BarTenderPrintMethod);
+        if (string.IsNullOrWhiteSpace(printerName))
+        {
+            LastErrorMessage = "No printer is selected. Select an installed Windows printer queue in Printer Settings.";
+            return false;
+        }
 
         // Strict connectivity check: don't accept the print job if BarTender reports the printer offline.
         if (method is "api" or "auto")
@@ -271,14 +283,21 @@ public class PrinterService : IPrinterService
 
     private static object BuildBarTenderData(WeighRecord record) => new
     {
-        QRCode = record.QrId,
+        QRCode = record.QrPayload,
         SAPCode = record.KitNumber,
-        Description = record.ProductName,
-        Weight = record.WeightKg.ToString("0.000"),
+        Description = record.LabelSizeText,
+        Size = record.LabelSizeText,
+        Length = record.LabelLengthText,
+        Material = record.LabelMaterialText,
+        ModelName = record.ProductName,
+        ModelCode = record.ModelCode,
+        CommandCode = record.CommandCode,
+        Weight = record.WeightKg.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture),
+        PrintDate = record.RecordDate.ToString("ddMMyy"),
         Site = record.SiteCode,
         Line = record.LineCode,
         Machine = record.MachineCode,
-        SerialNumber = record.SerialNumber.ToString()
+        SerialNumber = record.DailySerialNumber.ToString("D6")
     };
 
     internal static string? ResolveBarTenderExePath(PrinterSettings settings)
@@ -332,10 +351,26 @@ public class PrinterService : IPrinterService
         if (File.Exists(configuredPath))
             return configuredPath;
 
-        var packagedTemplate = Path.GetFullPath(
-            Path.Combine("Labels", "Template.btw"),
-            applicationDirectory);
-        return File.Exists(packagedTemplate) ? packagedTemplate : configuredPath;
+        var labelsDirectory = Path.Combine(applicationDirectory, "Labels");
+        var configuredFileName = Path.GetFileName(configuredPath);
+        if (!string.IsNullOrWhiteSpace(configuredFileName))
+        {
+            var packagedSameName = Path.Combine(labelsDirectory, configuredFileName);
+            if (File.Exists(packagedSameName))
+                return Path.GetFullPath(packagedSameName);
+        }
+
+        if (Directory.Exists(labelsDirectory))
+        {
+            var firstPackagedTemplate = Directory
+                .EnumerateFiles(labelsDirectory, "*.btw", SearchOption.TopDirectoryOnly)
+                .OrderBy(path => path, StringComparer.CurrentCultureIgnoreCase)
+                .FirstOrDefault();
+            if (firstPackagedTemplate is not null)
+                return Path.GetFullPath(firstPackagedTemplate);
+        }
+
+        return configuredPath;
     }
 
     internal static string[] BuildBarTenderArguments(string labelPath, string dataPath, string printerName) =>
@@ -348,8 +383,22 @@ public class PrinterService : IPrinterService
     ];
 
     internal static string BuildBarTenderCsv(WeighRecord record) =>
-        "QRCode,SAPCode,Description\r\n" +
-        $"{CsvCell(record.QrId)},{CsvCell(record.KitNumber)},{CsvCell(record.ProductName)}";
+        "QRCode,SAPCode,Description,Size,Length,Material,ModelName,ModelCode,CommandCode,Weight,PrintDate,Line,SerialNumber\r\n" +
+        string.Join(
+            ',',
+            CsvCell(record.QrPayload),
+            CsvCell(record.KitNumber),
+            CsvCell(record.LabelSizeText),
+            CsvCell(record.LabelSizeText),
+            CsvCell(record.LabelLengthText),
+            CsvCell(record.LabelMaterialText),
+            CsvCell(record.ProductName),
+            CsvCell(record.ModelCode),
+            CsvCell(record.CommandCode),
+            CsvCell(record.WeightKg.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture)),
+            CsvCell(record.RecordDate.ToString("ddMMyy")),
+            CsvCell(record.LineCode),
+            CsvCell(record.DailySerialNumber.ToString("D6")));
 
     private static string CsvCell(string? value) => $"\"{(value ?? string.Empty).Replace("\"", "\"\"")}\"";
 
@@ -366,6 +415,13 @@ public class PrinterService : IPrinterService
                 var exePath = ResolveBarTenderExePath(settings);
                 var labelPath = ResolveExistingBarTenderLabelPath(settings);
                 var printerName = settings.BarTenderPrinterName?.Trim() ?? string.Empty;
+                if (string.IsNullOrWhiteSpace(printerName))
+                {
+                    LastErrorMessage = "No printer is selected. Select an installed Windows printer queue.";
+                    SetStatus(ConnectionStatus.Error);
+                    return false;
+                }
+
                 var queueReady = PrinterRawSpooler.IsPrinterReady(printerName, out var queueStatus);
                 var cmdReady = exePath is not null &&
                                File.Exists(labelPath) &&

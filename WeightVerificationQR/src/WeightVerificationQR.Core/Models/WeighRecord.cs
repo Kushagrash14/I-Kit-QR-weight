@@ -27,6 +27,25 @@ public class WeighRecord
     [MaxLength(20)]
     public string MachineCode { get; set; } = string.Empty;
 
+    [MaxLength(10)]
+    public string CommandCode { get; set; } = string.Empty;
+
+    [MaxLength(50)]
+    public string ModelCode { get; set; } = string.Empty;
+
+    [MaxLength(100)]
+    public string LabelSizeText { get; set; } = string.Empty;
+
+    [MaxLength(50)]
+    public string LabelLengthText { get; set; } = string.Empty;
+
+    [MaxLength(50)]
+    public string LabelMaterialText { get; set; } = string.Empty;
+
+    /// <summary>Six-digit sequence reset per production date and configured line code.</summary>
+    public int DailySerialNumber { get; set; }
+
+    /// <summary>Globally allocated backend serial used for multi-station synchronization.</summary>
     public long SerialNumber { get; set; }
 
     public int ProductId { get; set; }
@@ -52,6 +71,10 @@ public class WeighRecord
     /// <summary>Same as KitNumber, kept separately in case QR payload format changes later.</summary>
     [MaxLength(120)]
     public string QrId { get; set; } = string.Empty;
+
+    /// <summary>Structured model and weighing data encoded inside the printed QR.</summary>
+    [MaxLength(500)]
+    public string QrPayload { get; set; } = string.Empty;
 
     public bool QrGenerated { get; set; }
 

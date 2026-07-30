@@ -108,6 +108,37 @@ public class WeighRecordRepository : IWeighRecordRepository
         }
     }
 
+    public async Task<int> GetNextDailyLabelSerialAsync(
+        string commandCode,
+        string lineCode,
+        DateTime productionDate)
+    {
+        await _sequenceLock.WaitAsync();
+        try
+        {
+            var start = productionDate.Date;
+            var end = start.AddDays(1);
+            var lastSerial = await _context.WeighRecords
+                .Where(r =>
+                    r.RecordDate >= start &&
+                    r.RecordDate < end &&
+                    r.CommandCode == commandCode &&
+                    r.LineCode == lineCode &&
+                    r.DailySerialNumber > 0)
+                .MaxAsync(r => (int?)r.DailySerialNumber) ?? 0;
+
+            if (lastSerial >= 999_999)
+                throw new InvalidOperationException(
+                    $"Daily serial capacity exhausted for {commandCode}-{lineCode} on {start:dd-MM-yyyy}.");
+
+            return lastSerial + 1;
+        }
+        finally
+        {
+            _sequenceLock.Release();
+        }
+    }
+
     public async Task<(int passCount, int failCount)> GetTodayCountsAsync()
     {
         var today = DateTime.Now.Date;

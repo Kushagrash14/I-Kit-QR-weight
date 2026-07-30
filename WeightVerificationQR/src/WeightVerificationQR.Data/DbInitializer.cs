@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
+using System.Text.Json;
 using WeightVerificationQR.Core.Interfaces;
 using WeightVerificationQR.Core.Models;
 
@@ -24,10 +25,14 @@ public static class DbInitializer
     ///   dotnet ef migrations add InitialCreate --startup-project ../WeightVerificationQR.App
     /// then replace EnsureCreatedAsync() below with context.Database.MigrateAsync().
     /// </summary>
-    public static async Task InitializeAsync(AppDbContext context, IPasswordHasher hasher)
+    public static async Task InitializeAsync(
+        AppDbContext context,
+        IPasswordHasher hasher,
+        string? productSeedFilePath = null)
     {
         await context.Database.EnsureCreatedAsync();
         await ApplySqliteCompatibilityUpgradesAsync(context);
+        await ImportProductsIfEmptyAsync(context, productSeedFilePath);
 
         var admin = await context.Users.FirstOrDefaultAsync(u => u.Username == "admin");
         if (admin is not null && admin.PasswordHash == "REPLACE_ON_FIRST_RUN")
@@ -58,6 +63,44 @@ public static class DbInitializer
         }
     }
 
+    private static async Task ImportProductsIfEmptyAsync(
+        AppDbContext context,
+        string? seedFilePath)
+    {
+        if (string.IsNullOrWhiteSpace(seedFilePath) || await context.Products.AnyAsync())
+            return;
+
+        if (!File.Exists(seedFilePath))
+            throw new FileNotFoundException("The product catalog file was not found.", seedFilePath);
+
+        await using var stream = File.OpenRead(seedFilePath);
+        var products = await JsonSerializer.DeserializeAsync<List<Product>>(
+            stream,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        if (products is null || products.Count == 0)
+            throw new InvalidDataException("The product catalog must contain at least one product.");
+
+        foreach (var product in products)
+        {
+            product.Id = 0;
+            product.ProductName = product.ProductName?.Trim() ?? string.Empty;
+            product.CreatedAt = DateTime.Now;
+            product.UpdatedAt = null;
+
+            if (product.ProductName.Length == 0 ||
+                product.MinWeightKg <= 0 ||
+                product.MaxWeightKg < product.MinWeightKg)
+            {
+                throw new InvalidDataException(
+                    $"The product catalog contains an invalid product: '{product.ProductName}'.");
+            }
+        }
+
+        context.Products.AddRange(products);
+        await context.SaveChangesAsync();
+    }
+
     private static async Task ApplySqliteCompatibilityUpgradesAsync(AppDbContext context)
     {
         if (!context.Database.IsSqlite())
@@ -77,36 +120,55 @@ public static class DbInitializer
             VALUES (1, 0, 0, 0, CURRENT_TIMESTAMP);
             """);
 
-        var additions = new Dictionary<string, string>
+        var weighRecordAdditions = new Dictionary<string, string>
         {
             ["GlobalRecordId"] = "TEXT NOT NULL DEFAULT ''",
             ["SiteCode"] = "TEXT NOT NULL DEFAULT ''",
             ["LineCode"] = "TEXT NOT NULL DEFAULT ''",
             ["MachineCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["CommandCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["ModelCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["LabelSizeText"] = "TEXT NOT NULL DEFAULT ''",
+            ["LabelLengthText"] = "TEXT NOT NULL DEFAULT ''",
+            ["LabelMaterialText"] = "TEXT NOT NULL DEFAULT ''",
+            ["DailySerialNumber"] = "INTEGER NOT NULL DEFAULT 0",
             ["SerialNumber"] = "INTEGER NOT NULL DEFAULT 0",
+            ["QrPayload"] = "TEXT NOT NULL DEFAULT ''",
             ["SyncStatus"] = "INTEGER NOT NULL DEFAULT 0",
             ["SyncAttempts"] = "INTEGER NOT NULL DEFAULT 0",
             ["LastSyncError"] = "TEXT NOT NULL DEFAULT ''",
             ["SyncedAt"] = "TEXT NULL"
         };
 
-        var existingColumns = await GetColumnNamesAsync(context, "WeighRecords");
-        foreach (var (name, sqlType) in additions)
-        {
-            if (existingColumns.Contains(name))
-                continue;
+        await AddMissingColumnsAsync(context, "WeighRecords", weighRecordAdditions);
 
-            var alterSql = string.Concat(
-                "ALTER TABLE \"WeighRecords\" ADD COLUMN \"",
-                name,
-                "\" ",
-                sqlType,
-                ";");
-            await context.Database.ExecuteSqlRawAsync(alterSql);
-        }
+        var productAdditions = new Dictionary<string, string>
+        {
+            ["CommandCode"] = "TEXT NOT NULL DEFAULT 'P'",
+            ["LabelLineCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["ModelCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["LabelSizeText"] = "TEXT NOT NULL DEFAULT ''",
+            ["LabelLengthText"] = "TEXT NOT NULL DEFAULT ''",
+            ["LabelMaterialText"] = "TEXT NOT NULL DEFAULT ''"
+        };
+        await AddMissingColumnsAsync(context, "Products", productAdditions);
 
         await context.Database.ExecuteSqlRawAsync(
             """
+            UPDATE "Products"
+            SET "CommandCode" = 'P'
+            WHERE trim("CommandCode") = '';
+            UPDATE "Products"
+            SET "LabelLineCode" =
+                CASE WHEN upper("ProductName") LIKE 'I KIT%' THEN 'I' ELSE 'O' END
+            WHERE trim("LabelLineCode") = '';
+            UPDATE "Products"
+            SET "ModelCode" = 'MODEL-' || printf('%03d', "Id")
+            WHERE trim("ModelCode") = '';
+            UPDATE "Products"
+            SET "LabelSizeText" = "ProductName"
+            WHERE trim("LabelSizeText") = '';
+
             UPDATE "WeighRecords"
             SET "GlobalRecordId" = lower(hex(randomblob(4))) || '-' ||
                                    lower(hex(randomblob(2))) || '-4' ||
@@ -120,6 +182,29 @@ public static class DbInitializer
             CREATE INDEX IF NOT EXISTS "IX_WeighRecords_SyncStatus"
                 ON "WeighRecords" ("SyncStatus");
             """);
+    }
+
+    private static async Task AddMissingColumnsAsync(
+        AppDbContext context,
+        string tableName,
+        IReadOnlyDictionary<string, string> additions)
+    {
+        var existingColumns = await GetColumnNamesAsync(context, tableName);
+        foreach (var (name, sqlType) in additions)
+        {
+            if (existingColumns.Contains(name))
+                continue;
+
+            var alterSql = string.Concat(
+                "ALTER TABLE \"",
+                tableName,
+                "\" ADD COLUMN \"",
+                name,
+                "\" ",
+                sqlType,
+                ";");
+            await context.Database.ExecuteSqlRawAsync(alterSql);
+        }
     }
 
     private static async Task<HashSet<string>> GetColumnNamesAsync(

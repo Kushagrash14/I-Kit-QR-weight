@@ -14,6 +14,11 @@ public class PrinterServiceZplTests
         WeightKg = 1.032m,
         Result = WeighResult.Pass,
         QrId = "KIT202607110001",
+        QrPayload = "KIT=KIT202607110001|MODEL=IKIT-A|WEIGHT_KG=1.032",
+        LabelSizeText = "12 mm & 6 mm",
+        LabelLengthText = "3 Meter",
+        LabelMaterialText = "EPE",
+        ModelCode = "IKIT-A",
         RecordDate = new DateTime(2026, 7, 11, 14, 30, 0)
     };
 
@@ -54,10 +59,10 @@ public class PrinterServiceZplTests
     }
 
     [Fact]
-    public void BuildZplLabel_StripsCaretAndTildeFromProductNameToAvoidBreakingZplSyntax()
+    public void BuildZplLabel_StripsCaretAndTildeFromDynamicLabelText()
     {
         var record = SampleRecord();
-        record.ProductName = "Weird^Name~Test";
+        record.LabelSizeText = "Weird^Name~Test";
         var service = new PrinterService(new QrCodeService());
 
         var zpl = service.BuildZplLabel(record, SampleSettings());

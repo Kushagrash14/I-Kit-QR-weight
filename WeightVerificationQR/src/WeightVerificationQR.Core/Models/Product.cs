@@ -29,6 +29,27 @@ public class Product
     [MaxLength(10)]
     public string CodePrefix { get; set; } = "KIT";
 
+    /// <summary>Configurable command printed at the start of the label ID, e.g. "P".</summary>
+    [MaxLength(10)]
+    public string CommandCode { get; set; } = "P";
+
+    /// <summary>Configurable production/kit line code, e.g. "I", "O", "ODU2", or "A1".</summary>
+    [MaxLength(20)]
+    public string LabelLineCode { get; set; } = string.Empty;
+
+    /// <summary>Stable model identifier included in the QR payload.</summary>
+    [MaxLength(50)]
+    public string ModelCode { get; set; } = string.Empty;
+
+    [MaxLength(100)]
+    public string LabelSizeText { get; set; } = string.Empty;
+
+    [MaxLength(50)]
+    public string LabelLengthText { get; set; } = string.Empty;
+
+    [MaxLength(50)]
+    public string LabelMaterialText { get; set; } = string.Empty;
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;

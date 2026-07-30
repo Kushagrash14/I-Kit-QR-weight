@@ -97,10 +97,13 @@ public interface ICentralSyncStore
 public interface ISerialNumberService
 {
     Task<SerialNumberAllocation> GetNextAsync(CancellationToken cancellationToken = default);
-    string BuildQrId(
-        long serialNumber,
+    string BuildKitNumber(
+        string commandCode,
+        string lineCode,
+        int dailySerialNumber,
         decimal weightKg,
         DateTime timestamp);
+    string BuildQrPayload(WeighRecord record);
 }
 
 public interface IOfflineSyncService

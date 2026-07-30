@@ -42,12 +42,12 @@ public class PrinterSettings
 
     // BarTender (used when ConnectionMode = BarTender)
     public string BarTenderApiUrl { get; set; } = "http://localhost:5159/api";
-    public string BarTenderPrinterName { get; set; } = "ZDesigner ZT231-300dpi ZPL";
+    public string BarTenderPrinterName { get; set; } = string.Empty;
     public string BarTenderExePath { get; set; } = string.Empty;
     public string BarTenderLabelPath { get; set; } = @"Labels\Template.btw";
 
     /// <summary>"api", "cmd", or "auto" (try API first, then direct BarTender command fallback).</summary>
-    public string BarTenderPrintMethod { get; set; } = "cmd";
+    public string BarTenderPrintMethod { get; set; } = "auto";
 
     public int LabelWidthMm { get; set; } = 50;
     public int LabelHeightMm { get; set; } = 30;

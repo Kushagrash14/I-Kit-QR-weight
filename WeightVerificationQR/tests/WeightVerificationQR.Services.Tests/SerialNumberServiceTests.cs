@@ -9,7 +9,7 @@ namespace WeightVerificationQR.Services.Tests;
 public class SerialNumberServiceTests
 {
     [Fact]
-    public void BuildQrId_IncludesSanitizedStationDateWeightAndEightDigitSerial()
+    public void BuildKitNumber_UsesConfiguredCodesDateActualWeightAndDailySerial()
     {
         var service = CreateService(
             new FakeRepository(),
@@ -23,12 +23,44 @@ public class SerialNumberServiceTests
                 SerialDigits = 8
             });
 
-        var qr = service.BuildQrId(
-            42,
-            12.345m,
-            new DateTime(2026, 7, 28, 10, 30, 0));
+        var qr = service.BuildKitNumber(
+            "p",
+            "odu 2",
+            2,
+            1.064m,
+            new DateTime(2026, 7, 29, 10, 30, 0));
 
-        Assert.Equal("P-SITE1-LINE2-WM03-20260728-12.345-00000042", qr);
+        Assert.Equal("P-ODU2-290726-1064-000002", qr);
+    }
+
+    [Fact]
+    public void BuildQrPayload_IncludesModelAndIndividualKitWeight()
+    {
+        var service = CreateService(
+            new FakeRepository(),
+            new FakeCentralStore(),
+            new StationSettings());
+        var record = new WeighRecord
+        {
+            KitNumber = "P-I-290726-1051-000001",
+            CommandCode = "P",
+            LineCode = "I",
+            ModelCode = "IKIT-A",
+            ProductName = "I Kit Model A",
+            LabelSizeText = "5/8\" & 3/8\"",
+            LabelLengthText = "3 Meter",
+            LabelMaterialText = "EPE",
+            WeightKg = 1.051m,
+            DailySerialNumber = 1,
+            RecordDate = new DateTime(2026, 7, 29)
+        };
+
+        var payload = service.BuildQrPayload(record);
+
+        Assert.Contains("KIT=P-I-290726-1051-000001", payload);
+        Assert.Contains("MODEL=IKIT-A", payload);
+        Assert.Contains("WEIGHT_KG=1.051", payload);
+        Assert.Contains("SERIAL=000001", payload);
     }
 
     [Fact]
@@ -114,6 +146,10 @@ public class SerialNumberServiceTests
         public Task<WeighRecord?> GetByIdAsync(int id) => Task.FromResult<WeighRecord?>(null);
         public Task<WeighRecord?> GetByQrIdAsync(string qrId) => Task.FromResult<WeighRecord?>(null);
         public Task<string> GenerateNextKitNumberAsync(string codePrefix) => Task.FromResult(string.Empty);
+        public Task<int> GetNextDailyLabelSerialAsync(
+            string commandCode,
+            string lineCode,
+            DateTime productionDate) => Task.FromResult(1);
         public Task<(int passCount, int failCount)> GetTodayCountsAsync() => Task.FromResult((0, 0));
         public Task<List<WeighRecord>> GetPendingSyncAsync(int maxCount) => Task.FromResult(new List<WeighRecord>());
         public Task MarkSyncedAsync(Guid globalRecordId, DateTime syncedAt) => Task.CompletedTask;

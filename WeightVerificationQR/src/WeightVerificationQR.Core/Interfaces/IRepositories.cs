@@ -26,6 +26,10 @@ public interface IWeighRecordRepository
         WeighResult? result = null,
         string? operatorName = null);
     Task<string> GenerateNextKitNumberAsync(string codePrefix);
+    Task<int> GetNextDailyLabelSerialAsync(
+        string commandCode,
+        string lineCode,
+        DateTime productionDate);
     Task<(int passCount, int failCount)> GetTodayCountsAsync();
     Task<SerialNumberState> GetSerialNumberStateAsync();
     Task UpdateSerialNumberStateAsync(SerialNumberState state);

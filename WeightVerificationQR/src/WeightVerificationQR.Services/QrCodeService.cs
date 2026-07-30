@@ -4,9 +4,7 @@ using WeightVerificationQR.Core.Interfaces;
 namespace WeightVerificationQR.Services;
 
 /// <summary>
-/// Generates QR codes containing only the unique Kit Number. All other details
-/// (product, weight, operator, etc.) are looked up from the database when the QR
-/// is scanned - keeping the QR payload small and the printed code robust.
+/// Generates a PNG QR code from the structured payload prepared by SerialNumberService.
 /// </summary>
 public class QrCodeService : IQrCodeService
 {
