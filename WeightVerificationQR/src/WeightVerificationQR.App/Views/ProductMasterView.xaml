@@ -101,7 +101,7 @@
 
                     <StackPanel DataContext="{Binding EditingProduct}">
                         <TextBlock Text="PRODUCT NAME" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                        <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+                        <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" MaxLength="200" Margin="0,0,0,14"/>
 
                         <Grid Margin="0,0,0,14">
                             <Grid.ColumnDefinitions>
@@ -124,7 +124,7 @@
                         </Grid>
 
                         <TextBlock Text="LABEL SIZE / MODEL TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                        <TextBox Text="{Binding LabelSizeText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+                        <TextBox Text="{Binding LabelSizeText, UpdateSourceTrigger=PropertyChanged}" MaxLength="100" Margin="0,0,0,14"/>
 
                         <Grid Margin="0,0,0,14">
                             <Grid.ColumnDefinitions>
@@ -133,16 +133,16 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="0,0,7,0">
                                 <TextBlock Text="LENGTH TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                                <TextBox Text="{Binding LabelLengthText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Text="{Binding LabelLengthText, UpdateSourceTrigger=PropertyChanged}" MaxLength="50"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Margin="7,0,0,0">
                                 <TextBlock Text="MATERIAL TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                                <TextBox Text="{Binding LabelMaterialText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Text="{Binding LabelMaterialText, UpdateSourceTrigger=PropertyChanged}" MaxLength="50"/>
                             </StackPanel>
                         </Grid>
 
                         <TextBlock Text="QUANTITY / PACK INFO" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                        <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+                        <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" Margin="0,0,0,14"/>
 
                         <Grid Margin="0,0,0,14">
                             <Grid.ColumnDefinitions>
@@ -160,7 +160,7 @@
                         </Grid>
 
                         <TextBlock Text="KIT NUMBER PREFIX" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                        <TextBox Text="{Binding CodePrefix, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,14"/>
+                        <TextBox Text="{Binding CodePrefix, UpdateSourceTrigger=PropertyChanged}" MaxLength="10" Margin="0,0,0,14"/>
 
                         <CheckBox Content="Active" IsChecked="{Binding IsActive}" Margin="0,0,0,18"/>
                     </StackPanel>

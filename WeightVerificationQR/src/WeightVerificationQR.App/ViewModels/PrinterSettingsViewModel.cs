@@ -73,9 +73,43 @@ public class PrinterSettingsViewModel : ViewModelBase
 
     private void Save()
     {
+        BarTenderPrinterName = BarTenderPrinterName.Trim();
+        BarTenderApiUrl = BarTenderApiUrl.Trim();
+        BarTenderExePath = BarTenderExePath.Trim();
+        BarTenderLabelPath = BarTenderLabelPath.Trim();
+
         if (string.IsNullOrWhiteSpace(BarTenderPrinterName))
         {
             StatusMessage = "Select the exact installed printer queue before saving.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(BarTenderLabelPath))
+        {
+            StatusMessage = "Select a BarTender .btw label template before saving.";
+            return;
+        }
+
+        var resolvedTemplatePath = Path.IsPathRooted(BarTenderLabelPath)
+            ? BarTenderLabelPath
+            : Path.GetFullPath(BarTenderLabelPath, AppDomain.CurrentDomain.BaseDirectory);
+        if (!File.Exists(resolvedTemplatePath))
+        {
+            StatusMessage = $"BarTender template was not found: {resolvedTemplatePath}";
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(BarTenderExePath) && !File.Exists(BarTenderExePath))
+        {
+            StatusMessage = $"BarTender executable was not found: {BarTenderExePath}";
+            return;
+        }
+
+        if (string.Equals(BarTenderPrintMethod, "api", StringComparison.OrdinalIgnoreCase) &&
+            (!Uri.TryCreate(BarTenderApiUrl, UriKind.Absolute, out var apiUri) ||
+             apiUri.Scheme is not ("http" or "https")))
+        {
+            StatusMessage = "Enter a valid HTTP/HTTPS BarTender API URL.";
             return;
         }
 
@@ -87,8 +121,10 @@ public class PrinterSettingsViewModel : ViewModelBase
         _printerSettings.BarTenderExePath = updated.BarTenderExePath;
         _printerSettings.BarTenderLabelPath = updated.BarTenderLabelPath;
         _printerSettings.BarTenderPrintMethod = updated.BarTenderPrintMethod;
-        AppSettingsFileWriter.SavePrinterSettings(_printerSettings);
-        StatusMessage = "Printer settings saved and will persist across restarts.";
+        var persisted = AppSettingsFileWriter.SavePrinterSettings(_printerSettings);
+        StatusMessage = persisted
+            ? "Printer settings saved and will persist across restarts."
+            : "Printer settings applied for this session, but appsettings.json could not be updated.";
     }
 
     private void RefreshInstalledPrinters()

@@ -22,6 +22,7 @@ public class DashboardViewModel : ViewModelBase, IDisposable
     private readonly ILogger<DashboardViewModel> _logger;
     private readonly DispatcherTimer _clockTimer;
     private readonly DispatcherTimer _autoReturnTimer;
+    private bool _disposed;
 
     public DashboardViewModel(
         IProductRepository productRepository,
@@ -48,8 +49,8 @@ public class DashboardViewModel : ViewModelBase, IDisposable
         SimulateWeighingCommand = new AsyncRelayCommand(SimulateWeighingAsync, () => SelectedProduct is not null);
 
         _serialPortService.WeightReceived += OnWeightReceived;
-        _serialPortService.ConnectionStatusChanged += (_, status) => MachineStatus = status;
-        _printerService.PrinterStatusChanged += (_, status) => PrinterStatus = status;
+        _serialPortService.ConnectionStatusChanged += OnMachineStatusChanged;
+        _printerService.PrinterStatusChanged += OnPrinterStatusChanged;
         _weighingEngine.WeighingCompleted += OnWeighingCompleted;
         _weighingEngine.CurrentOperator = _session.CurrentUser?.FullName ?? "Unknown";
 
@@ -136,6 +137,9 @@ public class DashboardViewModel : ViewModelBase, IDisposable
     private async Task LoadProductsAsync()
     {
         var products = await _productRepository.GetAllAsync();
+        if (_disposed)
+            return;
+
         Products.Clear();
         foreach (var p in products) Products.Add(p);
         if (Products.Count > 0) SelectedProduct = Products[0];
@@ -175,9 +179,15 @@ public class DashboardViewModel : ViewModelBase, IDisposable
 
     private async void OnWeightReceived(object? sender, WeightReadingEventArgs e)
     {
+        if (_disposed)
+            return;
+
         // Marshal back to the UI thread since this event fires from the SerialPort background thread.
         await System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
         {
+            if (_disposed)
+                return;
+
             LiveWeight = e.WeightKg;
             IsStable = e.IsStable;
 
@@ -190,8 +200,14 @@ public class DashboardViewModel : ViewModelBase, IDisposable
 
     private async void OnWeighingCompleted(object? sender, WeighingCompletedEventArgs e)
     {
+        if (_disposed)
+            return;
+
         await System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
         {
+            if (_disposed)
+                return;
+
             LastRecord = e.Record;
             DisplayState = e.Record.Result == WeighResult.Pass ? DashboardDisplayState.Pass : DashboardDisplayState.Fail;
 
@@ -205,16 +221,52 @@ public class DashboardViewModel : ViewModelBase, IDisposable
         await RefreshTodayCountsAsync();
     }
 
+    private void OnMachineStatusChanged(object? sender, ConnectionStatus status) =>
+        SetConnectionStatusOnUiThread(status, value => MachineStatus = value);
+
+    private void OnPrinterStatusChanged(object? sender, ConnectionStatus status) =>
+        SetConnectionStatusOnUiThread(status, value => PrinterStatus = value);
+
+    private void SetConnectionStatusOnUiThread(
+        ConnectionStatus status,
+        Action<ConnectionStatus> apply)
+    {
+        if (_disposed)
+            return;
+
+        var dispatcher = System.Windows.Application.Current?.Dispatcher;
+        if (dispatcher is null || dispatcher.CheckAccess())
+        {
+            apply(status);
+            return;
+        }
+
+        _ = dispatcher.InvokeAsync(() =>
+        {
+            if (!_disposed)
+                apply(status);
+        });
+    }
+
     private async Task RefreshTodayCountsAsync()
     {
         var (pass, fail) = await _weighRecordRepository.GetTodayCountsAsync();
+        if (_disposed)
+            return;
+
         TotalPassToday = pass;
         TotalFailToday = fail;
     }
 
     public void Dispose()
     {
+        if (_disposed)
+            return;
+
+        _disposed = true;
         _serialPortService.WeightReceived -= OnWeightReceived;
+        _serialPortService.ConnectionStatusChanged -= OnMachineStatusChanged;
+        _printerService.PrinterStatusChanged -= OnPrinterStatusChanged;
         _weighingEngine.WeighingCompleted -= OnWeighingCompleted;
         _clockTimer.Stop();
         _autoReturnTimer.Stop();

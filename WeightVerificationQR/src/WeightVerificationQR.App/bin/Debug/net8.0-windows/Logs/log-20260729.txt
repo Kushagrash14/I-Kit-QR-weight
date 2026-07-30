@@ -479,3 +479,67 @@ WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
 SELECT COUNT(*)
 FROM "WeighRecords" AS "w"
 WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-29 16:38:09.295 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."FullName", "u"."IsActive", "u"."LastLoginAt", "u"."PasswordHash", "u"."PasswordSalt", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+ORDER BY "u"."FullName"
+2026-07-29 16:38:12.947 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CommandCode", "p"."CreatedAt", "p"."IsActive", "p"."LabelLengthText", "p"."LabelLineCode", "p"."LabelMaterialText", "p"."LabelSizeText", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ModelCode", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+ORDER BY "p"."ProductName"
+2026-07-29 16:38:14.887 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__fromDate_Value_Date_0='?' (DbType = DateTime), @__AddDays_1='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT "w"."Id", "w"."CommandCode", "w"."DailySerialNumber", "w"."FailReason", "w"."GlobalRecordId", "w"."KitNumber", "w"."LabelLengthText", "w"."LabelMaterialText", "w"."LabelSizeText", "w"."LastSyncError", "w"."LineCode", "w"."MachineCode", "w"."ModelCode", "w"."OperatorName", "w"."PrintedSuccessfully", "w"."PrinterStatus", "w"."ProductId", "w"."ProductName", "w"."QrGenerated", "w"."QrId", "w"."QrPayload", "w"."Quantity", "w"."RecordDate", "w"."Remarks", "w"."ReprintCount", "w"."Result", "w"."SerialNumber", "w"."SiteCode", "w"."SyncAttempts", "w"."SyncStatus", "w"."SyncedAt", "w"."WeightKg"
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__fromDate_Value_Date_0 AND "w"."RecordDate" < @__AddDays_1
+ORDER BY "w"."RecordDate" DESC
+2026-07-29 16:38:17.122 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CommandCode", "p"."CreatedAt", "p"."IsActive", "p"."LabelLengthText", "p"."LabelLineCode", "p"."LabelMaterialText", "p"."LabelSizeText", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ModelCode", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-29 16:38:17.123 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-29 16:38:17.123 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-29 16:38:26.319 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CommandCode", "p"."CreatedAt", "p"."IsActive", "p"."LabelLengthText", "p"."LabelLineCode", "p"."LabelMaterialText", "p"."LabelSizeText", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ModelCode", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-29 16:38:26.320 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-29 16:38:26.320 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-29 16:38:34.417 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CommandCode", "p"."CreatedAt", "p"."IsActive", "p"."LabelLengthText", "p"."LabelLineCode", "p"."LabelMaterialText", "p"."LabelSizeText", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ModelCode", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+ORDER BY "p"."ProductName"
+2026-07-29 16:38:42.109 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CommandCode", "p"."CreatedAt", "p"."IsActive", "p"."LabelLengthText", "p"."LabelLineCode", "p"."LabelMaterialText", "p"."LabelSizeText", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ModelCode", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+ORDER BY "p"."ProductName"
+2026-07-29 17:08:44.540 +05:30 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CommandCode", "p"."CreatedAt", "p"."IsActive", "p"."LabelLengthText", "p"."LabelLineCode", "p"."LabelMaterialText", "p"."LabelSizeText", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ModelCode", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+WHERE "p"."IsActive"
+ORDER BY "p"."ProductName"
+2026-07-29 17:08:44.544 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 1
+2026-07-29 17:08:44.546 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM "WeighRecords" AS "w"
+WHERE "w"."RecordDate" >= @__today_0 AND "w"."Result" = 2
+2026-07-29 17:08:58.631 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."Id", "p"."CodePrefix", "p"."CommandCode", "p"."CreatedAt", "p"."IsActive", "p"."LabelLengthText", "p"."LabelLineCode", "p"."LabelMaterialText", "p"."LabelSizeText", "p"."MaxWeightKg", "p"."MinWeightKg", "p"."ModelCode", "p"."ProductName", "p"."Quantity", "p"."UpdatedAt"
+FROM "Products" AS "p"
+ORDER BY "p"."ProductName"

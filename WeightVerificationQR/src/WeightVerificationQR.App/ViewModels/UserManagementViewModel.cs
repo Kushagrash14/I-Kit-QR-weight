@@ -105,9 +105,27 @@ public class UserManagementViewModel : ViewModelBase
     {
         if (EditingUser is null) return;
 
+        EditingUser.FullName = EditingUser.FullName?.Trim() ?? string.Empty;
+        EditingUser.Username = EditingUser.Username?.Trim() ?? string.Empty;
+
         if (string.IsNullOrWhiteSpace(EditingUser.FullName) || string.IsNullOrWhiteSpace(EditingUser.Username))
         {
             StatusMessage = "Full name and username are required.";
+            return;
+        }
+
+        if (EditingUser.FullName.Length > 100 || EditingUser.Username.Length > 50)
+        {
+            StatusMessage = "Full name must be 100 characters or fewer and username must be 50 characters or fewer.";
+            return;
+        }
+
+        var duplicateUsername = Users.Any(user =>
+            user.Id != EditingUser.Id &&
+            string.Equals(user.Username, EditingUser.Username, StringComparison.OrdinalIgnoreCase));
+        if (duplicateUsername)
+        {
+            StatusMessage = $"Username '{EditingUser.Username}' is already in use.";
             return;
         }
 
@@ -118,32 +136,40 @@ public class UserManagementViewModel : ViewModelBase
             return;
         }
 
-        if (EditingUser.Id == 0)
+        try
         {
-            if (string.IsNullOrWhiteSpace(NewPassword) || NewPassword.Length < 6)
+            if (EditingUser.Id == 0)
             {
-                StatusMessage = "A password of at least 6 characters is required for new users.";
-                return;
-            }
-            var (hash, salt) = _passwordHasher.HashPassword(NewPassword);
-            EditingUser.PasswordHash = hash;
-            EditingUser.PasswordSalt = salt;
-            await _userRepository.AddAsync(EditingUser);
-        }
-        else
-        {
-            if (!string.IsNullOrWhiteSpace(NewPassword))
-            {
-                if (NewPassword.Length < 6)
+                if (string.IsNullOrWhiteSpace(NewPassword) || NewPassword.Length < 6)
                 {
-                    StatusMessage = "Password must be at least 6 characters.";
+                    StatusMessage = "A password of at least 6 characters is required for new users.";
                     return;
                 }
                 var (hash, salt) = _passwordHasher.HashPassword(NewPassword);
                 EditingUser.PasswordHash = hash;
                 EditingUser.PasswordSalt = salt;
+                await _userRepository.AddAsync(EditingUser);
             }
-            await _userRepository.UpdateAsync(EditingUser);
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(NewPassword))
+                {
+                    if (NewPassword.Length < 6)
+                    {
+                        StatusMessage = "Password must be at least 6 characters.";
+                        return;
+                    }
+                    var (hash, salt) = _passwordHasher.HashPassword(NewPassword);
+                    EditingUser.PasswordHash = hash;
+                    EditingUser.PasswordSalt = salt;
+                }
+                await _userRepository.UpdateAsync(EditingUser);
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"User could not be saved: {ex.Message}";
+            return;
         }
 
         StatusMessage = $"User '{EditingUser.FullName}' saved.";

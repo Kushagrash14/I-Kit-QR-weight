@@ -17,9 +17,9 @@ public static class AppSettingsFileWriter
     private static string SettingsFilePath =>
         Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
 
-    public static void SaveSerialPortSettings(SerialPortSettings settings)
+    public static bool SaveSerialPortSettings(SerialPortSettings settings)
     {
-        UpdateSection("SerialPort", node =>
+        return UpdateSection("SerialPort", node =>
         {
             node["PortName"] = settings.PortName;
             node["BaudRate"] = settings.BaudRate;
@@ -33,9 +33,9 @@ public static class AppSettingsFileWriter
         });
     }
 
-    public static void SavePrinterSettings(PrinterSettings settings)
+    public static bool SavePrinterSettings(PrinterSettings settings)
     {
-        UpdateSection("Printer", node =>
+        return UpdateSection("Printer", node =>
         {
             node["PrinterType"] = settings.PrinterType.ToString();
             node["ConnectionMode"] = settings.ConnectionMode.ToString();
@@ -55,9 +55,9 @@ public static class AppSettingsFileWriter
         });
     }
 
-    public static void SaveStationSettings(StationSettings settings)
+    public static bool SaveStationSettings(StationSettings settings)
     {
-        UpdateSection("Station", node =>
+        return UpdateSection("Station", node =>
         {
             node["QrPrefix"] = settings.QrPrefix;
             node["SiteCode"] = settings.SiteCode;
@@ -68,9 +68,9 @@ public static class AppSettingsFileWriter
         });
     }
 
-    public static void SaveCentralSyncSettings(CentralSyncSettings settings)
+    public static bool SaveCentralSyncSettings(CentralSyncSettings settings)
     {
-        UpdateSection("CentralSync", node =>
+        return UpdateSection("CentralSync", node =>
         {
             node["Enabled"] = settings.Enabled;
             node["ConnectionString"] = settings.ConnectionString;
@@ -83,12 +83,10 @@ public static class AppSettingsFileWriter
     /// <summary>
     /// Reads appsettings.json as a mutable JSON tree, applies <paramref name="apply"/> to the
     /// named section (creating it if missing), and writes the file back out formatted.
-    /// Any write failure (locked file, missing permissions, etc.) is swallowed here — the
-    /// in-memory settings object was already updated by the caller, so the running session is
-    /// unaffected either way; only persistence across a restart is at risk, which the caller
-    /// surfaces via its own StatusMessage if needed.
+    /// The return value tells the caller whether persistence succeeded. The in-memory settings
+    /// object is already updated by the caller, so a write failure only affects future restarts.
     /// </summary>
-    private static void UpdateSection(string sectionName, Action<JsonObject> apply)
+    private static bool UpdateSection(string sectionName, Action<JsonObject> apply)
     {
         try
         {
@@ -106,11 +104,11 @@ public static class AppSettingsFileWriter
 
             var options = new JsonSerializerOptions { WriteIndented = true };
             File.WriteAllText(path, root.ToJsonString(options));
+            return true;
         }
         catch
         {
-            // Best-effort persistence only - see remarks above. Nothing to recover here;
-            // the current session already has the new values in memory.
+            return false;
         }
     }
 }

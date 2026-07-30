@@ -137,17 +137,49 @@ public class MachineSettingsViewModel : ViewModelBase
 
     private void Save()
     {
-        if (string.IsNullOrWhiteSpace(SiteCode) ||
+        if (string.IsNullOrWhiteSpace(PortName) || BaudRate <= 0)
+        {
+            StatusMessage = "COM port is required and baud rate must be greater than zero.";
+            return;
+        }
+
+        if (StableReadingCount < 1 || StabilityToleranceKg < 0 || ResetWeightThresholdKg < 0)
+        {
+            StatusMessage = "Stable reading count must be at least 1; tolerance and reset threshold cannot be negative.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(QrPrefix) ||
+            string.IsNullOrWhiteSpace(SiteCode) ||
             string.IsNullOrWhiteSpace(LineCode) ||
             string.IsNullOrWhiteSpace(MachineCode))
         {
-            StatusMessage = "Site, line and machine codes are required.";
+            StatusMessage = "Prefix, site, line and machine codes are required.";
             return;
         }
 
         if (SerialDigits is < 1 or > 18 || EmergencySerialStart < 1)
         {
             StatusMessage = "Serial digits must be 1-18 and emergency serial start must be positive.";
+            return;
+        }
+
+        if (CentralSyncEnabled && string.IsNullOrWhiteSpace(CentralConnectionString))
+        {
+            StatusMessage = "Enter a PostgreSQL connection string or disable central synchronization.";
+            return;
+        }
+
+        PortName = PortName.Trim();
+        QrPrefix = NormalizeStationCode(QrPrefix);
+        SiteCode = NormalizeStationCode(SiteCode);
+        LineCode = NormalizeStationCode(LineCode);
+        MachineCode = NormalizeStationCode(MachineCode);
+        CentralConnectionString = CentralConnectionString.Trim();
+
+        if (QrPrefix.Length == 0 || SiteCode.Length == 0 || LineCode.Length == 0 || MachineCode.Length == 0)
+        {
+            StatusMessage = "Prefix, site, line and machine codes must contain valid letters or numbers.";
             return;
         }
 
@@ -159,11 +191,14 @@ public class MachineSettingsViewModel : ViewModelBase
         _serialSettings.ResetWeightThresholdKg = updated.ResetWeightThresholdKg;
         ApplyStationSettings();
         ApplyCentralSettings();
-        AppSettingsFileWriter.SaveSerialPortSettings(_serialSettings);
-        AppSettingsFileWriter.SaveStationSettings(_stationSettings);
-        AppSettingsFileWriter.SaveCentralSyncSettings(_centralSyncSettings);
+        var persisted =
+            AppSettingsFileWriter.SaveSerialPortSettings(_serialSettings) &
+            AppSettingsFileWriter.SaveStationSettings(_stationSettings) &
+            AppSettingsFileWriter.SaveCentralSyncSettings(_centralSyncSettings);
         _offlineSyncService.Start();
-        StatusMessage = "Machine, station and offline-sync settings saved.";
+        StatusMessage = persisted
+            ? "Machine, station and offline-sync settings saved."
+            : "Settings applied for this session, but appsettings.json could not be fully updated.";
     }
 
     private async Task TestCentralAsync()
@@ -211,4 +246,11 @@ public class MachineSettingsViewModel : ViewModelBase
         StopBits = _serialSettings.StopBits,
         PollIntervalMs = _serialSettings.PollIntervalMs
     };
+
+    private static string NormalizeStationCode(string value) =>
+        new((value ?? string.Empty)
+            .Trim()
+            .ToUpperInvariant()
+            .Where(char.IsLetterOrDigit)
+            .ToArray());
 }

@@ -20,7 +20,14 @@ public class QrReprintViewModel : ViewModelBase
         _printerSettings = printerSettings;
 
         SearchCommand = new AsyncRelayCommand(SearchAsync);
-        ReprintCommand = new AsyncRelayCommand(ReprintAsync, () => FoundRecord is { Result: WeighResult.Pass });
+        ReprintCommand = new AsyncRelayCommand(
+            ReprintAsync,
+            () => FoundRecord is
+            {
+                Result: WeighResult.Pass,
+                QrGenerated: true
+            } record &&
+            !string.IsNullOrWhiteSpace(record.QrPayload));
     }
 
     private string _qrIdInput = string.Empty;
@@ -61,6 +68,8 @@ public class QrReprintViewModel : ViewModelBase
 
         if (record.Result != WeighResult.Pass)
             StatusMessage = "This record is a FAIL - no QR label was ever generated for it.";
+        else if (!record.QrGenerated || string.IsNullOrWhiteSpace(record.QrPayload))
+            StatusMessage = "This PASS record has no stored QR payload and cannot be reprinted safely.";
     }
 
     private async Task ReprintAsync()

@@ -42,18 +42,30 @@ public class MainViewModel : ViewModelBase
     {
         if (string.IsNullOrEmpty(page)) return;
 
-        CurrentPage = page;
-        CurrentViewModel = page switch
+        if (CurrentViewModel is not null &&
+            string.Equals(CurrentPage, page, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        ViewModelBase? nextViewModel = page switch
         {
             "Dashboard" => _serviceProvider.GetRequiredService<DashboardViewModel>(),
-            "ProductMaster" => RequiresRole(UserRole.Admin) ? _serviceProvider.GetRequiredService<ProductMasterViewModel>() : CurrentViewModel,
-            "UserManagement" => RequiresRole(UserRole.Admin) ? _serviceProvider.GetRequiredService<UserManagementViewModel>() : CurrentViewModel,
-            "Reports" => RequiresRole(UserRole.Supervisor) ? _serviceProvider.GetRequiredService<ReportsViewModel>() : CurrentViewModel,
-            "MachineSettings" => RequiresRole(UserRole.Admin) ? _serviceProvider.GetRequiredService<MachineSettingsViewModel>() : CurrentViewModel,
-            "PrinterSettings" => RequiresRole(UserRole.Admin) ? _serviceProvider.GetRequiredService<PrinterSettingsViewModel>() : CurrentViewModel,
-            "QrReprint" => RequiresRole(UserRole.Supervisor) ? _serviceProvider.GetRequiredService<QrReprintViewModel>() : CurrentViewModel,
-            _ => CurrentViewModel
+            "ProductMaster" when RequiresRole(UserRole.Admin) => _serviceProvider.GetRequiredService<ProductMasterViewModel>(),
+            "UserManagement" when RequiresRole(UserRole.Admin) => _serviceProvider.GetRequiredService<UserManagementViewModel>(),
+            "Reports" when RequiresRole(UserRole.Supervisor) => _serviceProvider.GetRequiredService<ReportsViewModel>(),
+            "MachineSettings" when RequiresRole(UserRole.Admin) => _serviceProvider.GetRequiredService<MachineSettingsViewModel>(),
+            "PrinterSettings" when RequiresRole(UserRole.Admin) => _serviceProvider.GetRequiredService<PrinterSettingsViewModel>(),
+            "QrReprint" when RequiresRole(UserRole.Supervisor) => _serviceProvider.GetRequiredService<QrReprintViewModel>(),
+            _ => null
         };
+
+        if (nextViewModel is null)
+            return;
+
+        ReleaseCurrentViewModel();
+        CurrentViewModel = nextViewModel;
+        CurrentPage = page;
     }
 
     /// <summary>Admin implicitly satisfies Supervisor-level checks; Supervisor satisfies Supervisor-level only.</summary>
@@ -70,9 +82,9 @@ public class MainViewModel : ViewModelBase
 
     private void Logout()
     {
-        // MainViewModel is a singleton: reset to Dashboard so the next user who logs in
-        // never inherits the previous user's page (e.g. an Operator landing on User Management).
-        Navigate("Dashboard");
+        ReleaseCurrentViewModel();
+        CurrentPage = string.Empty;
+        _session.CurrentUser = null;
         LoggedOut?.Invoke(this, EventArgs.Empty);
     }
 
@@ -84,5 +96,13 @@ public class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsAdmin));
         OnPropertyChanged(nameof(IsSupervisorOrAbove));
         Navigate("Dashboard");
+    }
+
+    private void ReleaseCurrentViewModel()
+    {
+        if (CurrentViewModel is IDisposable disposable)
+            disposable.Dispose();
+
+        CurrentViewModel = null;
     }
 }

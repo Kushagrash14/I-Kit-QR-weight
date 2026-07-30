@@ -16,7 +16,7 @@ public class ProductMasterViewModel : ViewModelBase
 
         Products = new ObservableCollection<Product>();
         NewCommand = new RelayCommand(StartNew);
-        SaveCommand = new AsyncRelayCommand(SaveAsync, () => EditingProduct is not null && !string.IsNullOrWhiteSpace(EditingProduct.ProductName));
+        SaveCommand = new AsyncRelayCommand(SaveAsync, () => EditingProduct is not null);
         DeleteCommand = new AsyncRelayCommand<Product>(DeleteAsync);
         EditCommand = new RelayCommand<Product>(Edit);
 
@@ -89,31 +89,82 @@ public class ProductMasterViewModel : ViewModelBase
     {
         if (EditingProduct is null) return;
 
+        EditingProduct.ProductName = EditingProduct.ProductName?.Trim() ?? string.Empty;
+        EditingProduct.Quantity = EditingProduct.Quantity?.Trim() ?? string.Empty;
+        EditingProduct.CodePrefix = NormalizeCode(EditingProduct.CodePrefix);
+        EditingProduct.CommandCode = NormalizeCode(EditingProduct.CommandCode);
+        EditingProduct.LabelLineCode = NormalizeCode(EditingProduct.LabelLineCode);
+        EditingProduct.ModelCode = NormalizeModelCode(EditingProduct.ModelCode);
+        EditingProduct.LabelSizeText = EditingProduct.LabelSizeText?.Trim() ?? string.Empty;
+        EditingProduct.LabelLengthText = EditingProduct.LabelLengthText?.Trim() ?? string.Empty;
+        EditingProduct.LabelMaterialText = EditingProduct.LabelMaterialText?.Trim() ?? string.Empty;
+
+        if (EditingProduct.ProductName.Length == 0)
+        {
+            StatusMessage = "Product name is required.";
+            return;
+        }
+
+        if (EditingProduct.ProductName.Length > 200 || EditingProduct.Quantity.Length > 50)
+        {
+            StatusMessage = "Product name must be 200 characters or fewer and quantity must be 50 characters or fewer.";
+            return;
+        }
+
         if (EditingProduct.MinWeightKg <= 0 || EditingProduct.MaxWeightKg <= 0 || EditingProduct.MinWeightKg > EditingProduct.MaxWeightKg)
         {
             StatusMessage = "Minimum weight must be greater than 0 and less than or equal to maximum weight.";
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(EditingProduct.CommandCode) ||
-            string.IsNullOrWhiteSpace(EditingProduct.LabelLineCode) ||
-            string.IsNullOrWhiteSpace(EditingProduct.ModelCode))
+        if (EditingProduct.CommandCode.Length == 0 ||
+            EditingProduct.LabelLineCode.Length == 0 ||
+            EditingProduct.ModelCode.Length == 0)
         {
-            StatusMessage = "Command code, line code, and model code are required.";
+            StatusMessage = "Command, line and model codes must contain valid letters or numbers.";
             return;
         }
 
-        EditingProduct.CommandCode = NormalizeCode(EditingProduct.CommandCode);
-        EditingProduct.LabelLineCode = NormalizeCode(EditingProduct.LabelLineCode);
-        EditingProduct.ModelCode = NormalizeCode(EditingProduct.ModelCode);
-        EditingProduct.LabelSizeText = EditingProduct.LabelSizeText.Trim();
-        EditingProduct.LabelLengthText = EditingProduct.LabelLengthText.Trim();
-        EditingProduct.LabelMaterialText = EditingProduct.LabelMaterialText.Trim();
+        if (EditingProduct.CodePrefix.Length == 0)
+            EditingProduct.CodePrefix = "KIT";
 
-        if (EditingProduct.Id == 0)
-            await _productRepository.AddAsync(EditingProduct);
-        else
-            await _productRepository.UpdateAsync(EditingProduct);
+        if (EditingProduct.CodePrefix.Length > 10 ||
+            EditingProduct.CommandCode.Length > 10 ||
+            EditingProduct.LabelLineCode.Length > 20 ||
+            EditingProduct.ModelCode.Length > 50)
+        {
+            StatusMessage = "Prefix/command must be 10 characters or fewer, line 20 or fewer, and model code 50 or fewer.";
+            return;
+        }
+
+        if (EditingProduct.LabelSizeText.Length == 0 ||
+            EditingProduct.LabelLengthText.Length == 0 ||
+            EditingProduct.LabelMaterialText.Length == 0)
+        {
+            StatusMessage = "Label size, length and material text are required for printing.";
+            return;
+        }
+
+        if (EditingProduct.LabelSizeText.Length > 100 ||
+            EditingProduct.LabelLengthText.Length > 50 ||
+            EditingProduct.LabelMaterialText.Length > 50)
+        {
+            StatusMessage = "Label size must be 100 characters or fewer; length and material must be 50 or fewer.";
+            return;
+        }
+
+        try
+        {
+            if (EditingProduct.Id == 0)
+                await _productRepository.AddAsync(EditingProduct);
+            else
+                await _productRepository.UpdateAsync(EditingProduct);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Product could not be saved: {ex.Message}";
+            return;
+        }
 
         StatusMessage = $"'{EditingProduct.ProductName}' saved.";
         IsEditing = false;
@@ -130,9 +181,16 @@ public class ProductMasterViewModel : ViewModelBase
     }
 
     private static string NormalizeCode(string value) =>
-        new(value
+        new((value ?? string.Empty)
             .Trim()
             .ToUpperInvariant()
             .Where(char.IsLetterOrDigit)
+            .ToArray());
+
+    private static string NormalizeModelCode(string value) =>
+        new((value ?? string.Empty)
+            .Trim()
+            .ToUpperInvariant()
+            .Where(ch => char.IsLetterOrDigit(ch) || ch is '-' or '_' or '.')
             .ToArray());
 }
