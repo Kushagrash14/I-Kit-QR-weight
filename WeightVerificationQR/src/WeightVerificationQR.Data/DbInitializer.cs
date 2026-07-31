@@ -128,6 +128,7 @@ public static class DbInitializer
             ["MachineCode"] = "TEXT NOT NULL DEFAULT ''",
             ["CommandCode"] = "TEXT NOT NULL DEFAULT ''",
             ["ModelCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["QrText"] = "TEXT NOT NULL DEFAULT ''",
             ["LabelSizeText"] = "TEXT NOT NULL DEFAULT ''",
             ["LabelLengthText"] = "TEXT NOT NULL DEFAULT ''",
             ["LabelMaterialText"] = "TEXT NOT NULL DEFAULT ''",
@@ -147,6 +148,7 @@ public static class DbInitializer
             ["CommandCode"] = "TEXT NOT NULL DEFAULT 'P'",
             ["LabelLineCode"] = "TEXT NOT NULL DEFAULT ''",
             ["ModelCode"] = "TEXT NOT NULL DEFAULT ''",
+            ["QrText"] = "TEXT NOT NULL DEFAULT ''",
             ["LabelSizeText"] = "TEXT NOT NULL DEFAULT ''",
             ["LabelLengthText"] = "TEXT NOT NULL DEFAULT ''",
             ["LabelMaterialText"] = "TEXT NOT NULL DEFAULT ''"
@@ -165,6 +167,9 @@ public static class DbInitializer
             UPDATE "Products"
             SET "ModelCode" = 'MODEL-' || printf('%03d', "Id")
             WHERE trim("ModelCode") = '';
+            UPDATE "Products"
+            SET "QrText" = "ProductName"
+            WHERE trim("QrText") = '';
             UPDATE "Products"
             SET "LabelSizeText" = "ProductName"
             WHERE trim("LabelSizeText") = '';

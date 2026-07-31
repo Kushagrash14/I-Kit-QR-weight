@@ -109,8 +109,7 @@ public class WeighRecordRepository : IWeighRecordRepository
     }
 
     public async Task<int> GetNextDailyLabelSerialAsync(
-        string commandCode,
-        string lineCode,
+        int productId,
         DateTime productionDate)
     {
         await _sequenceLock.WaitAsync();
@@ -122,14 +121,13 @@ public class WeighRecordRepository : IWeighRecordRepository
                 .Where(r =>
                     r.RecordDate >= start &&
                     r.RecordDate < end &&
-                    r.CommandCode == commandCode &&
-                    r.LineCode == lineCode &&
+                    r.ProductId == productId &&
                     r.DailySerialNumber > 0)
                 .MaxAsync(r => (int?)r.DailySerialNumber) ?? 0;
 
             if (lastSerial >= 999_999)
                 throw new InvalidOperationException(
-                    $"Daily serial capacity exhausted for {commandCode}-{lineCode} on {start:dd-MM-yyyy}.");
+                    $"Daily serial capacity exhausted for product {productId} on {start:dd-MM-yyyy}.");
 
             return lastSerial + 1;
         }

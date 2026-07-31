@@ -29,6 +29,7 @@ public class ProductMasterViewModel : ViewModelBase
     }
 
     public ObservableCollection<Product> Products { get; }
+    public IReadOnlyList<string> LabelLineCodeOptions { get; } = ["I", "O"];
 
     private Product? _editingProduct;
     public Product? EditingProduct
@@ -69,7 +70,8 @@ public class ProductMasterViewModel : ViewModelBase
         {
             IsActive = true,
             CodePrefix = "KIT",
-            CommandCode = "P"
+            CommandCode = "P",
+            LabelLineCode = "O"
         };
         IsEditing = true;
     }
@@ -89,6 +91,7 @@ public class ProductMasterViewModel : ViewModelBase
             CommandCode = product.CommandCode,
             LabelLineCode = product.LabelLineCode,
             ModelCode = product.ModelCode,
+            QrText = product.QrText,
             LabelSizeText = product.LabelSizeText,
             LabelLengthText = product.LabelLengthText,
             LabelMaterialText = product.LabelMaterialText,
@@ -104,10 +107,14 @@ public class ProductMasterViewModel : ViewModelBase
 
         EditingProduct.ProductName = EditingProduct.ProductName?.Trim() ?? string.Empty;
         EditingProduct.Quantity = EditingProduct.Quantity?.Trim() ?? string.Empty;
-        EditingProduct.CodePrefix = NormalizeCode(EditingProduct.CodePrefix);
-        EditingProduct.CommandCode = NormalizeCode(EditingProduct.CommandCode);
+        EditingProduct.CodePrefix = "KIT";
+        EditingProduct.CommandCode = "P";
         EditingProduct.LabelLineCode = NormalizeCode(EditingProduct.LabelLineCode);
-        EditingProduct.ModelCode = NormalizeModelCode(EditingProduct.ModelCode);
+        EditingProduct.ModelCode = NormalizeModelCode(
+            string.IsNullOrWhiteSpace(EditingProduct.ModelCode)
+                ? EditingProduct.ProductName
+                : EditingProduct.ModelCode);
+        EditingProduct.QrText = EditingProduct.QrText?.Trim() ?? string.Empty;
         EditingProduct.LabelSizeText = EditingProduct.LabelSizeText?.Trim() ?? string.Empty;
         EditingProduct.LabelLengthText = EditingProduct.LabelLengthText?.Trim() ?? string.Empty;
         EditingProduct.LabelMaterialText = EditingProduct.LabelMaterialText?.Trim() ?? string.Empty;
@@ -130,23 +137,20 @@ public class ProductMasterViewModel : ViewModelBase
             return;
         }
 
-        if (EditingProduct.CommandCode.Length == 0 ||
-            EditingProduct.LabelLineCode.Length == 0 ||
-            EditingProduct.ModelCode.Length == 0)
+        if (!LabelLineCodeOptions.Contains(EditingProduct.LabelLineCode))
         {
-            StatusMessage = "Command, line and model codes must contain valid letters or numbers.";
+            StatusMessage = "Select I or O for the label line.";
             return;
         }
 
-        if (EditingProduct.CodePrefix.Length == 0)
-            EditingProduct.CodePrefix = "KIT";
-
-        if (EditingProduct.CodePrefix.Length > 10 ||
-            EditingProduct.CommandCode.Length > 10 ||
-            EditingProduct.LabelLineCode.Length > 20 ||
-            EditingProduct.ModelCode.Length > 50)
+        if (EditingProduct.ModelCode.Length > 50)
         {
-            StatusMessage = "Prefix/command must be 10 characters or fewer, line 20 or fewer, and model code 50 or fewer.";
+            EditingProduct.ModelCode = EditingProduct.ModelCode[..50];
+        }
+
+        if (EditingProduct.QrText.Length == 0)
+        {
+            StatusMessage = "QR print text is required.";
             return;
         }
 
@@ -154,15 +158,16 @@ public class ProductMasterViewModel : ViewModelBase
             EditingProduct.LabelLengthText.Length == 0 ||
             EditingProduct.LabelMaterialText.Length == 0)
         {
-            StatusMessage = "Label size, length and material text are required for printing.";
+            StatusMessage = "QR text, size, length and material are required for printing.";
             return;
         }
 
-        if (EditingProduct.LabelSizeText.Length > 100 ||
+        if (EditingProduct.QrText.Length > 250 ||
+            EditingProduct.LabelSizeText.Length > 100 ||
             EditingProduct.LabelLengthText.Length > 50 ||
             EditingProduct.LabelMaterialText.Length > 50)
         {
-            StatusMessage = "Label size must be 100 characters or fewer; length and material must be 50 or fewer.";
+            StatusMessage = "QR text must be 250 characters or fewer, size 100 or fewer, and length/material 50 or fewer.";
             return;
         }
 

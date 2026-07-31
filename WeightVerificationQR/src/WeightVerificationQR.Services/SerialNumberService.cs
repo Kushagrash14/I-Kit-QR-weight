@@ -106,20 +106,11 @@ public sealed class SerialNumberService : ISerialNumberService
 
     public string BuildQrPayload(WeighRecord record)
     {
-        var dailySerial = record.DailySerialNumber.ToString("D6", CultureInfo.InvariantCulture);
-        return string.Join(
-            '|',
-            $"KIT={CleanPayload(record.KitNumber)}",
-            $"COMMAND={CleanPayload(record.CommandCode)}",
-            $"LINE={CleanPayload(record.LineCode)}",
-            $"MODEL={CleanPayload(record.ModelCode)}",
-            $"NAME={CleanPayload(record.ProductName)}",
-            $"SIZE={CleanPayload(record.LabelSizeText)}",
-            $"LENGTH={CleanPayload(record.LabelLengthText)}",
-            $"MATERIAL={CleanPayload(record.LabelMaterialText)}",
-            $"WEIGHT_KG={record.WeightKg.ToString("0.000", CultureInfo.InvariantCulture)}",
-            $"DATE={record.RecordDate:yyyy-MM-dd}",
-            $"SERIAL={dailySerial}");
+        var qrText = CleanPayload(record.QrText);
+        var kitNumber = CleanPayload(record.KitNumber);
+        return string.IsNullOrWhiteSpace(qrText)
+            ? kitNumber
+            : $"{qrText} {kitNumber}";
     }
 
     private async Task<SerialNumberBlock?> TryGetCentralBlockAsync(

@@ -28,7 +28,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="410"/>
+                <ColumnDefinition Width="440"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0,0,18,0" Padding="0">
@@ -41,7 +41,7 @@
                                             Binding="{Binding ProductName}"
                                             Width="*"
                                             MinWidth="120"/>
-                        <DataGridTemplateColumn Header="LABEL ID" Width="82">
+                        <DataGridTemplateColumn Header="LINE" Width="72">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock FontWeight="SemiBold"
@@ -127,27 +127,42 @@
                         <TextBlock Text="PRODUCT NAME" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
                         <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" MaxLength="200" Margin="0,0,0,14"/>
 
+                        <TextBlock Text="PRINT DETAILS" Style="{StaticResource CardTitleText}" Margin="0,2,0,10"/>
+
+                        <TextBlock Text="QR TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                        <TextBox Text="{Binding QrText, UpdateSourceTrigger=PropertyChanged}"
+                                 MaxLength="250"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 MinHeight="54"
+                                 VerticalContentAlignment="Top"
+                                 Margin="0,0,0,14"/>
+
                         <Grid Margin="0,0,0,14">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="110"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                                <TextBlock Text="COMMAND" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                                <TextBox Text="{Binding CommandCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="10"/>
+                                <TextBlock Text="LINE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                <ComboBox x:Name="LineCodeSelector"
+                                          ItemsSource="{Binding DataContext.LabelLineCodeOptions, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                          SelectedItem="{Binding LabelLineCode, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
-                            <StackPanel Grid.Column="1" Margin="5,0">
-                                <TextBlock Text="LINE CODE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                                <TextBox Text="{Binding LabelLineCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="20"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Margin="5,0,0,0">
-                                <TextBlock Text="MODEL CODE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                                <TextBox Text="{Binding ModelCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="50"/>
-                            </StackPanel>
+                            <Border Grid.Column="1"
+                                    Margin="9,20,0,0"
+                                    Padding="10,7"
+                                    CornerRadius="6"
+                                    Background="{StaticResource BackgroundBrush}">
+                                <TextBlock Foreground="{StaticResource TextSecondaryBrush}" FontSize="12">
+                                    <Run Text="Auto code: P-"/>
+                                    <Run Text="{Binding SelectedItem, ElementName=LineCodeSelector}"/>
+                                    <Run Text="-300726-WEIGHT-000001"/>
+                                </TextBlock>
+                            </Border>
                         </Grid>
 
-                        <TextBlock Text="LABEL SIZE / MODEL TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                        <TextBlock Text="SIZE" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
                         <TextBox Text="{Binding LabelSizeText, UpdateSourceTrigger=PropertyChanged}" MaxLength="100" Margin="0,0,0,14"/>
 
                         <Grid Margin="0,0,0,14">
@@ -156,11 +171,11 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="0,0,7,0">
-                                <TextBlock Text="LENGTH TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                <TextBlock Text="LENGTH" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
                                 <TextBox Text="{Binding LabelLengthText, UpdateSourceTrigger=PropertyChanged}" MaxLength="50"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Margin="7,0,0,0">
-                                <TextBlock Text="MATERIAL TEXT" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
+                                <TextBlock Text="MATERIAL" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
                                 <TextBox Text="{Binding LabelMaterialText, UpdateSourceTrigger=PropertyChanged}" MaxLength="50"/>
                             </StackPanel>
                         </Grid>
@@ -182,9 +197,6 @@
                                 <TextBox Text="{Binding MaxWeightKg, UpdateSourceTrigger=PropertyChanged, StringFormat=0.000}"/>
                             </StackPanel>
                         </Grid>
-
-                        <TextBlock Text="KIT NUMBER PREFIX" Style="{StaticResource CardTitleText}" Margin="0,0,0,6"/>
-                        <TextBox Text="{Binding CodePrefix, UpdateSourceTrigger=PropertyChanged}" MaxLength="10" Margin="0,0,0,14"/>
 
                         <CheckBox Content="Active" IsChecked="{Binding IsActive}" Margin="0,0,0,18"/>
                     </StackPanel>

@@ -41,6 +41,10 @@ public class Product
     [MaxLength(50)]
     public string ModelCode { get; set; } = string.Empty;
 
+    /// <summary>Custom product text placed inside the QR before the generated kit number.</summary>
+    [MaxLength(250)]
+    public string QrText { get; set; } = string.Empty;
+
     [MaxLength(100)]
     public string LabelSizeText { get; set; } = string.Empty;
 

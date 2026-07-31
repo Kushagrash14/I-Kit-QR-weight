@@ -81,6 +81,7 @@ public class WeighingEngine : IWeighingEngine
             Quantity = CurrentProduct.Quantity,
             CommandCode = CurrentProduct.CommandCode,
             ModelCode = CurrentProduct.ModelCode,
+            QrText = CurrentProduct.QrText,
             LabelSizeText = CurrentProduct.LabelSizeText,
             LabelLengthText = CurrentProduct.LabelLengthText,
             LabelMaterialText = CurrentProduct.LabelMaterialText,
@@ -99,8 +100,7 @@ public class WeighingEngine : IWeighingEngine
             var allocation = await _serialNumberService.GetNextAsync();
             record.SerialNumber = allocation.Value;
             record.DailySerialNumber = await _weighRecordRepository.GetNextDailyLabelSerialAsync(
-                record.CommandCode,
-                record.LineCode,
+                record.ProductId,
                 record.RecordDate);
             record.KitNumber = _serialNumberService.BuildKitNumber(
                 record.CommandCode,

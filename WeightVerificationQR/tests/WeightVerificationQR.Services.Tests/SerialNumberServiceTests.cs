@@ -47,6 +47,7 @@ public class SerialNumberServiceTests
             LineCode = "I",
             ModelCode = "IKIT-A",
             ProductName = "I Kit Model A",
+            QrText = "INSTA KIT (5/8 & 3/8) EPE",
             LabelSizeText = "5/8\" & 3/8\"",
             LabelLengthText = "3 Meter",
             LabelMaterialText = "EPE",
@@ -57,10 +58,9 @@ public class SerialNumberServiceTests
 
         var payload = service.BuildQrPayload(record);
 
-        Assert.Contains("KIT=P-I-290726-1051-000001", payload);
-        Assert.Contains("MODEL=IKIT-A", payload);
-        Assert.Contains("WEIGHT_KG=1.051", payload);
-        Assert.Contains("SERIAL=000001", payload);
+        Assert.Equal(
+            "INSTA KIT (5/8 & 3/8) EPE P-I-290726-1051-000001",
+            payload);
     }
 
     [Fact]
@@ -147,8 +147,7 @@ public class SerialNumberServiceTests
         public Task<WeighRecord?> GetByQrIdAsync(string qrId) => Task.FromResult<WeighRecord?>(null);
         public Task<string> GenerateNextKitNumberAsync(string codePrefix) => Task.FromResult(string.Empty);
         public Task<int> GetNextDailyLabelSerialAsync(
-            string commandCode,
-            string lineCode,
+            int productId,
             DateTime productionDate) => Task.FromResult(1);
         public Task<(int passCount, int failCount)> GetTodayCountsAsync() => Task.FromResult((0, 0));
         public Task<List<WeighRecord>> GetPendingSyncAsync(int maxCount) => Task.FromResult(new List<WeighRecord>());
